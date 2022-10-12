@@ -5,7 +5,6 @@ import ChoreScreen from '../Screens/ChoreScreen';
 import CreateScreen from '../Screens/CreateScreen';
 import DetailScreen from '../Screens/DetailScreen';
 import HomeScreen from '../Screens/HomeScreen';
-import LoginScreen from '../Screens/LoginScreen';
 import ManagerScreen from '../Screens/ManagerScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
@@ -28,7 +27,6 @@ export type RootStackParamList = {
   StatisticsScreen: undefined;
   ProfileScreen: undefined;
   DetailScreen: undefined;
-  LoginScreen: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -37,7 +35,6 @@ export default function RootNavigator() {
   return (
     <NavigationContainer>
       <RootStack.Navigator>
-        <RootStack.Screen name='LoginScreen' component={LoginScreen} />
         <RootStack.Screen name='StartScreen' component={StartScreen} />
         <RootStack.Screen name='HomeScreen' component={HomeScreen} />
         <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
