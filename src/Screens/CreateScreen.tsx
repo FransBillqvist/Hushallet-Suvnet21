@@ -1,16 +1,16 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 
-export default function ProfileScreen({ navigation }: Props) {
+export default function CreateScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Text>Profile screen</Text>
-      <Text>Name</Text>
-      <Text>Avatar</Text>
-      <Text>Knapp: Skapa</Text>
+      <Text>TextInput: Hushållets namn</Text>
+      <Text>Display: Hushållets inbjudningskod</Text>
+      <Text>Knapp: Skapa hushåll</Text>
     </View>
   );
 }

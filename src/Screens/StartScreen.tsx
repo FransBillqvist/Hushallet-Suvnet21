@@ -1,15 +1,17 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'StatisticsScreen'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
 
-export default function StatisticsScreen({ navigation }: Props) {
+export default function StartScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Text>Pil-vänster FÖRRA VECKAN pil-höger </Text>
-      <Text>Piechart: TOTALT</Text>
-      <Text>Display: Alla sysslors pie charts </Text>
+      <Text>Logga in eller skapa konto</Text>
+      <Text>Knapp: Logga in</Text>
+      <Text>Knapp: Registrera konto</Text>
+      <Button title='Log in' onPress={() => navigation.navigate('ManagerScreen')}></Button>
       <Button title='Register' onPress={() => navigation.navigate('RegisterScreen')}></Button>
     </View>
   );
