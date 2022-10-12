@@ -1,15 +1,12 @@
 {
   "env": {
-    "es2021": true,
     "node": true,
-    "react-native/react-native": true
+    "es2021": true
   },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/react"
+    "plugin:@typescript-eslint/recommended"
   ],
   "overrides": [],
   "parser": "@typescript-eslint/parser",
@@ -17,6 +14,9 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "react-native", "@typescript-eslint"],
-  "rules": {}
+  "plugins": ["react", "@typescript-eslint", "react-native"],
+  "rules": {
+    "@typescript-eslint/no-namespace": [2, { "allowDeclarations": true }],
+    "@typescript-eslint/no-empty-interface": 0
+  }
 }

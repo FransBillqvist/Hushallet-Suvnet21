@@ -1,16 +1,18 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'DetailScreen'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'ChoreScreen'>;
 
-export default function DetailScreen({ navigation }: Props) {
+export default function ChoreScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Text>Sysslns titel</Text>
-      <Text>Sysslans beskrivning</Text>
-      <Text>Energivärde: 6</Text>
-      <Text>Image: Liten pojke dammar</Text>
+      <Text>TextInput: Titel</Text>
+      <Text>TextInput: Beskrivning</Text>
+      <Text>Återkommer: var blabla dag </Text>
+      <Text>Värde: 1-2-4-6-8 </Text>
+      <Text>SKALL HA EDIT </Text>
     </View>
   );
 }

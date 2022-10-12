@@ -1,17 +1,17 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'DetailScreen'>;
 
-export default function ManagerScreen() {
+export default function DetailScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Text>Hushålls-skärm</Text>
-      <Text>Knapp: Skapa nytt hushåll(ägare)</Text>
-      <Text>Dropdown menu: Gå med i ett hushåll</Text>
-      <Text>Knapp: Skriv in hushållskod(För att gå med i hushåll) Knapp: Acceptera</Text>
-      <Text>Lista med hushåll</Text>
+      <Text>Sysslns titel</Text>
+      <Text>Sysslans beskrivning</Text>
+      <Text>Energivärde: 6</Text>
+      <Text>Image: Liten pojke dammar</Text>
     </View>
   );
 }

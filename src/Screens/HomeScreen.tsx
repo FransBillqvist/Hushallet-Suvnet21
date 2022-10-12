@@ -1,15 +1,16 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
-export default function CreateScreen({ navigation }: Props) {
+export default function HomeScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Text>TextInput: Hushållets namn</Text>
-      <Text>Display: Hushållets inbjudningskod</Text>
-      <Text>Knapp: Skapa hushåll</Text>
+      <Text>Chores to be done</Text>
+      <Text>Add chore</Text>
+      <Text>Edit chore</Text>
     </View>
   );
 }
