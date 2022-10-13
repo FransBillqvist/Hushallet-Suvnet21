@@ -7,34 +7,26 @@ type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
 
 export default function StartScreen({ navigation }: Props) {
   return (
-    <View>
-      <View style={{ marginLeft: 15 }}>
-        <View style={{ backgroundColor: 'yellow', paddingBottom: 20 }}>
-          <Text>Användarnamn</Text>
-          <TextInput style={styles.input} placeholder='Användarnamn'></TextInput>
+    <View style={styles.container}>
+      <View style={styles.inputContainer}>
+        <View style={styles.inputStyle}>
+          <Text style={styles.inputLabel}>Användarnamn</Text>
+          <TextInput style={styles.inputTextField} placeholder='Användarnamn'></TextInput>
         </View>
-        <View style={{ backgroundColor: 'blue' }}>
-          <Text>Lösenord</Text>
-          <TextInput style={styles.input} placeholder='Lösenord'></TextInput>
+        <View style={styles.inputStyle}>
+          <Text style={styles.inputLabel}>Lösenord</Text>
+          <TextInput style={styles.inputTextField} placeholder='Lösenord'></TextInput>
         </View>
       </View>
       <View style={styles.buttonContainer}>
         <Pressable style={styles.button}>
-          <Text>Logga in</Text>
+          <Text style={styles.buttonText}>Logga in</Text>
+        </Pressable>
+        <Text style={styles.ellerText}>eller</Text>
+        <Pressable style={styles.button}>
+          <Text style={styles.buttonText}>Skapa konto</Text>
         </Pressable>
       </View>
-      <View
-        style={{
-          borderBottomWidth: StyleSheet.hairlineWidth,
-          borderBottomColor: 'grey',
-          maxWidth: '50%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'orange',
-          padding: 10,
-          marginLeft: 100,
-        }}
-      ></View>
     </View>
   );
 }
@@ -42,29 +34,51 @@ export default function StartScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  input: {
+  inputContainer: {
+    paddingHorizontal: 15,
+    width: '100%',
+  },
+  inputLabel: {
+    marginBottom: 10,
+    color: '#52525C',
+    fontSize: 15,
+  },
+  inputTextField: {
     borderWidth: 1,
-    borderRadius: 10,
-    backgroundColor: 'green',
+    borderRadius: 7,
+    borderColor: 'darkgrey',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: 'white',
+    fontSize: 15,
+  },
+  inputStyle: {
+    marginTop: 10,
   },
   buttonContainer: {
-    backgroundColor: 'cyan',
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxWidth: 300,
+    marginTop: 45,
   },
   button: {
     backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
-    borderWidth: 1,
-    marginTop: 10,
+    borderRadius: 1000,
+    paddingVertical: 16,
+    elevation: 4,
+    minWidth: '100%',
     alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 17,
+    fontWeight: '600',
+  },
+  ellerText: {
+    padding: 10,
+    fontWeight: '700',
+    fontSize: 18,
   },
 });
