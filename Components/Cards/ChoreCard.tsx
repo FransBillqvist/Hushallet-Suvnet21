@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent, ReactNode } from 'react';
 
 import {
   GestureResponderEvent,
@@ -7,7 +7,7 @@ import {
   Text,
   useWindowDimensions,
   View,
-} from "react-native";
+} from 'react-native';
 
 interface ButtonProps {
   children?: ReactNode;
@@ -18,8 +18,8 @@ const ChoreCard: FunctionComponent<ButtonProps> = (props) => {
   const { styles } = useStyle();
   return (
     <Pressable style={styles.pressable} onPress={props.onPress}>
-      <View style={{ alignItems: "center", flexDirection: "row" }}>
-        <Text style={{ textAlign: "center" }}>{props.children}</Text>
+      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+        <Text style={{ textAlign: 'center' }}>{props.children}</Text>
       </View>
     </Pressable>
   );
@@ -30,9 +30,9 @@ const useStyle = () => {
   const styles = StyleSheet.create({
     pressable: {
       borderRadius: 10,
-      backgroundColor: "#F3F8F8",
+      backgroundColor: '#F3F8F8',
       padding: 10,
-      shadowColor: "1px 2px 4px rgba(0, 0, 0, 0.15)",
+      shadowColor: '1px 2px 4px rgba(0, 0, 0, 0.15)',
       shadowOpacity: 0.8,
       elevation: 6,
       shadowRadius: 15,

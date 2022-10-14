@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent, ReactNode } from 'react';
 
 import {
   Pressable,
@@ -6,7 +6,7 @@ import {
   GestureResponderEvent,
   StyleSheet,
   useWindowDimensions,
-} from "react-native";
+} from 'react-native';
 
 interface ButtonProps {
   children: ReactNode;
@@ -27,15 +27,15 @@ const useStyle = () => {
   const styles = StyleSheet.create({
     pressable: {
       borderRadius: 25,
-      backgroundColor: "#F3F8F8",
+      backgroundColor: '#F3F8F8',
       padding: 10,
-      shadowColor: "rgba(0, 0, 0, 0.1)",
+      shadowColor: 'rgba(0, 0, 0, 0.1)',
       shadowOpacity: 0.8,
       elevation: 6,
       shadowRadius: 15,
-      shadowOffset: { width: 1, height: 5 },      
-      alignItems: "center",
-      alignContent: "space-between",
+      shadowOffset: { width: 1, height: 5 },
+      alignItems: 'center',
+      alignContent: 'space-between',
       width: dimensions.width / 3,
     },
   });
