@@ -1,24 +1,25 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, TextInput } from 'react-native';
+import { Text, View } from '../Components/Themed';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
 
 export default function StartScreen({ navigation }: Props) {
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <View style={styles.inputStyle}>
+    <View style={styles.container} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
+      <View style={styles.inputContainer} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
+        <View style={styles.inputStyle} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
           <Text style={styles.inputLabel}>Användarnamn</Text>
           <TextInput style={styles.inputTextField} placeholder='Användarnamn'></TextInput>
         </View>
-        <View style={styles.inputStyle}>
+        <View style={styles.inputStyle} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
           <Text style={styles.inputLabel}>Lösenord</Text>
           <TextInput style={styles.inputTextField} placeholder='Lösenord'></TextInput>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
+      <View style={styles.buttonContainer} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
         <Pressable style={styles.button}>
           <Text style={styles.buttonText}>Logga in</Text>
         </Pressable>
