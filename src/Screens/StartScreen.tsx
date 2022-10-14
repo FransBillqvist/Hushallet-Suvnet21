@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Pressable, StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
+import BigButton from '../Components/Buttons/BigButton';
 import { Text, View } from '../Components/Themed';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
@@ -20,13 +21,9 @@ export default function StartScreen({ navigation }: Props) {
         </View>
       </View>
       <View style={styles.buttonContainer} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Logga in</Text>
-        </Pressable>
+        <BigButton onPress={() => navigation.navigate('ManagerScreen')}>Logga In</BigButton>
         <Text style={styles.ellerText}>eller</Text>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Skapa konto</Text>
-        </Pressable>
+        <BigButton onPress={() => navigation.navigate('RegisterScreen')}>Skapa konto</BigButton>
       </View>
     </View>
   );
