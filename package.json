@@ -9,13 +9,19 @@
     "web": "expo start --web",
     "lint": "eslint ./src",
     "format": "prettier ./ --check",
-    "prettier": "npm run format -- --write"
+    "prettier": "npm run format -- --write",
+    "types": "tsc --noEmit",
+    "check": "npm run lint && npm run format && npm run types"
   },
   "dependencies": {
+    "@firebase/firestore": "^3.7.1",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
-    "expo": "~46.0.13",
+    "dotenv": "^16.0.3",
+    "expo": "^46.0.15",
+    "expo-constants": "~13.2.4",
     "expo-status-bar": "~1.4.0",
+    "firebase": "^9.12.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.6",
