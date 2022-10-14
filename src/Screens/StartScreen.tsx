@@ -9,10 +9,10 @@ type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
 
 export default function StartScreen({ navigation }: Props) {
   const testfb = async () => {
-    await addDoc(collection(fireStore, 'test'), {name: 'test'})
+    await addDoc(collection(fireStore, 'test'), { name: 'test' });
   };
   const Testreg = async () => {
-    await addDoc(collection(fireStore, 'User'), {name: Date.now().toString()})
+    await addDoc(collection(fireStore, 'User'), { name: Date.now().toString() });
   };
   return (
     <View style={styles.container}>
