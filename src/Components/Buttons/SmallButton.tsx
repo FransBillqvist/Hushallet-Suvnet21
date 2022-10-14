@@ -1,45 +1,29 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import { Button } from 'native-base';
+import { GestureResponderEvent, useWindowDimensions } from 'react-native';
+import React, { ReactNode } from 'react';
 
-import {
-  Pressable,
-  Text,
-  GestureResponderEvent,
-  StyleSheet,
-  useWindowDimensions,
-} from 'react-native';
-
-interface ButtonProps {
-  children: ReactNode;
+interface Props {
+  children?: ReactNode;
+  startIcon?: JSX.Element;
   onPress: (event: GestureResponderEvent) => void;
 }
 
-const SmallButton: FunctionComponent<ButtonProps> = (props) => {
-  const { styles } = useStyle();
+const SmallButton = (props: Props) => {
   return (
-    <Pressable style={styles.pressable} onPress={props.onPress}>
-      <Text>{props.children}</Text>
-    </Pressable>
+    <Button
+      rounded='full'
+      width={useWindowDimensions().width / 3}
+      bg='white.300'
+      shadow='1'
+      _text={{ color: 'black' }}
+      _pressed={{ bg: 'gray.200' }}
+      flexDir='row'
+      justifyContent='space-between'
+      startIcon={props.startIcon}
+      onPress={props.onPress}
+    >
+      {props.children}
+    </Button>
   );
 };
-
-const useStyle = () => {
-  const dimensions = useWindowDimensions();
-  const styles = StyleSheet.create({
-    pressable: {
-      borderRadius: 25,
-      backgroundColor: '#F3F8F8',
-      padding: 10,
-      shadowColor: 'rgba(0, 0, 0, 0.1)',
-      shadowOpacity: 0.8,
-      elevation: 6,
-      shadowRadius: 15,
-      shadowOffset: { width: 1, height: 5 },
-      alignItems: 'center',
-      alignContent: 'space-between',
-      width: dimensions.width / 3,
-    },
-  });
-  return { styles };
-};
-
 export default SmallButton;
