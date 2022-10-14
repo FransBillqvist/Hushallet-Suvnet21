@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     marginBottom: 10,
-    color: '#52525C',
     fontSize: 15,
   },
   inputTextField: {
@@ -66,7 +65,6 @@ const styles = StyleSheet.create({
     marginTop: 45,
   },
   button: {
-    backgroundColor: 'white',
     borderRadius: 1000,
     paddingVertical: 16,
     elevation: 4,
