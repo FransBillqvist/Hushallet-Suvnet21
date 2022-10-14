@@ -9,13 +9,13 @@ type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
 
 export default function StartScreen({ navigation }: Props) {
   return (
-    <View style={styles.container} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
-      <View style={styles.inputContainer} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
+    <View style={styles.container}>
+      <View style={styles.inputContainer}>
         <View style={styles.inputStyle} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
           <Text style={styles.inputLabel}>Användarnamn</Text>
           <TextInput style={styles.inputTextField} placeholder='Användarnamn'></TextInput>
         </View>
-        <View style={styles.inputStyle} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
+        <View style={styles.inputStyle}>
           <Text style={styles.inputLabel}>Lösenord</Text>
           <TextInput style={styles.inputTextField} placeholder='Lösenord'></TextInput>
         </View>
