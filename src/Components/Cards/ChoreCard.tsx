@@ -1,48 +1,28 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import { Box } from 'native-base';
 
-import {
-  GestureResponderEvent,
-  Pressable,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-
-interface ButtonProps {
+interface Props {
   children?: ReactNode;
-  onPress?: (event: GestureResponderEvent) => void;
 }
 
-const ChoreCard: FunctionComponent<ButtonProps> = (props) => {
-  const { styles } = useStyle();
+const ChoreCard = (props: Props) => {
   return (
-    <Pressable style={styles.pressable} onPress={props.onPress}>
-      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-        <Text style={{ textAlign: 'center' }}>{props.children}</Text>
-      </View>
-    </Pressable>
+    <Box flex='1'>
+      <Box
+        shadow='1'
+        rounded='lg'
+        overflow='hidden'
+        bg='white.300'
+        w='80'
+        p='4'
+        borderColor='white.300'
+        flexDir='row'
+        justifyContent='space-between'
+      >
+        {props.children}
+      </Box>
+    </Box>
   );
-};
-
-const useStyle = () => {
-  const dimensions = useWindowDimensions();
-  const styles = StyleSheet.create({
-    pressable: {
-      borderRadius: 10,
-      backgroundColor: '#F3F8F8',
-      padding: 10,
-      shadowColor: '1px 2px 4px rgba(0, 0, 0, 0.15)',
-      shadowOpacity: 0.8,
-      elevation: 6,
-      shadowRadius: 15,
-      shadowOffset: { width: 1, height: 5 },
-      width: dimensions.width - 20,
-      paddingBottom: 10,
-      minHeight: 50,
-    },
-  });
-  return { styles };
 };
 
 export default ChoreCard;
