@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent, ReactNode } from 'react';
 
 import {
   Pressable,
@@ -7,7 +7,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   View,
-} from "react-native";
+} from 'react-native';
 
 interface ButtonProps {
   children: ReactNode;
@@ -18,8 +18,8 @@ const BigButton: FunctionComponent<ButtonProps> = (props) => {
   const { styles } = useStyle();
   return (
     <Pressable style={styles.pressable} onPress={props.onPress}>
-      <View style={{ alignItems: "center", flexDirection: "row" }}>
-        <Text style={{ textAlign: "center" }}>{props.children}</Text>
+      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+        <Text style={{ textAlign: 'center' }}>{props.children}</Text>
       </View>
     </Pressable>
   );
@@ -30,14 +30,14 @@ const useStyle = () => {
   const styles = StyleSheet.create({
     pressable: {
       borderRadius: 25,
-      backgroundColor: "#F3F8F8",
+      backgroundColor: '#F3F8F8',
       padding: 10,
-      shadowColor: "rgba(0, 0, 0, 0.1)",
+      shadowColor: 'rgba(0, 0, 0, 0.1)',
       shadowOpacity: 0.8,
       elevation: 6,
       shadowRadius: 15,
       shadowOffset: { width: 1, height: 5 },
-      textAlignVertical: "center",
+      textAlignVertical: 'center',
       width: dimensions.width / 2,
       paddingBottom: 10,
     },
