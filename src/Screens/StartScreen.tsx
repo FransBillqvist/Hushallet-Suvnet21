@@ -61,17 +61,6 @@ const styles = StyleSheet.create({
     maxWidth: 300,
     marginTop: 45,
   },
-  button: {
-    borderRadius: 1000,
-    paddingVertical: 16,
-    elevation: 4,
-    minWidth: '100%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 17,
-    fontWeight: '600',
-  },
   ellerText: {
     padding: 10,
     fontWeight: '700',
