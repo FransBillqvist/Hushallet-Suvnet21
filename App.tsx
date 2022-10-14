@@ -15,7 +15,7 @@ export default function App() {
       <NativeBaseProvider>
         <ReduxProvider store={store}>
           <StatusBar style='auto' />
-          <RootNavigator  colorScheme={colorScheme} />
+          <RootNavigator colorScheme={colorScheme} />
         </ReduxProvider>
       </NativeBaseProvider>
     </SafeAreaProvider>
