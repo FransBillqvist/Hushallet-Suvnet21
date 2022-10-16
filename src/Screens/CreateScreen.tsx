@@ -4,23 +4,30 @@ import { GestureResponderEvent, StyleSheet, Text, TextInput, View } from 'react-
 import BigButton from '../Components/Buttons/BigButton';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import 'react-native-get-random-values';
+import { customAlphabet, nanoid } from 'nanoid';
+import { AntDesign } from '@expo/vector-icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 
-const code = '';
-
 export default function CreateScreen({ navigation }: Props) {
+  const [text, onChangeText] = React.useState('Namn ge ditt hushåll');
+  let code = '';
+  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
+  if (text !== 'Namn ge ditt hushåll' && text.length > 3) {
+    code = nanoid();
+  }
   return (
     <View style={styles.container}>
       <View style={styles.inputsContainer}>
-        <TextInput style={styles.textInput} placeholder='Namnge ditt hushåll'></TextInput>
+        <TextInput style={styles.textInput} onChangeText={onChangeText} value={text}></TextInput>
       </View>
       <View style={styles.spacer}></View>
       <View style={styles.inputsContainer}>
         {code !== '' ? (
           <Text style={styles.showInviteCode}>
             {code}
-            <MaterialIcons name='add-circle-outline' size={24} color='black' />
+            <AntDesign name='copy1' size={24} color='black' />
           </Text>
         ) : (
           <Text style={{ fontSize: 20 }}>Din kod har inte genererats än.</Text>
@@ -51,13 +58,14 @@ const styles = StyleSheet.create({
   inputsContainer: {
     minHeight: 50,
     flexBasis: 80,
-    backgroundColor: '#0f0f53',
+    backgroundColor: '#fff',
     color: '#000000',
   },
   spacer: {
     flexBasis: 50,
   },
   textInput: {
+    minWidth: 300,
     fontSize: 24,
     backgroundColor: '#e0e0e0',
     color: '#000000',
@@ -67,8 +75,8 @@ const styles = StyleSheet.create({
   },
   showInviteCode: {
     fontSize: 24,
-    backgroundColor: '#2b63bf',
-    color: '#00ff00',
+    backgroundColor: '#fff',
+    color: '#000000',
   },
   textForButton: {
     textAlign: 'center',
