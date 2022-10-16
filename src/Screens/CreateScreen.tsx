@@ -15,7 +15,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 export default function CreateScreen({ navigation }: Props) {
   const [text, onChangeText] = React.useState('');
   let code = '';
-  const nanoid= customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
+  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
   if (text !== 'Namn ge ditt hushåll' && text.length > 3) {
     code = nanoid();
   }
@@ -25,7 +25,12 @@ export default function CreateScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.inputsContainer}>
-        <TextInput style={styles.textInput} onChangeText={onChangeText} placeholder={'Namn ge ditt hushåll'} value={text}></TextInput>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={onChangeText}
+          placeholder={'Namn ge ditt hushåll'}
+          value={text}
+        ></TextInput>
       </View>
       <View style={styles.spacer}></View>
       <View style={styles.inputsContainer}>
