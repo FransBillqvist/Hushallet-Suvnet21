@@ -7,6 +7,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import 'react-native-get-random-values';
 import { customAlphabet, nanoid } from 'nanoid';
 import { AntDesign } from '@expo/vector-icons';
+import { fireStore } from '../Config/firebase';
+import { addDoc, collection } from '@firebase/firestore';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 
@@ -17,6 +19,9 @@ export default function CreateScreen({ navigation }: Props) {
   if (text !== 'Namn ge ditt hushåll' && text.length > 3) {
     code = nanoid();
   }
+  const AddHouse = async () => {
+    await addDoc(collection(fireStore, 'Household'), { id: nanoid(), name: text, code: code });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.inputsContainer}>
@@ -36,6 +41,7 @@ export default function CreateScreen({ navigation }: Props) {
       <View style={styles.spacer}></View>
       <BigButton
         onPress={function (event: GestureResponderEvent): void {
+          AddHouse();
           navigation.navigate('StartScreen');
         }}
       >
