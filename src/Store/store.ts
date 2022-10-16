@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { householdReducer } from './householdSlice';
 import { userReducer } from './userSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    household: householdReducer,
   },
 });
 
