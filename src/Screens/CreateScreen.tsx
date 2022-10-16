@@ -9,28 +9,34 @@ type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 
 const code = '';
 
-
-
 export default function CreateScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.inputsContainer}>
         <TextInput style={styles.textInput} placeholder='Namn ge ditt hushåll'></TextInput>
       </View>
-        <View style={styles.spacer}>
-        </View>
-        <View style={styles.inputsContainer}>
-        {code !== '' ? <Text style={styles.showInviteCode}>{code}<MaterialIcons name="add-circle-outline" size={24} color="black" /></Text> : <Text style={{fontSize: 20}}>Din kod har inte generats än.</Text>}
-        </View>
-      <View style={styles.spacer}>
-        </View>
-        <BigButton onPress={function (event: GestureResponderEvent): void {
+      <View style={styles.spacer}></View>
+      <View style={styles.inputsContainer}>
+        {code !== '' ? (
+          <Text style={styles.showInviteCode}>
+            {code}
+            <MaterialIcons name='add-circle-outline' size={24} color='black' />
+          </Text>
+        ) : (
+          <Text style={{ fontSize: 20 }}>Din kod har inte generats än.</Text>
+        )}
+      </View>
+      <View style={styles.spacer}></View>
+      <BigButton
+        onPress={function (event: GestureResponderEvent): void {
           navigation.navigate('StartScreen');
-      } } >
-       <Text style={styles.textForButton}>
-        <MaterialIcons name="add-circle-outline" size={21} color="black" />
-
-        Skapa Hushåll</Text></BigButton>
+        }}
+      >
+        <Text style={styles.textForButton}>
+          <MaterialIcons name='add-circle-outline' size={21} color='black' />
+          Skapa Hushåll
+        </Text>
+      </BigButton>
     </View>
   );
 }
@@ -45,7 +51,7 @@ const styles = StyleSheet.create({
   inputsContainer: {
     minHeight: 50,
     flexBasis: 80,
-    backgroundColor:' #0f0f53',
+    backgroundColor: '#0f0f53',
     color: '#000000',
   },
   spacer: {
