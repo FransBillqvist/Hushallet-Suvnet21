@@ -1,9 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import * as React from 'react';
 import ChoreScreen from '../Screens/ChoreScreen';
 import CreateScreen from '../Screens/CreateScreen';
 import DetailScreen from '../Screens/DetailScreen';
+import DevStartScreen from '../Screens/DevStartScreen';
 import HomeScreen from '../Screens/HomeScreen';
 import ManagerScreen from '../Screens/ManagerScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
@@ -27,6 +28,7 @@ export type RootStackParamList = {
   StatisticsScreen: undefined;
   ProfileScreen: undefined;
   DetailScreen: undefined;
+  DevStartScreen: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -35,6 +37,8 @@ export default function RootNavigator() {
   return (
     <NavigationContainer>
       <RootStack.Navigator>
+        {/* DELETE DEVSTARTSCREEN BEFORE GOING LIVE!!*/}
+        <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
         <RootStack.Screen name='StartScreen' component={StartScreen} />
         <RootStack.Screen name='HomeScreen' component={HomeScreen} />
         <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
