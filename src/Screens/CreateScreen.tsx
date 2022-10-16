@@ -13,7 +13,7 @@ export default function CreateScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.inputsContainer}>
-        <TextInput style={styles.textInput} placeholder='Namn ge ditt hushåll'></TextInput>
+        <TextInput style={styles.textInput} placeholder='Namnge ditt hushåll'></TextInput>
       </View>
       <View style={styles.spacer}></View>
       <View style={styles.inputsContainer}>
@@ -23,7 +23,7 @@ export default function CreateScreen({ navigation }: Props) {
             <MaterialIcons name='add-circle-outline' size={24} color='black' />
           </Text>
         ) : (
-          <Text style={{ fontSize: 20 }}>Din kod har inte generats än.</Text>
+          <Text style={{ fontSize: 20 }}>Din kod har inte genererats än.</Text>
         )}
       </View>
       <View style={styles.spacer}></View>
