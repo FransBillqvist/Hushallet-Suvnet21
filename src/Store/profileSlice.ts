@@ -43,7 +43,7 @@ const profileSlice = createSlice({
       state.name = action.payload;
       console.log('fulfilled');
     });
-    // builder.addCase(setHouseholdName.rejected, (state, action) => {
+    // builder.addCase(setProfileName.rejected, (state, action) => {
     //   state.isLoading = false;
     //   //   state.error = action.payload || 'Unknown error';
     //   console.log('rejected');
