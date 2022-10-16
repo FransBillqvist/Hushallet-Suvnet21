@@ -1,43 +1,49 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-interface HouseholdState {
+interface ChoreState {
   id: string;
   name: string;
-  code: string;
+  description: string;
+  demanding: number;
+  frequency: number;
+  householdId: string;
   isLoading: boolean;
   error: string;
 }
 
-const initialState: HouseholdState = {
+const initialState: ChoreState = {
   id: '',
   name: '',
-  code: '',
+  description: '',
+  demanding: 0,
+  frequency: 0,
+  householdId: '',
   isLoading: false,
   error: '',
 };
 
-export const setHouseholdName = createAsyncThunk<string, string>(
-  'user/sethouseholdname',
+export const setChoreName = createAsyncThunk<string, string>(
+  'user/setchorename',
   async (name, thunkApi) => {
     return name;
   },
 );
 
-const householdSlice = createSlice({
-  name: 'household',
+const choreSlice = createSlice({
+  name: 'chores',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(setHouseholdName.pending, (state) => {
+    builder.addCase(setChoreName.pending, (state) => {
       state.isLoading = true;
       console.log('pending');
     });
-    builder.addCase(setHouseholdName.fulfilled, (state, action) => {
+    builder.addCase(setChoreName.fulfilled, (state, action) => {
       state.isLoading = false;
       state.name = action.payload;
       console.log('fulfilled');
     });
-    // builder.addCase(setHouseholdName.rejected, (state, action) => {
+    // builder.addCase(setChoreName.rejected, (state, action) => {
     //   state.isLoading = false;
     //   //   state.error = action.payload || 'Unknown error';
     //   console.log('rejected');
@@ -45,4 +51,4 @@ const householdSlice = createSlice({
   },
 });
 
-export const householdReducer = householdSlice.reducer;
+export const choreReducer = choreSlice.reducer;
