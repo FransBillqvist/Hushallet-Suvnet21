@@ -4,19 +4,17 @@ import { GestureResponderEvent, StyleSheet, Text, TextInput, View } from 'react-
 import BigButton from '../Components/Buttons/BigButton';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import "react-native-get-random-values";
+import 'react-native-get-random-values';
 import { customAlphabet, nanoid } from 'nanoid';
-import { AntDesign } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 
-
-
 export default function CreateScreen({ navigation }: Props) {
-  const [text, onChangeText] = React.useState("Namn ge ditt hushåll");
+  const [text, onChangeText] = React.useState('Namn ge ditt hushåll');
   let code = '';
-  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789',6);
-  if(text !== "Namn ge ditt hushåll" && text.length > 3){
+  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
+  if (text !== 'Namn ge ditt hushåll' && text.length > 3) {
     code = nanoid();
   }
   return (
@@ -29,7 +27,7 @@ export default function CreateScreen({ navigation }: Props) {
         {code !== '' ? (
           <Text style={styles.showInviteCode}>
             {code}
-            <AntDesign name="copy1" size={24} color="black" />
+            <AntDesign name='copy1' size={24} color='black' />
           </Text>
         ) : (
           <Text style={{ fontSize: 20 }}>Din kod har inte genererats än.</Text>
