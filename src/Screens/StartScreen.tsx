@@ -1,6 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
+import BigButton from '../Components/Buttons/BigButton';
+import { Text, View } from '../Components/Themed';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
@@ -9,7 +11,7 @@ export default function StartScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <View style={styles.inputStyle}>
+        <View style={styles.inputStyle} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
           <Text style={styles.inputLabel}>Användarnamn</Text>
           <TextInput style={styles.inputTextField} placeholder='Användarnamn'></TextInput>
         </View>
@@ -18,14 +20,10 @@ export default function StartScreen({ navigation }: Props) {
           <TextInput style={styles.inputTextField} placeholder='Lösenord'></TextInput>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Logga in</Text>
-        </Pressable>
+      <View style={styles.buttonContainer} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
+        <BigButton onPress={() => navigation.navigate('ManagerScreen')}>Logga In</BigButton>
         <Text style={styles.ellerText}>eller</Text>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Skapa konto</Text>
-        </Pressable>
+        <BigButton onPress={() => navigation.navigate('RegisterScreen')}>Skapa konto</BigButton>
       </View>
     </View>
   );
@@ -42,7 +40,6 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     marginBottom: 10,
-    color: '#52525C',
     fontSize: 15,
   },
   inputTextField: {
@@ -63,18 +60,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     maxWidth: 300,
     marginTop: 45,
-  },
-  button: {
-    backgroundColor: 'white',
-    borderRadius: 1000,
-    paddingVertical: 16,
-    elevation: 4,
-    minWidth: '100%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 17,
-    fontWeight: '600',
   },
   ellerText: {
     padding: 10,
