@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { GestureResponderEvent, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import BigButton from '../Components/Buttons/BigButton';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -45,7 +45,7 @@ export default function CreateScreen({ navigation }: Props) {
       </View>
       <View style={styles.spacer}></View>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           AddHouse();
           navigation.navigate('StartScreen');
         }}
