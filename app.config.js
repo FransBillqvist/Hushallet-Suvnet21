@@ -12,7 +12,7 @@ export default {
     splash: {
       image: './assets/hushållet-removebg-preview.png',
       resizeMode: 'contain',
-      backgroundColor: 'black',
+      backgroundColor: '#000000',
     },
     updates: {
       fallbackToCacheTimeout: 0,
