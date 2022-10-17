@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { GestureResponderEvent, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import BigButton from '../Components/Buttons/BigButton';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
@@ -10,63 +10,63 @@ export default function DevStartScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           navigation.navigate('ChoreScreen');
         }}
       >
         <Text>Chore</Text>
       </BigButton>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           navigation.navigate('CreateScreen');
         }}
       >
         <Text>Create</Text>
       </BigButton>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           navigation.navigate('DetailScreen');
         }}
       >
         <Text>Detail</Text>
       </BigButton>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           navigation.navigate('HomeScreen');
         }}
       >
         <Text>Home</Text>
       </BigButton>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           navigation.navigate('ManagerScreen');
         }}
       >
         <Text>Manager</Text>
       </BigButton>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           navigation.navigate('ProfileScreen');
         }}
       >
         <Text>Profile</Text>
       </BigButton>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           navigation.navigate('RegisterScreen');
         }}
       >
         <Text>Register</Text>
       </BigButton>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           navigation.navigate('StartScreen');
         }}
       >
         <Text>Start</Text>
       </BigButton>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           navigation.navigate('StatisticsScreen');
         }}
       >
