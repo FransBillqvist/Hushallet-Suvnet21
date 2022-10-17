@@ -1,20 +1,22 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { GestureResponderEvent, StyleSheet, Text, TextInput, View } from 'react-native';
-import BigButton from '../Components/Buttons/BigButton';
-import { RootStackParamList } from '../Navigation/RootNavigator';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import 'react-native-get-random-values';
-import { customAlphabet, nanoid } from 'nanoid';
 import { AntDesign } from '@expo/vector-icons';
-import { fireStore } from '../Config/firebase';
 import { addDoc, collection } from '@firebase/firestore';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as Clipboard from 'expo-clipboard';
+import { customAlphabet } from 'nanoid';
+import * as React from 'react';
+import { GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import 'react-native-get-random-values';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import BigButton from '../Components/Buttons/BigButton';
+import { fireStore } from '../Config/firebase';
+import { RootStackParamList } from '../Navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 
 export default function CreateScreen({ navigation }: Props) {
   const [text, onChangeText] = React.useState('');
   let code = '';
+
   const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
   if (text !== 'Namn ge ditt hushåll' && text.length > 3) {
     code = nanoid();
@@ -22,6 +24,11 @@ export default function CreateScreen({ navigation }: Props) {
   const AddHouse = async () => {
     await addDoc(collection(fireStore, 'Household'), { id: nanoid(), name: text, code: code });
   };
+
+  const copyToClipboard = () => {
+    Clipboard.setStringAsync(code);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputsContainer}>
@@ -37,7 +44,9 @@ export default function CreateScreen({ navigation }: Props) {
         {code !== '' ? (
           <Text style={styles.showInviteCode}>
             {code}
-            <AntDesign name='copy1' size={24} color='black' />
+            <Pressable onPress={copyToClipboard}>
+              <AntDesign name='copy1' size={24} color='black' />
+            </Pressable>
           </Text>
         ) : (
           <Text style={{ fontSize: 20 }}>Din kod har inte genererats än.</Text>
