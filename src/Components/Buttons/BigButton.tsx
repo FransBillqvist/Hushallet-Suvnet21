@@ -1,11 +1,11 @@
 import { Button } from 'native-base';
-import { GestureResponderEvent, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import React, { ReactNode } from 'react';
+import { InterfaceButtonProps } from 'native-base/lib/typescript/components/primitives/Button/types';
 
-interface Props {
+interface Props extends InterfaceButtonProps {
   children?: ReactNode;
-  startIcon?: JSX.Element;
-  onPress: (event: GestureResponderEvent) => void;
+  onPress: () => void;
 }
 
 const BigButton = (props: Props) => {
@@ -18,7 +18,6 @@ const BigButton = (props: Props) => {
       _text={{ color: 'black' }}
       _pressed={{ bg: 'gray.200' }}
       flexDir='row'
-      justifyContent='space-between'
       startIcon={props.startIcon}
       onPress={props.onPress}
     >
