@@ -1,9 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
-/**
- * Learn more about Light and Dark modes:
- * https://docs.expo.io/guides/color-schemes/
- */
-
+import React from 'react';
 import { Text as DefaultText, View as DefaultView } from 'react-native';
 import colors from '../colors';
 import useColorScheme from '../Hooks/useColorScheme';
