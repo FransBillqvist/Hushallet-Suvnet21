@@ -19,7 +19,7 @@ jobs:
         with:
           expo-version: 5.x
           eas-version: latest
-          token: ${{ Z185BO4vZFROrKxylJMrBr7M9WgzEY97ArLGIV3u }}
+          token: ${{ secrets.EXPO_TOKEN }}
       - name: Install dependencies
         run: npm ci
       - name: Build on EAS
