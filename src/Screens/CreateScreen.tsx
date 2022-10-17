@@ -54,7 +54,7 @@ export default function CreateScreen({ navigation }: Props) {
       </View>
       <View style={styles.spacer}></View>
       <BigButton
-        onPress={function (event: GestureResponderEvent): void {
+        onPress={function (): void {
           AddHouse();
           navigation.navigate('StartScreen');
         }}
