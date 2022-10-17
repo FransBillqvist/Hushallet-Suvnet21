@@ -1,4 +1,5 @@
 import { PieChart } from 'react-native-chart-kit';
+import { AbstractChartProps } from 'react-native-chart-kit/dist/AbstractChart';
 import React from 'react';
 
 const chartConfig = {
@@ -12,10 +13,14 @@ const chartConfig = {
   useShadowColorFromDataset: false, // optional
 };
 
-const ChorePieChart = () => {
+interface Props extends AbstractChartProps {
+  data: Array<unknown>;
+}
+
+const ChorePieChart = (props: Props) => {
   return (
     <PieChart
-      data={data}
+      data={props.data}
       width={250}
       height={200}
       chartConfig={chartConfig}
