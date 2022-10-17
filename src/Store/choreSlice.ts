@@ -28,6 +28,24 @@ export const setChoreName = createAsyncThunk<string, string>(
     return name;
   },
 );
+export const setChoreDescription = createAsyncThunk<string, string>(
+  'user/setchoredescription',
+  async (description, thunkApi) => {
+    return description;
+  },
+);
+export const setChoreDemanding = createAsyncThunk<number, number>(
+  'user/setchoredemanding',
+  async (demanding, thunkApi) => {
+    return demanding;
+  },
+);
+export const setChoreFrequency = createAsyncThunk<number, number>(
+  'user/setchorefrequency',
+  async (frequency, thunkApi) => {
+    return frequency;
+  },
+);
 
 const choreSlice = createSlice({
   name: 'chores',
@@ -43,6 +61,35 @@ const choreSlice = createSlice({
       state.name = action.payload;
       console.log('fulfilled');
     });
+
+    builder.addCase(setChoreDescription.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(setChoreDescription.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.description = action.payload;
+      console.log('fulfilled');
+    });
+    builder.addCase(setChoreDemanding.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(setChoreDemanding.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.demanding = action.payload;
+      console.log('fulfilled');
+    });
+    builder.addCase(setChoreFrequency.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(setChoreFrequency.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.frequency = action.payload;
+      console.log('fulfilled');
+    });
+
     // builder.addCase(setChoreName.rejected, (state, action) => {
     //   state.isLoading = false;
     //   //   state.error = action.payload || 'Unknown error';
