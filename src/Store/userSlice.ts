@@ -22,6 +22,12 @@ export const setUserName = createAsyncThunk<string, string>(
     return username;
   },
 );
+export const setUserPassword = createAsyncThunk<string, string>(
+  'user/setuserpassword',
+  async (password, thunkApi) => {
+    return password;
+  },
+);
 
 const userSlice = createSlice({
   name: 'user',
@@ -36,6 +42,15 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.username = action.payload;
       console.log('fulfilled');
+    });
+    builder.addCase(setUserPassword.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(setUserPassword.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.password = action.payload;
+      console.log(action.type);
     });
     // builder.addCase(setUserName.rejected, (state, action) => {
     //   state.isLoading = false;
