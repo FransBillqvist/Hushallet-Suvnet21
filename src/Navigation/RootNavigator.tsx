@@ -5,6 +5,7 @@ import { ColorSchemeName } from 'react-native';
 import ChoreScreen from '../Screens/ChoreScreen';
 import CreateScreen from '../Screens/CreateScreen';
 import DetailScreen from '../Screens/DetailScreen';
+import DevStartScreen from '../Screens/DevStartScreen';
 import HomeScreen from '../Screens/HomeScreen';
 import ManagerScreen from '../Screens/ManagerScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   StatisticsScreen: undefined;
   ProfileScreen: undefined;
   DetailScreen: undefined;
+  DevStartScreen: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -36,6 +38,8 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
   return (
     <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <RootStack.Navigator>
+        {/* DELETE DEVSTARTSCREEN BEFORE GOING LIVE!!*/}
+        <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
         <RootStack.Screen name='StartScreen' component={StartScreen} />
         <RootStack.Screen name='HomeScreen' component={HomeScreen} />
         <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
