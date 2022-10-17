@@ -10,9 +10,9 @@ export default {
     userInterfaceStyle: 'automatic',
     owner: 'lumincob',
     splash: {
-      image: './assets/splash.png',
+      image: './assets/hushållet-removebg-preview.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff',
+      backgroundColor: 'black',
     },
     updates: {
       fallbackToCacheTimeout: 0,
