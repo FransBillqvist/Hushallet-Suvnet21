@@ -9,9 +9,9 @@ export default {
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
     splash: {
-      image: './assets/splash.png',
+      image: './assets/hushållet-removebg-preview.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff',
+      backgroundColor: 'black',
     },
     updates: {
       fallbackToCacheTimeout: 0,
