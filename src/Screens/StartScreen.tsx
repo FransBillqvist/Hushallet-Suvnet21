@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet } from 'react-native';
 import BigButton from '../Components/Buttons/BigButton';
-import { Text, View } from '../Components/Themed';
+import { Text, TextInput, View } from '../Components/Themed';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
   inputTextField: {
     borderWidth: 1,
     borderRadius: 7,
-    borderColor: 'darkgrey',
+    // borderColor: 'darkgrey',
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: 'white',
+    // backgroundColor: 'grey',
     fontSize: 15,
   },
   inputStyle: {
