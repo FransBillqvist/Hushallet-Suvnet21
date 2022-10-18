@@ -4,7 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Clipboard from 'expo-clipboard';
 import { customAlphabet } from 'nanoid';
 import * as React from 'react';
-import { GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import 'react-native-get-random-values';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import BigButton from '../Components/Buttons/BigButton';
