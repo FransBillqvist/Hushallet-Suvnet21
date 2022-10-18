@@ -11,7 +11,7 @@ export default function StartScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <View style={styles.inputStyle} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
+        <View style={styles.inputStyle}>
           <Text style={styles.inputLabel}>Användarnamn</Text>
           <TextInput style={styles.inputTextField} placeholder='Användarnamn'></TextInput>
         </View>
@@ -20,7 +20,7 @@ export default function StartScreen({ navigation }: Props) {
           <TextInput style={styles.inputTextField} placeholder='Lösenord'></TextInput>
         </View>
       </View>
-      <View style={styles.buttonContainer} lightColor='#eee' darkColor='rgba(255,255,255,0.1)'>
+      <View style={styles.buttonContainer}>
         <BigButton onPress={() => navigation.navigate('ManagerScreen')}>Logga In</BigButton>
         <Text style={styles.ellerText}>eller</Text>
         <BigButton onPress={() => navigation.navigate('RegisterScreen')}>Skapa konto</BigButton>
