@@ -8,7 +8,7 @@ export default {
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
-    owner: 'lumincob',
+    // owner: 'lumincob',
     splash: {
       image: './assets/hushållet-removebg-preview.png',
       resizeMode: 'contain',
