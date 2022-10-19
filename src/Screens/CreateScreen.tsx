@@ -8,21 +8,23 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import 'react-native-get-random-values';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import BigButton from '../Components/Buttons/BigButton';
-import { fireStore } from '../Config/firebase';
+import { db } from '../Config/firebase';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 
 export default function CreateScreen({ navigation }: Props) {
   const [text, onChangeText] = React.useState('');
+
+  const nanoCode = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
+  const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 32);
   let code = '';
 
-  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
-  if (text !== 'Namn ge ditt hushåll' && text.length > 3) {
-    code = nanoid();
+  if (text.length > 3) {
+    code = nanoCode();
   }
   const AddHouse = async () => {
-    await addDoc(collection(fireStore, 'Household'), { id: nanoid(), name: text, code: code });
+    await addDoc(collection(db, 'Household'), { id: nanoId(), name: text, code: code });
   };
 
   const copyToClipboard = () => {
@@ -53,17 +55,30 @@ export default function CreateScreen({ navigation }: Props) {
         )}
       </View>
       <View style={styles.spacer}></View>
-      <BigButton
-        onPress={function (): void {
-          AddHouse();
-          navigation.navigate('StartScreen');
-        }}
-      >
-        <Text style={styles.textForButton}>
-          <MaterialIcons name='add-circle-outline' size={21} color='black' />
-          Skapa Hushåll
-        </Text>
-      </BigButton>
+      {code !== '' ? (
+        <BigButton
+          onPress={function (): void {
+            AddHouse();
+            navigation.navigate('StartScreen');
+          }}
+        >
+          <Text style={styles.textForButton}>
+            <MaterialIcons name='add-circle-outline' size={21} color='black' />
+            Skapa Hushåll
+          </Text>
+        </BigButton>
+      ) : (
+        <BigButton
+          onPress={function (): void {
+            null;
+          }}
+        >
+          <Text style={styles.textForButton}>
+            <MaterialIcons name='add-circle-outline' size={21} color='black' />
+            Skapa Hushåll
+          </Text>
+        </BigButton>
+      )}
     </View>
   );
 }
