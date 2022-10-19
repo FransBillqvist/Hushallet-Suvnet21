@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  View as DefaultView,
-} from 'react-native';
+import { View as DefaultView } from 'react-native';
 import colors from '../colors';
 import useColorScheme from '../Hooks/useColorScheme';
 
