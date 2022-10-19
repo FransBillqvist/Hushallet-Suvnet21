@@ -11,6 +11,7 @@ export default function DetailScreen({ navigation }: Props) {
       <Text>Sysslns titel</Text>
       <Text>Sysslans beskrivning</Text>
       <Text>Energivärde: 6</Text>
+
       <Text>Image: Liten pojke dammar</Text>
     </View>
   );
