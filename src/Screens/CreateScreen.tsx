@@ -56,17 +56,17 @@ export default function CreateScreen({ navigation }: Props) {
       </View>
       <View style={styles.spacer}></View>
       <BigButton
-          disabled={code !== '' ? false : true}
-          onPress={function (): void {
-            AddHouse();
-            navigation.navigate('StartScreen');
-          }}
-        >
-          <Text style={styles.textForButton}>
-            <MaterialIcons name='add-circle-outline' size={21} color='black' />
-            Skapa Hushåll
-          </Text>
-        </BigButton>
+        disabled={code !== '' ? false : true}
+        onPress={function (): void {
+          AddHouse();
+          navigation.navigate('StartScreen');
+        }}
+      >
+        <Text style={styles.textForButton}>
+          <MaterialIcons name='add-circle-outline' size={21} color='black' />
+          Skapa Hushåll
+        </Text>
+      </BigButton>
     </View>
   );
 }
