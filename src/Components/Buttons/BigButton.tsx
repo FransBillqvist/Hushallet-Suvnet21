@@ -5,13 +5,13 @@ import { InterfaceButtonProps } from 'native-base/lib/typescript/components/prim
 
 interface Props extends InterfaceButtonProps {
   children?: ReactNode;
-  onPress: () => void;  
+  onPress: () => void;
 }
 
 const BigButton = (props: Props) => {
   return (
     <Button
-    disabled={props.disabled}
+      disabled={props.disabled}
       rounded='full'
       width={useWindowDimensions().width / 2}
       bg='white.300'
