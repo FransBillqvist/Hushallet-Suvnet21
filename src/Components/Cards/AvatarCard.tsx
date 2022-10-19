@@ -1,11 +1,9 @@
-import { InterfacePressableProps } from 'native-base/lib/typescript/components/primitives/Pressable/types';
-import { ReactNode, useState } from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { Pressable } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
+import { Surface, Text } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
 
-interface Props extends InterfacePressableProps {
-  children?: ReactNode;
+interface Props {
+  children?: React.ReactNode;
 }
 
 const AvatarCard = (props: Props) => {
@@ -13,37 +11,32 @@ const AvatarCard = (props: Props) => {
   const checkActive = () => {
     setIsActive(!isActive);
   };
-
   return (
-    <Pressable
-      onPressIn={checkActive}
-      style={[styles.card, { backgroundColor: isActive ? 'pink' : '#EDF3F3' }]}
+    <Surface
+      style={[styles.surface, { backgroundColor: isActive ? 'pink' : '#EDF3F3' }]}
+      elevation={4}
+      onTouchEnd={checkActive}
     >
       <Text style={styles.text}>{props.children}</Text>
-    </Pressable>
+    </Surface>
   );
 };
 
+export default AvatarCard;
+
 const styles = StyleSheet.create({
-  card: {
+  surface: {
+    padding: 8,
+    height: 70,
+    width: 70,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
-    width: 60,
-    height: 60,
     borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.32,
-    shadowRadius: 5.46,
     elevation: 9,
+    marginTop: 20,
     margin: 10,
   },
-
-  text: { fontSize: 40 },
+  text: {
+    fontSize: 40,
+  },
 });
-
-export default AvatarCard;
