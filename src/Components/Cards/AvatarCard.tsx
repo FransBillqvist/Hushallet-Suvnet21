@@ -6,7 +6,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const MyComponent = (props: Props) => {
+const AvatarCard = (props: Props) => {
   const [isActive, setIsActive] = useState(false);
   const checkActive = () => {
     setIsActive(!isActive);
@@ -22,7 +22,7 @@ const MyComponent = (props: Props) => {
   );
 };
 
-export default MyComponent;
+export default AvatarCard;
 
 const styles = StyleSheet.create({
   surface: {
