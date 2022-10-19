@@ -10,6 +10,7 @@ interface Props extends InterfaceButtonProps {
 const HugeButton = (props: Props) => {
   return (
     <Button
+      disabled={props.disabled}
       rounded='full'
       w='80'
       bg='white.300'

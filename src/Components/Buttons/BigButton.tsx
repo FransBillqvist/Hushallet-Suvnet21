@@ -11,6 +11,7 @@ interface Props extends InterfaceButtonProps {
 const BigButton = (props: Props) => {
   return (
     <Button
+      disabled={props.disabled}
       rounded='full'
       width={useWindowDimensions().width / 2}
       bg='white.300'
