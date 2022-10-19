@@ -1,8 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { RootStackParamList } from '../Navigation/RootNavigator';
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import DemandingCard from '../Components/Cards/DemandingCard';
+import { RootStackParamList } from '../Navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChoreScreen'>;
 
