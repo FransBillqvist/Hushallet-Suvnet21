@@ -7,7 +7,7 @@ import { StyleSheet, View } from 'react-native';
 import 'react-native-get-random-values';
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
-import { fireStore } from '../Config/firebase';
+import { db } from '../Config/firebase';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
@@ -23,7 +23,7 @@ export default function CreateScreen({ navigation }: Props) {
     isDisabled = false;
   }
   const AddHouse = async () => {
-    await addDoc(collection(fireStore, 'Household'), { id: nanoid(), name: text, code: code });
+    await addDoc(collection(db, 'Household'), { id: nanoid(), name: text, code: code });
   };
 
   const copyToClipboard = () => {
