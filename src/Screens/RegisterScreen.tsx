@@ -1,43 +1,38 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Box, Button, Input, Text } from 'native-base';
 import * as React from 'react';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { useAppDispatch, useAppSelector } from '../Store/store';
-import { setUserName, setUserPassword } from '../Store/userSlice';
+import { registerUser } from '../Store/userSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RegisterScreen'>;
 
 export default function RegisterScreen({ navigation }: Props) {
+  const { isLoading, errorMsg } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
-  const [password, onChangePassword] = useState<string>('');
-  const [userName, onChangeUserName] = useState<string>('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
-    <View style={styles.container}>
+    <Box style={styles.container}>
       <Text>Registrera användare</Text>
 
-      <TextInput
-        value={userName}
-        placeholder='fyll i användarnamn'
-        onChangeText={onChangeUserName}
-      ></TextInput>
-      <TextInput
-        value={password}
-        placeholder='fyll i lösenord'
-        onChangeText={onChangePassword}
-      ></TextInput>
+      <Input value={email} placeholder='fyll i användarnamn' onChangeText={setEmail} />
+      <Input value={password} placeholder='fyll i lösenord' onChangeText={setPassword} />
       <Button
-        title='Registrera användare'
+        disabled={password.length <= 5 ? true : false}
         onPress={() => {
-          dispatch(setUserName(userName));
-          dispatch(setUserPassword(password));
+          dispatch(registerUser({ email, password }));
         }}
-      />
-      <Text>Current user password: {user.password}</Text>
-      <Text>Current state username: {user.username}</Text>
-    </View>
+      >
+        Registrera användare
+      </Button>
+      {errorMsg && <Text>{errorMsg}</Text>}
+      <Text>Current state email: {}</Text>
+      <Text>Current user password: </Text>
+    </Box>
   );
 }
 
