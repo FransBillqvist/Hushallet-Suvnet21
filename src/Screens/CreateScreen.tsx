@@ -1,12 +1,11 @@
-import { AntDesign } from '@expo/vector-icons';
 import { addDoc, collection } from '@firebase/firestore';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Clipboard from 'expo-clipboard';
 import { customAlphabet } from 'nanoid';
 import * as React from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import 'react-native-get-random-values';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { IconButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import { db } from '../Config/firebase';
 import { RootStackParamList } from '../Navigation/RootNavigator';
@@ -19,6 +18,7 @@ export default function CreateScreen({ navigation }: Props) {
   const nanoCode = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
   const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 32);
   let code = '';
+  let isDisabled = true;
 
   if (text.length > 3) {
     code = nanoCode();
@@ -46,9 +46,7 @@ export default function CreateScreen({ navigation }: Props) {
         {code !== '' ? (
           <Text style={styles.showInviteCode}>
             {code}
-            <Pressable onPress={copyToClipboard}>
-              <AntDesign name='copy1' size={24} color='black' />
-            </Pressable>
+            <IconButton icon='content-copy' onPress={copyToClipboard}></IconButton>
           </Text>
         ) : (
           <Text style={{ fontSize: 20 }}>Din kod har inte genererats än.</Text>
@@ -61,11 +59,10 @@ export default function CreateScreen({ navigation }: Props) {
           AddHouse();
           navigation.navigate('StartScreen');
         }}
+        icon='home-plus-outline'
+        disabled={isDisabled}
       >
-        <Text style={styles.textForButton}>
-          <MaterialIcons name='add-circle-outline' size={21} color='black' />
-          Skapa Hushåll
-        </Text>
+        <Text style={styles.textForButton}>Skapa Hushåll</Text>
       </BigButton>
     </View>
   );

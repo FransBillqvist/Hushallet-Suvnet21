@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import ChorePieChart from '../Components/ChorePieChart';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
@@ -37,7 +38,7 @@ export default function StatisticsScreen({ navigation }: Props) {
       <Text>Piechart: TOTALT</Text>
       <Text>Display: Alla sysslors pie charts </Text>
       <ChorePieChart data={testData} />
-      <Button title='Register' onPress={() => navigation.navigate('RegisterScreen')}></Button>
+      <Button onPress={() => navigation.navigate('RegisterScreen')}>Register</Button>
     </View>
   );
 }
