@@ -6,7 +6,6 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import 'react-native-get-random-values';
 import { IconButton, Text, TextInput } from 'react-native-paper';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import BigButton from '../Components/Buttons/BigButton';
 import { fireStore } from '../Config/firebase';
 import { RootStackParamList } from '../Navigation/RootNavigator';
@@ -16,10 +15,12 @@ type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 export default function CreateScreen({ navigation }: Props) {
   const [text, onChangeText] = React.useState('');
   let code = '';
+  let isDisabled = true;
 
   const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
   if (text !== 'Namn ge ditt hushåll' && text.length > 3) {
     code = nanoid();
+    isDisabled = false;
   }
   const AddHouse = async () => {
     await addDoc(collection(fireStore, 'Household'), { id: nanoid(), name: text, code: code });
@@ -56,11 +57,10 @@ export default function CreateScreen({ navigation }: Props) {
           AddHouse();
           navigation.navigate('StartScreen');
         }}
+        icon='home-plus-outline'
+        disabled={isDisabled}
       >
-        <Text style={styles.textForButton}>
-          <MaterialIcons name='add-circle-outline' size={21} color='black' />
-          Skapa Hushåll
-        </Text>
+        <Text style={styles.textForButton}>Skapa Hushåll</Text>
       </BigButton>
     </View>
   );
