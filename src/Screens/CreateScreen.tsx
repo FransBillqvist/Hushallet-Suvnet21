@@ -18,7 +18,6 @@ export default function CreateScreen({ navigation }: Props) {
   const nanoCode = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
   const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 32);
   let code = '';
-  let isDisabled = true;
 
   if (text.length > 3) {
     code = nanoCode();
@@ -60,7 +59,6 @@ export default function CreateScreen({ navigation }: Props) {
           navigation.navigate('StartScreen');
         }}
         icon='home-plus-outline'
-        disabled={isDisabled}
       >
         <Text style={styles.textForButton}>Skapa Hushåll</Text>
       </BigButton>
