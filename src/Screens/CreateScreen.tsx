@@ -1,11 +1,11 @@
-import { AntDesign } from '@expo/vector-icons';
 import { addDoc, collection } from '@firebase/firestore';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Clipboard from 'expo-clipboard';
 import { customAlphabet } from 'nanoid';
 import * as React from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import 'react-native-get-random-values';
+import { IconButton, Text, TextInput } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import BigButton from '../Components/Buttons/BigButton';
 import { fireStore } from '../Config/firebase';
@@ -44,9 +44,7 @@ export default function CreateScreen({ navigation }: Props) {
         {code !== '' ? (
           <Text style={styles.showInviteCode}>
             {code}
-            <Pressable onPress={copyToClipboard}>
-              <AntDesign name='copy1' size={24} color='black' />
-            </Pressable>
+            <IconButton icon='content-copy' onPress={copyToClipboard}></IconButton>
           </Text>
         ) : (
           <Text style={{ fontSize: 20 }}>Din kod har inte genererats än.</Text>
