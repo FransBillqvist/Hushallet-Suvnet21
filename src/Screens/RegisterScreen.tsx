@@ -1,5 +1,4 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Box, Button, Input, Text } from 'native-base';
 import * as React from 'react';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -21,14 +20,14 @@ export default function RegisterScreen({ navigation }: Props) {
       <Text>Registrera användare</Text>
       <View>
         <TextInput
-          value={userName}
+          value={email}
           placeholder='fyll i användarnamn'
-          onChangeText={onChangeUserName}
+          onChangeText={setEmail}
         ></TextInput>
         <TextInput
           value={password}
           placeholder='fyll i lösenord'
-          onChangeText={onChangePassword}
+          onChangeText={setPassword}
         ></TextInput>
       </View>
       <View>
