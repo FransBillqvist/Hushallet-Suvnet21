@@ -13,6 +13,7 @@ import ProfileScreen from '../Screens/ProfileScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
 import StartScreen from '../Screens/StartScreen';
 import StatisticsScreen from '../Screens/StatisticsScreen';
+// import { useAppSelector } from "../Store/store";
 
 declare global {
   namespace ReactNavigation {
@@ -36,20 +37,28 @@ export type RootStackParamList = {
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchemeName }) {
+  // const user = useAppSelector((state) => state.user.user)
   return (
     <NavigationContainer theme={getTheme(colorScheme)}>
       <RootStack.Navigator>
         {/* DELETE DEVSTARTSCREEN BEFORE GOING LIVE!!*/}
-        <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
-        <RootStack.Screen name='StartScreen' component={StartScreen} />
-        <RootStack.Screen name='HomeScreen' component={HomeScreen} />
-        <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
-        <RootStack.Screen name='RegisterScreen' component={RegisterScreen} />
-        <RootStack.Screen name='ChoreScreen' component={ChoreScreen} />
-        <RootStack.Screen name='CreateScreen' component={CreateScreen} />
-        <RootStack.Screen name='StatisticsScreen' component={StatisticsScreen} />
-        <RootStack.Screen name='ProfileScreen' component={ProfileScreen} />
-        <RootStack.Screen name='DetailScreen' component={DetailScreen} />
+        {/* {!user ? ( */}
+          {/* <> */}
+          <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
+          <RootStack.Screen name='StartScreen' component={StartScreen} />
+          <RootStack.Screen name='RegisterScreen' component={RegisterScreen} />
+        {/* </> */}
+        {/* ) : ( */}
+          {/* <> */}
+          <RootStack.Screen name='HomeScreen' component={HomeScreen} />
+          <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
+          <RootStack.Screen name='ChoreScreen' component={ChoreScreen} />
+          <RootStack.Screen name='CreateScreen' component={CreateScreen} />
+          <RootStack.Screen name='StatisticsScreen' component={StatisticsScreen} />
+          <RootStack.Screen name='ProfileScreen' component={ProfileScreen} />
+          <RootStack.Screen name='DetailScreen' component={DetailScreen} />
+          {/* </> */}
+          {/* )} */}
       </RootStack.Navigator>
     </NavigationContainer>
   );
