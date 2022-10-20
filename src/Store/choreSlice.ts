@@ -1,4 +1,4 @@
-import { addDoc, collection } from '@firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { nanoid } from 'nanoid';
@@ -46,6 +46,25 @@ export const addChoreToDb = createAsyncThunk<ChoreCreate, ChoreCreate, { rejectV
         return thunkApi.rejectWithValue(error.message);
       }
       return thunkApi.rejectWithValue('Kunde inte lägga till sysslan, vänligen kontakta support!');
+    }
+  },
+);
+
+export const getChoresFromDb = createAsyncThunk<_, string, { rejectValue: string }>(
+  'user/getchores',
+  async (string, thunkApi) => {
+    try {
+      const testHouseholdId = 'VCOK0';
+      const q = query(collection(db, 'Chore'), where('code', '==', testHouseholdId));
+      const chores = await getDocs(q);
+
+      return chores;
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        return thunkApi.rejectWithValue(error.message);
+      }
+      return thunkApi.rejectWithValue('Kunde inte hämta några sysslor, vänligen kontakta support!');
     }
   },
 );
