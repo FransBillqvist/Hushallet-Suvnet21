@@ -16,6 +16,12 @@ const avatarArray: string[] = ['🦊', '🐳', '🐷', '🐥', '🐸', '🐬', '
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const [name, setName] = React.useState('');
+  const [chosenAvatar, setAvatar] = React.useState('');
+  const [isActive, setIsActive] = React.useState<boolean>(false);
+
+  const checkActive = () => {
+    setIsActive(!isActive);
+  };
 
   return (
     <View style={styles.container}>
@@ -30,7 +36,15 @@ export default function ProfileScreen({ navigation }: Props) {
       </View>
       <View style={styles.avatarCard}>
         {avatarArray.map((avatar, index) => (
-          <AvatarCard key={index}>{avatar}</AvatarCard>
+          <AvatarCard
+            isActive={avatar === chosenAvatar}
+            key={index}
+            onTouchedEnd={() => {
+              setAvatar(avatar);
+            }}
+          >
+            {avatar}
+          </AvatarCard>
         ))}
       </View>
       <View>

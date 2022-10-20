@@ -7,4 +7,4 @@ export type Profile = {
   householdId: string;
 };
 
-export type ProfileCreate = Omit<Profile, 'id, userId, avatar, role, householdId'>;
+export type ProfileCreate = Omit<Profile, 'id, userId, role, householdId'>;
