@@ -10,22 +10,16 @@ const testData = [
     name: 'Kalle',
     contribution: 215,
     color: '#FF7E46',
-    // legendFontColor: "#7F7F7F",
-    // legendFontSize: 20,
   },
   {
     name: 'Olle',
     contribution: 215,
     color: '#FCD933',
-    // legendFontColor: "#7F7F7F",
-    // legendFontSize: 20,
   },
   {
     name: 'Anna',
     contribution: 215,
     color: '#CD5D6F',
-    // legendFontColor: "#7F7F7F",
-    // legendFontSize: 20,
   },
 ];
 
@@ -46,7 +40,6 @@ export default function StatisticsScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },

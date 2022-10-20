@@ -70,15 +70,12 @@ export default function CreateScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   inputsContainer: {
     minHeight: 50,
     flexBasis: 80,
-    backgroundColor: '#fff',
-    color: '#000000',
   },
   spacer: {
     flexBasis: 50,
@@ -87,21 +84,15 @@ const styles = StyleSheet.create({
     paddingLeft: 6,
     minWidth: 300,
     fontSize: 24,
-    backgroundColor: '#e0e0e0',
-    color: '#000000',
     borderRadius: 10,
-    boarderColor: '#d8d8d8',
     borderWidth: 1,
   },
   showInviteCode: {
     fontSize: 24,
-    backgroundColor: '#fff',
-    color: '#000000',
   },
   textForButton: {
     textAlign: 'center',
     fontSize: 18,
-    color: '#000000',
     fontWeight: 'bold',
   },
 });
