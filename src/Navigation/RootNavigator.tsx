@@ -57,6 +57,7 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
         <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
         <RootStack.Screen name='ChoreScreen' component={ChoreScreen} />
         <RootStack.Screen name='CreateScreen' component={CreateScreen} />
+        <RootStack.Screen name='EditChoreScreen' component={EditChoreScreen} />
         <RootStack.Screen name='StatisticsScreen' component={StatisticsScreen} />
         <RootStack.Screen name='ProfileScreen' component={ProfileScreen} />
         <RootStack.Screen name='DetailScreen' component={DetailScreen} />
