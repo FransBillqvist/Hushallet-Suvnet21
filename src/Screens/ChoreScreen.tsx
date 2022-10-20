@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { nanoid } from 'nanoid';
-import { Box } from 'native-base';
 import * as React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import DemandingCard from '../Components/Cards/DemandingCard';
@@ -16,7 +16,6 @@ import {
   setChoreName,
 } from '../Store/choreSlice';
 import { useAppDispatch } from '../Store/store';
-import { Text } from 'react-native-paper';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChoreScreen'>;
 
@@ -43,7 +42,7 @@ export default function ChoreScreen({ navigation }: Props) {
           placeholder='Titel'
           onChangeText={(text: string) => handleChange('name', text)}
         />
-        <Box></Box>
+        <View></View>
       </ChoreCard>
 
       <ChoreCard>
@@ -54,8 +53,8 @@ export default function ChoreScreen({ navigation }: Props) {
         />
       </ChoreCard>
       <ChoreCard>
-        <Box>Återkommer</Box>
-        <Box>
+        <Text>Återkommer</Text>
+        <Text>
           Var
           <TextInput
             value={chore.frequency.toString()}
@@ -63,7 +62,7 @@ export default function ChoreScreen({ navigation }: Props) {
             onChangeText={(num: string) => handleChange('frequency', Number(num))}
           />
           dag
-        </Box>
+        </Text>
       </ChoreCard>
       <DemandingCard />
       <BigButton
@@ -85,7 +84,6 @@ export default function ChoreScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
