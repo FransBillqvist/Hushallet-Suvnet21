@@ -7,23 +7,23 @@ import { StyleSheet, View } from 'react-native';
 import 'react-native-get-random-values';
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
-import { fireStore } from '../Config/firebase';
+import { db } from '../Config/firebase';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 
 export default function CreateScreen({ navigation }: Props) {
   const [text, onChangeText] = React.useState('');
-  let code = '';
-  let isDisabled = true;
 
-  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
-  if (text !== 'Namn ge ditt hushåll' && text.length > 3) {
-    code = nanoid();
-    isDisabled = false;
+  const nanoCode = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 6);
+  const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 32);
+  let code = '';
+
+  if (text.length > 3) {
+    code = nanoCode();
   }
   const AddHouse = async () => {
-    await addDoc(collection(fireStore, 'Household'), { id: nanoid(), name: text, code: code });
+    await addDoc(collection(db, 'Household'), { id: nanoId(), name: text, code: code });
   };
 
   const copyToClipboard = () => {
@@ -53,12 +53,12 @@ export default function CreateScreen({ navigation }: Props) {
       </View>
       <View style={styles.spacer}></View>
       <BigButton
+        disabled={code !== '' ? false : true}
         onPress={function (): void {
           AddHouse();
           navigation.navigate('StartScreen');
         }}
         icon='home-plus-outline'
-        disabled={isDisabled}
       >
         <Text style={styles.textForButton}>Skapa Hushåll</Text>
       </BigButton>
