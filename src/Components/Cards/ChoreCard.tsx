@@ -1,28 +1,27 @@
-import React, { ReactNode } from 'react';
-import { Box } from 'native-base';
+import * as React from 'react';
+import { Surface } from 'react-native-paper';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
 
 interface Props {
-  children?: ReactNode;
+  children?: React.ReactNode;
 }
 
 const ChoreCard = (props: Props) => {
-  return (
-    <Box flex='1'>
-      <Box
-        shadow='1'
-        rounded='lg'
-        overflow='hidden'
-        bg='white.300'
-        w='80'
-        p='4'
-        borderColor='white.300'
-        flexDir='row'
-        justifyContent='space-between'
-      >
-        {props.children}
-      </Box>
-    </Box>
-  );
+  return <Surface style={styles.surface}>{props.children}</Surface>;
 };
+
+const styles = StyleSheet.create({
+  surface: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    minHeight: 50,
+    width: windowWidth - 20,
+    padding: 10,
+  },
+});
 
 export default ChoreCard;

@@ -16,6 +16,7 @@ import {
   setChoreName,
 } from '../Store/choreSlice';
 import { useAppDispatch } from '../Store/store';
+import { Text } from 'react-native-paper';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChoreScreen'>;
 
