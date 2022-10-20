@@ -22,6 +22,7 @@ export default function CreateScreen({ navigation }: Props) {
   if (text.length > 3) {
     code = nanoCode();
   }
+  //test a new line to merge
   const AddHouse = async () => {
     await addDoc(collection(db, 'Household'), { id: nanoId(), name: text, code: code });
   };
