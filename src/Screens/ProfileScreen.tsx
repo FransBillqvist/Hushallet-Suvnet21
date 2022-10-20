@@ -51,7 +51,6 @@ export default function ProfileScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     padding: 20,
   },
   inputLabel: {
@@ -61,10 +60,8 @@ const styles = StyleSheet.create({
   inputTextField: {
     borderWidth: 1,
     borderRadius: 7,
-    borderColor: 'darkgrey',
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: 'white',
     fontSize: 15,
   },
   inputStyle: {

@@ -7,6 +7,7 @@ import ChoreScreen from '../Screens/ChoreScreen';
 import CreateScreen from '../Screens/CreateScreen';
 import DetailScreen from '../Screens/DetailScreen';
 import DevStartScreen from '../Screens/DevStartScreen';
+import EditChoreScreen from '../Screens/EditChoreScreen';
 import HomeScreen from '../Screens/HomeScreen';
 import ManagerScreen from '../Screens/ManagerScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   RegisterScreen: undefined;
   ChoreScreen: undefined;
   CreateScreen: undefined;
+  EditChoreScreen: undefined;
   StatisticsScreen: undefined;
   ProfileScreen: undefined;
   DetailScreen: undefined;
@@ -42,6 +44,7 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
     <NavigationContainer theme={getTheme(colorScheme)}>
       <RootStack.Navigator>
         {/* DELETE DEVSTARTSCREEN BEFORE GOING LIVE!!*/}
+
         {/* {!user ? ( */}
         {/* <> */}
         <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
