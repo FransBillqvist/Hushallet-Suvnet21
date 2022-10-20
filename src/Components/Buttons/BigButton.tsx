@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Button } from 'react-native-paper';
+import { StyleSheet, Dimensions } from 'react-native';
 
 interface Props {
   children?: ReactNode;
@@ -8,24 +9,24 @@ interface Props {
   disabled?: boolean;
 }
 
+const windowWidth = Dimensions.get('window').width;
+
 const BigButton = (props: Props) => {
   return (
     <Button
-      // disabled={props.disabled}
-      // rounded='full'
-      // width={useWindowDimensions().width / 2}
-      // bg='white.300'
-      // shadow='1'
-      // _text={{ color: 'black' }}
-      // _pressed={{ bg: 'gray.200' }}
-      // flexDir='row'
       icon={props.icon}
       onPress={props.onPress}
-      mode='contained-tonal'
+      mode='outlined'
       disabled={props.disabled}
+      style={styles.button}
     >
       {props.children}
     </Button>
   );
 };
+const styles = StyleSheet.create({
+  button: {
+    width: windowWidth / 2,
+  },
+});
 export default BigButton;

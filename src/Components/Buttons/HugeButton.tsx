@@ -1,28 +1,32 @@
-import { Button } from 'native-base';
 import React, { ReactNode } from 'react';
-import { InterfaceButtonProps } from 'native-base/lib/typescript/components/primitives/Button/types';
+import { Button } from 'react-native-paper';
+import { StyleSheet, Dimensions } from 'react-native';
 
-interface Props extends InterfaceButtonProps {
+interface Props {
   children?: ReactNode;
   onPress: () => void;
+  icon?: string;
+  disabled?: boolean;
 }
+
+const windowWidth = Dimensions.get('window').width;
 
 const HugeButton = (props: Props) => {
   return (
     <Button
-      disabled={props.disabled}
-      rounded='full'
-      w='80'
-      bg='white.300'
-      shadow='1'
-      _text={{ color: 'black' }}
-      _pressed={{ bg: 'gray.200' }}
-      flexDir='row'
-      startIcon={props.startIcon}
+      icon={props.icon}
       onPress={props.onPress}
+      mode='outlined'
+      disabled={props.disabled}
+      style={styles.button}
     >
       {props.children}
     </Button>
   );
 };
+const styles = StyleSheet.create({
+  button: {
+    width: windowWidth - 20,
+  },
+});
 export default HugeButton;
