@@ -2,7 +2,7 @@ import { addDoc, collection } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { nanoid } from 'nanoid';
-import { fireStore } from '../Config/firebase';
+import { db } from '../Config/firebase';
 import { ChoreCreate } from '../Data/chore';
 
 interface ChoreState {
@@ -31,7 +31,7 @@ export const addChoreToDb = createAsyncThunk<ChoreCreate, ChoreCreate, { rejectV
   'user/addchore',
   async (Chore, thunkApi) => {
     try {
-      await addDoc(collection(fireStore, 'Chore'), {
+      await addDoc(collection(db, 'Chore'), {
         id: nanoid(10),
         name: Chore.name,
         description: Chore.description,
@@ -45,7 +45,7 @@ export const addChoreToDb = createAsyncThunk<ChoreCreate, ChoreCreate, { rejectV
       if (error instanceof FirebaseError) {
         return thunkApi.rejectWithValue(error.message);
       }
-      return thunkApi.rejectWithValue('Could not add chore, please contact staff!');
+      return thunkApi.rejectWithValue('Kunde inte lägga till sysslan, vänligen kontakta support!');
     }
   },
 );
