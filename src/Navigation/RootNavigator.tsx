@@ -1,7 +1,8 @@
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { ColorSchemeName } from 'react-native';
+import { getTheme } from '../Components/theme';
 import ChoreScreen from '../Screens/ChoreScreen';
 import CreateScreen from '../Screens/CreateScreen';
 import DetailScreen from '../Screens/DetailScreen';
@@ -36,7 +37,7 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
-    <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer theme={getTheme(colorScheme)}>
       <RootStack.Navigator>
         {/* DELETE DEVSTARTSCREEN BEFORE GOING LIVE!!*/}
         <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />

@@ -4,11 +4,14 @@ import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SmallButton from '../Components/Buttons/SmallButton';
+import AvatarCard from '../Components/Cards/AvatarCard';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { setProfileName } from '../Store/profileSlice';
 import { useAppDispatch } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
+
+const avatarArray: string[] = ['🦊', '🐳', '🐷', '🐥', '🐸', '🐬', '🐙', '🦄'];
 
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
@@ -25,9 +28,14 @@ export default function ProfileScreen({ navigation }: Props) {
           value={name}
         />
       </View>
-      <Text>Välj Avatar</Text>
+      <View style={styles.avatarCard}>
+        {avatarArray.map((avatar, index) => (
+          <AvatarCard key={index}>{avatar}</AvatarCard>
+        ))}
+      </View>
       <View>
         <SmallButton
+          style={styles.button}
           onPress={() => {
             dispatch(setProfileName(name));
           }}
@@ -61,5 +69,14 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     marginTop: 10,
+  },
+  avatarCard: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  button: {
+    marginTop: 30,
   },
 });

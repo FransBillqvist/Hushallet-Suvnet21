@@ -1,4 +1,9 @@
+import { addDoc, collection } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { FirebaseError } from 'firebase/app';
+import { nanoid } from 'nanoid';
+import { fireStore } from '../Config/firebase';
+import { ChoreCreate } from '../Data/chore';
 
 interface ChoreState {
   id: string;
@@ -21,6 +26,29 @@ const initialState: ChoreState = {
   isLoading: false,
   error: '',
 };
+
+export const addChoreToDb = createAsyncThunk<ChoreCreate, ChoreCreate, { rejectValue: string }>(
+  'user/addchore',
+  async (Chore, thunkApi) => {
+    try {
+      await addDoc(collection(fireStore, 'Chore'), {
+        id: nanoid(10),
+        name: Chore.name,
+        description: Chore.description,
+        demanding: Chore.demanding,
+        frequency: Chore.frequency,
+        householdId: Chore.householdId,
+      });
+      return Chore;
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        return thunkApi.rejectWithValue(error.message);
+      }
+      return thunkApi.rejectWithValue('Could not add chore, please contact staff!');
+    }
+  },
+);
 
 export const setChoreName = createAsyncThunk<string, string>(
   'user/setchorename',
@@ -52,6 +80,18 @@ const choreSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(addChoreToDb.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(addChoreToDb.fulfilled, (state, action) => {
+      state.isLoading = false;
+      console.log('fulfilled');
+    });
+    builder.addCase(addChoreToDb.rejected, (state, action) => {
+      state.error = action.payload || '';
+      state.isLoading = false;
+    });
     builder.addCase(setChoreName.pending, (state) => {
       state.isLoading = true;
       console.log('pending');
