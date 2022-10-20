@@ -48,7 +48,7 @@ export const login = createAsyncThunk<
   } catch (error) {
     console.error(error);
     if (error instanceof FirebaseError) {
-    // return thunkApi.rejectWithValue(error.message);
+      // return thunkApi.rejectWithValue(error.message);
     }
     return thunkApi.rejectWithValue('Det gick tyvärr inte att logga in');
   }
@@ -57,8 +57,7 @@ export const login = createAsyncThunk<
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
       state.isLoading = true;
@@ -76,7 +75,7 @@ const userSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.user = {id: action.payload.id, email: action.payload.email}
+      state.user = { id: action.payload.id, email: action.payload.email };
       state.isLoading = false;
     });
     builder.addCase(login.rejected, (state) => {

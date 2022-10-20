@@ -43,22 +43,22 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
       <RootStack.Navigator>
         {/* DELETE DEVSTARTSCREEN BEFORE GOING LIVE!!*/}
         {/* {!user ? ( */}
-          {/* <> */}
-          <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
-          <RootStack.Screen name='StartScreen' component={StartScreen} />
-          <RootStack.Screen name='RegisterScreen' component={RegisterScreen} />
+        {/* <> */}
+        <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
+        <RootStack.Screen name='StartScreen' component={StartScreen} />
+        <RootStack.Screen name='RegisterScreen' component={RegisterScreen} />
         {/* </> */}
         {/* ) : ( */}
-          {/* <> */}
-          <RootStack.Screen name='HomeScreen' component={HomeScreen} />
-          <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
-          <RootStack.Screen name='ChoreScreen' component={ChoreScreen} />
-          <RootStack.Screen name='CreateScreen' component={CreateScreen} />
-          <RootStack.Screen name='StatisticsScreen' component={StatisticsScreen} />
-          <RootStack.Screen name='ProfileScreen' component={ProfileScreen} />
-          <RootStack.Screen name='DetailScreen' component={DetailScreen} />
-          {/* </> */}
-          {/* )} */}
+        {/* <> */}
+        <RootStack.Screen name='HomeScreen' component={HomeScreen} />
+        <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
+        <RootStack.Screen name='ChoreScreen' component={ChoreScreen} />
+        <RootStack.Screen name='CreateScreen' component={CreateScreen} />
+        <RootStack.Screen name='StatisticsScreen' component={StatisticsScreen} />
+        <RootStack.Screen name='ProfileScreen' component={ProfileScreen} />
+        <RootStack.Screen name='DetailScreen' component={DetailScreen} />
+        {/* </> */}
+        {/* )} */}
       </RootStack.Navigator>
     </NavigationContainer>
   );
