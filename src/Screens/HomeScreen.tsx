@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
@@ -10,8 +10,8 @@ export default function HomeScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Text>Chores to be done</Text>
-      <Text>Add chore</Text>
-      <Text>Edit chore</Text>
+      <Button title='Lägg till en ny syssla' onPress={() => navigation.navigate('ChoreScreen')} />
+      <Button title='Redigera en syssla' onPress={() => navigation.navigate('EditChoreScreen')} />
     </View>
   );
 }
