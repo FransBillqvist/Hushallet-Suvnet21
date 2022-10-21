@@ -1,30 +1,33 @@
-import { addDoc, collection } from '@firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { nanoid } from 'nanoid';
 import { db } from '../Config/firebase';
-import { ChoreCreate } from '../Data/chore';
+import { Chore, ChoreCreate } from '../Data/chore';
+import { AppState } from '../Store/store';
 
 interface ChoreState {
-  id: string;
   name: string;
   description: string;
   demanding: number;
   frequency: number;
   householdId: string;
   isLoading: boolean;
+  isRemoved: boolean;
   error: string;
+  chore: Chore[];
 }
 
 const initialState: ChoreState = {
-  id: '',
   name: '',
   description: '',
   demanding: 0,
   frequency: 0,
   householdId: '',
   isLoading: false,
+  isRemoved: false,
   error: '',
+  chore: [],
 };
 
 export const addChoreToDb = createAsyncThunk<ChoreCreate, ChoreCreate, { rejectValue: string }>(
@@ -50,25 +53,52 @@ export const addChoreToDb = createAsyncThunk<ChoreCreate, ChoreCreate, { rejectV
   },
 );
 
-export const setChoreName = createAsyncThunk<string, string>(
+export const getChores = createAsyncThunk<
+  Chore[],
+  string,
+  { rejectValue: string; state: AppState }
+>('household/getchores', async (householdId, thunkApi) => {
+  try {
+    const chores: Chore[] = [];
+    const q = query(collection(db, 'Chore'), where('householdId', '==', householdId));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      if (doc.data().householdId === householdId) {
+        const doctorData = doc.data() as Chore;
+        chores.push(doctorData);
+      }
+    });
+
+    return chores;
+  } catch (error) {
+    console.error(error);
+    if (error instanceof FirebaseError) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+    return thunkApi.rejectWithValue('Kunde inte hämta sysslor, vänligen kontakta support!');
+  }
+});
+
+export const setChoreName = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchorename',
   async (name, thunkApi) => {
     return name;
   },
 );
-export const setChoreDescription = createAsyncThunk<string, string>(
+export const setChoreDescription = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchoredescription',
   async (description, thunkApi) => {
     return description;
   },
 );
-export const setChoreDemanding = createAsyncThunk<number, number>(
+export const setChoreDemanding = createAsyncThunk<number, number, { rejectValue: string }>(
   'user/setchoredemanding',
   async (demanding, thunkApi) => {
     return demanding;
   },
 );
-export const setChoreFrequency = createAsyncThunk<number, number>(
+export const setChoreFrequency = createAsyncThunk<number, number, { rejectValue: string }>(
   'user/setchorefrequency',
   async (frequency, thunkApi) => {
     return frequency;
@@ -84,7 +114,7 @@ const choreSlice = createSlice({
       state.isLoading = true;
       console.log('pending');
     });
-    builder.addCase(addChoreToDb.fulfilled, (state, action) => {
+    builder.addCase(addChoreToDb.fulfilled, (state) => {
       state.isLoading = false;
       console.log('fulfilled');
     });
@@ -92,6 +122,18 @@ const choreSlice = createSlice({
       state.error = action.payload || '';
       state.isLoading = false;
     });
+
+    builder.addCase(getChores.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getChores.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(getChores.rejected, (state, action) => {
+      state.error = action.payload || '';
+      state.isLoading = false;
+    });
+
     builder.addCase(setChoreName.pending, (state) => {
       state.isLoading = true;
       console.log('pending');
@@ -100,6 +142,11 @@ const choreSlice = createSlice({
       state.isLoading = false;
       state.name = action.payload;
       console.log('fulfilled');
+    });
+    builder.addCase(setChoreName.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload || 'Unknown error';
+      console.log('rejected');
     });
 
     builder.addCase(setChoreDescription.pending, (state) => {
@@ -129,12 +176,6 @@ const choreSlice = createSlice({
       state.frequency = action.payload;
       console.log('fulfilled');
     });
-
-    // builder.addCase(setChoreName.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   //   state.error = action.payload || 'Unknown error';
-    //   console.log('rejected');
-    // });
   },
 });
 
