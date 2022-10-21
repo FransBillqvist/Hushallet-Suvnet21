@@ -8,6 +8,7 @@ import SmallButton from '../Components/Buttons/SmallButton';
 import AvatarCard from '../Components/Cards/AvatarCard';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { Profile } from '../Data/profile';
 import { getHouseHoldByCode } from '../Store/householdSlice';
 import { setProfileName } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
