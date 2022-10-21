@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { GestureResponderEvent, StyleSheet } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
 
 interface Props {
   children?: React.ReactNode;
+  onTouchedEnd?: (event: GestureResponderEvent) => void;
+  isActive: boolean;
 }
 
 const AvatarCard = (props: Props) => {
@@ -13,9 +15,9 @@ const AvatarCard = (props: Props) => {
   };
   return (
     <Surface
-      style={[styles.surface, { backgroundColor: isActive ? 'pink' : '#EDF3F3' }]}
+      style={[styles.surface, { backgroundColor: props.isActive ? 'pink' : '#EDF3F3' }]}
       elevation={4}
-      onTouchEnd={checkActive}
+      onTouchEnd={props.onTouchedEnd}
     >
       <Text style={styles.text}>{props.children}</Text>
     </Surface>
