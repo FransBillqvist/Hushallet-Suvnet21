@@ -66,7 +66,7 @@ export default function ChoreScreen({ navigation }: Props) {
         </ChoreCard>
         <DemandingCard />
         <BigButton
-        theme={getTheme('dark')}
+          theme={getTheme('dark')}
           onPress={() => {
             dispatch(setChoreName(chore.name));
             dispatch(setChoreDescription(chore.description));
