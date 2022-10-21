@@ -1,25 +1,17 @@
 import React, { ReactNode } from 'react';
-import { Button } from 'react-native-paper';
+import { Button, Props } from 'react-native-paper';
 import { StyleSheet, Dimensions } from 'react-native';
 
-interface Props {
+interface ButtonProps extends Props {
   children?: ReactNode;
   onPress: () => void;
-  icon?: string;
-  disabled?: boolean;
 }
 
 const windowWidth = Dimensions.get('window').width;
 
-const HugeButton = (props: Props) => {
+const HugeButton = (props: ButtonProps) => {
   return (
-    <Button
-      icon={props.icon}
-      onPress={props.onPress}
-      mode='outlined'
-      disabled={props.disabled}
-      style={styles.button}
-    >
+    <Button {...props} style={[props.style, styles.button]} mode='outlined' theme={undefined}>
       {props.children}
     </Button>
   );
