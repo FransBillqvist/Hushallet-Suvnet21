@@ -5,7 +5,6 @@ import { Text, TextInput } from 'react-native-paper';
 import SmallButton from '../Components/Buttons/SmallButton';
 import AvatarCard from '../Components/Cards/AvatarCard';
 import { getTheme } from '../Components/theme';
-import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { setProfileName } from '../Store/profileSlice';
 import { useAppDispatch } from '../Store/store';
@@ -37,10 +36,8 @@ export default function ProfileScreen({ navigation }: Props) {
       <View>
         <SmallButton
           style={styles.button}
-          extended
-          label=''
           icon='plus-circle-outline'
-          theme={getTheme('light')}
+          theme={getTheme('dark')}
           onPress={() => {
             dispatch(setProfileName(name));
           }}

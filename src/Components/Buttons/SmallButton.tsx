@@ -1,19 +1,20 @@
-import React, { ReactNode } from 'react';
-import { Button, Props } from 'react-native-paper';
+import React from 'react';
+import { Button } from 'react-native-paper';
+import { Props } from 'react-native-paper/lib/typescript/components/Button/Button';
 import { StyleSheet, Dimensions } from 'react-native';
 
-interface ButtonProps extends Props {
-  children?: ReactNode;
-  onPress: () => void;
-}
+interface ButtonProps extends Props {}
 
 const windowWidth = Dimensions.get('window').width;
 
 const SmallButton = (props: ButtonProps) => {
   return (
-    <Button {...props} style={[props.style, styles.button]} mode='outlined' theme={undefined}>
-      {props.children}
-    </Button>
+    <Button
+      {...props}
+      style={[props.style, styles.button]}
+      mode='outlined'
+      theme={undefined}
+    ></Button>
   );
 };
 const styles = StyleSheet.create({
