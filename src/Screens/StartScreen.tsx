@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../Store/store';
 import { login } from '../Store/userSlice';
 import { auth } from '../Config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { getTheme } from '../Components/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
 
@@ -41,9 +42,13 @@ export default function StartScreen({ navigation }: Props) {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <BigButton onPress={() => dispatch(login({ email, password }))}>Logga In</BigButton>
+        <BigButton theme={getTheme('dark')} onPress={() => dispatch(login({ email, password }))}>
+          Logga In
+        </BigButton>
         <Text style={styles.ellerText}>eller</Text>
-        <BigButton onPress={() => navigation.navigate('RegisterScreen')}>Skapa konto</BigButton>
+        <BigButton theme={getTheme('dark')} onPress={() => navigation.navigate('RegisterScreen')}>
+          Skapa konto
+        </BigButton>
         {errorMsg && <Text>{errorMsg}</Text>}
       </View>
     </View>
