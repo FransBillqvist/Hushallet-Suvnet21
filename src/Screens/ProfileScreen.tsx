@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
 
-const avatarArray: string[] = ['🦊', '🐳', '🐷', '🐥', '🐸', '🐬', '🐙', '🦄'];
+const avatarArray: string[] = ['🦊', '🐳', '🐷', '🐥', '🐸', '🐬', '🐙', '🦄']; // DESSA SKA FILTRERAS BORT BEROENDE PÅ VILKA SOM REDAN FINNS I HUSHÅLLET
 
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
@@ -63,6 +63,7 @@ export default function ProfileScreen({ navigation }: Props) {
               role: householdMember,
               householdId: '',
             };
+            console.log(newProfile);
             dispatch(setProfileName(name));
           }}
           startIcon={<MaterialIcons name='add-circle-outline' size={21} color='black' />}
