@@ -5,6 +5,7 @@ import { Text, TextInput } from 'react-native-paper';
 import SmallButton from '../Components/Buttons/SmallButton';
 import AvatarCard from '../Components/Cards/AvatarCard';
 import { getTheme } from '../Components/theme';
+import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { setProfileName } from '../Store/profileSlice';
 import { useAppDispatch } from '../Store/store';
