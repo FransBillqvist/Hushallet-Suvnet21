@@ -3,16 +3,18 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../Config/firebase';
 import { Household } from '../Data/household';
 
-interface HouseholdState {
+interface HouseholdsState<Household> {
   households: Household[];
   isLoading: boolean;
-  error: string;
+  error?: string;
+  singleHousehold?: Household;
 }
 
-const initialState: HouseholdState = {
+const initialState: HouseholdsState<Household> = {
   households: [],
   isLoading: false,
   error: '',
+  singleHousehold: {id: '', name: '', code: ''},
 };
 
 export const setHouseholdName = createAsyncThunk<string, string>(
@@ -36,6 +38,7 @@ export const getHouseHoldByCode = createAsyncThunk<Household, string>(
   },
 );
 
+
 const householdSlice = createSlice({
   name: 'household',
   initialState,
@@ -50,11 +53,11 @@ const householdSlice = createSlice({
       // state.name = action.payload;
       console.log('fulfilled');
     });
-    // builder.addCase(setHouseholdName.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   //   state.error = action.payload || 'Unknown error';
-    //   console.log('rejected');
-    // });
+    builder.addCase(setHouseholdName.rejected, (state, action) => {
+      state.isLoading = false;
+      // state.error = action.payload || 'Unknown error';
+      console.log('rejected');
+    });
 
     builder.addCase(getHouseHoldByCode.pending, (state) => {
       state.isLoading = true;
