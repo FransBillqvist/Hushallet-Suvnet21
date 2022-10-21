@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { Dimensions, StyleSheet } from 'react-native';
 import { Surface } from 'react-native-paper';
-import { StyleSheet, Dimensions } from 'react-native';
+import { Chore } from '../../Data/chore';
 
 const windowWidth = Dimensions.get('window').width;
 
 interface Props {
   children?: React.ReactNode;
+  chore?: Chore;
 }
 
 const ChoreCard = (props: Props) => {
