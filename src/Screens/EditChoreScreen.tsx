@@ -8,6 +8,7 @@ import DemandingCard from '../Components/Cards/DemandingCard';
 import { ChoreCreate } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { useAppDispatch } from '../Store/store';
+import { getTheme } from '../Components/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreScreen'>;
 
@@ -59,6 +60,7 @@ export default function EditChoreScreen({ navigation }: Props) {
       <DemandingCard />
       {/*Needs to dispatch an edit thunk in ChoreSlice*/}
       <BigButton
+        theme={getTheme('dark')}
         onPress={() => {
           navigation.navigate('HomeScreen');
         }}

@@ -16,6 +16,7 @@ import {
   setChoreName,
 } from '../Store/choreSlice';
 import { useAppDispatch } from '../Store/store';
+import { getTheme } from '../Components/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChoreScreen'>;
 
@@ -65,6 +66,7 @@ export default function ChoreScreen({ navigation }: Props) {
         </ChoreCard>
         <DemandingCard />
         <BigButton
+          theme={getTheme('dark')}
           onPress={() => {
             dispatch(setChoreName(chore.name));
             dispatch(setChoreDescription(chore.description));

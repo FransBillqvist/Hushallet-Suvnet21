@@ -1,31 +1,20 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Button } from 'react-native-paper';
+import { Props } from 'react-native-paper/lib/typescript/components/Button/Button';
+import { StyleSheet, Dimensions } from 'react-native';
 
-interface Props {
-  children?: ReactNode;
-  onPress: () => void;
-  icon?: string;
-  disabled?: boolean;
-}
+interface ButtonProps extends Props {}
 
-const BigButton = (props: Props) => {
-  return (
-    <Button
-      // disabled={props.disabled}
-      // rounded='full'
-      // width={useWindowDimensions().width / 2}
-      // bg='white.300'
-      // shadow='1'
-      // _text={{ color: 'black' }}
-      // _pressed={{ bg: 'gray.200' }}
-      // flexDir='row'
-      icon={props.icon}
-      onPress={props.onPress}
-      mode='contained-tonal'
-      disabled={props.disabled}
-    >
-      {props.children}
-    </Button>
-  );
+const windowWidth = Dimensions.get('window').width;
+
+//Latest update
+
+const BigButton = (props: ButtonProps) => {
+  return <Button {...props} style={[props.style, styles.button]} mode='outlined'></Button>;
 };
+const styles = StyleSheet.create({
+  button: {
+    width: windowWidth / 2,
+  },
+});
 export default BigButton;

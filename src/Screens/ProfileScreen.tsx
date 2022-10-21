@@ -4,11 +4,11 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import 'react-native-get-random-values';
 import { Text, TextInput } from 'react-native-paper';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SmallButton from '../Components/Buttons/SmallButton';
 import AvatarCard from '../Components/Cards/AvatarCard';
-import { Profile } from '../Data/profile';
+import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { Profile } from '../Data/profile';
 import { getHouseHoldByCode } from '../Store/householdSlice';
 import { setProfileName } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
@@ -52,6 +52,8 @@ export default function ProfileScreen({ navigation }: Props) {
       <View>
         <SmallButton
           style={styles.button}
+          icon='plus-circle-outline'
+          theme={getTheme('dark')}
           onPress={() => {
             const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 32);
             const householdMember = nav ? 'owner' : 'member';
@@ -69,7 +71,6 @@ export default function ProfileScreen({ navigation }: Props) {
             dispatch(getHouseHoldByCode('1q2uur')); // DENNA SKA FLYTTAS TILL EN ANNAN SCREEN
             navigation.navigate('HomeScreen');
           }}
-          startIcon={<MaterialIcons name='add-circle-outline' size={21} color='black' />}
         >
           Skapa
         </SmallButton>
@@ -105,5 +106,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 30,
+    alignSelf: 'center',
   },
 });
