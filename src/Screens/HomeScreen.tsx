@@ -3,10 +3,16 @@ import * as React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { getChores } from '../Store/choreSlice';
+import { useAppDispatch } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
 export default function HomeScreen({ navigation }: Props) {
+  const dispatch = useAppDispatch();
+  React.useEffect(() => {
+    dispatch(getChores('VCOK0'));
+  });
   return (
     <View style={styles.container}>
       <Text>Chores to be done</Text>
