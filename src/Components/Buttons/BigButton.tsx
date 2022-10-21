@@ -7,6 +7,8 @@ interface ButtonProps extends Props {}
 
 const windowWidth = Dimensions.get('window').width;
 
+//Latest update
+
 const BigButton = (props: ButtonProps) => {
   return <Button {...props} style={[props.style, styles.button]} mode='outlined'></Button>;
 };
