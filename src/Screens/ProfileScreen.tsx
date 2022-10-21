@@ -2,9 +2,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SmallButton from '../Components/Buttons/SmallButton';
 import AvatarCard from '../Components/Cards/AvatarCard';
+import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { setProfileName } from '../Store/profileSlice';
 import { useAppDispatch } from '../Store/store';
@@ -36,10 +36,13 @@ export default function ProfileScreen({ navigation }: Props) {
       <View>
         <SmallButton
           style={styles.button}
+          extended
+          label=''
+          icon='plus-circle-outline'
+          theme={getTheme('light')}
           onPress={() => {
             dispatch(setProfileName(name));
           }}
-          startIcon={<MaterialIcons name='add-circle-outline' size={21} color='black' />}
         >
           Skapa
         </SmallButton>
@@ -75,5 +78,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 30,
+    alignSelf: 'center',
   },
 });

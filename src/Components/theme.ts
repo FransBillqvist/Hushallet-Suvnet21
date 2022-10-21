@@ -18,7 +18,7 @@ export const lightTheme: Theme = {
   colors: {
     ...PaperLightTheme.colors,
     ...NavLightTheme.colors,
-    primary: 'yellow',
+    primary: 'black',
     secondary: 'green',
   },
 };
