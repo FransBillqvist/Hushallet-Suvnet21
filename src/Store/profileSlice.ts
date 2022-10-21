@@ -1,23 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { Profile } from '../Data/profile';
 
 interface ProfileState {
-  id: string;
-  userId: string;
-  name: string;
-  avatar: string;
-  role: string;
-  householdId: string;
+  profiles: Profile[];
   isLoading: boolean;
   error: string;
 }
 
 const initialState: ProfileState = {
-  id: '',
-  userId: '',
-  name: '',
-  avatar: '',
-  role: '',
-  householdId: '',
+  profiles: [],
   isLoading: false,
   error: '',
 };
@@ -40,7 +31,7 @@ const profileSlice = createSlice({
     });
     builder.addCase(setProfileName.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.name = action.payload;
+      // state.profiles[index].name = action.payload;
       console.log('fulfilled');
     });
     // builder.addCase(setProfileName.rejected, (state, action) => {

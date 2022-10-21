@@ -3,8 +3,10 @@ export type Profile = {
   userId: string;
   name: string;
   avatar: string;
-  role: string;
+  role: Role;
   householdId: string;
 };
 
-export type ProfileCreate = Omit<Profile, 'id, userId, avatar, role, householdId'>;
+type Role = 'owner' | 'member';
+
+export type ProfileCreate = Omit<Profile, 'id, userId, role, householdId'>;

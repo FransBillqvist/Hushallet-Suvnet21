@@ -4,8 +4,6 @@ import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } f
 import app from '../Config/firebase';
 import { User } from '../Data/user';
 
-// type User = Omit<FirebaseUser, "toJSON" | "delete" | "reload" | "getIdTokenResult" | "getIdToken">;
-
 interface UserState {
   user: User | undefined;
   isLoading: boolean;
@@ -50,7 +48,7 @@ export const login = createAsyncThunk<
   } catch (error) {
     console.error(error);
     if (error instanceof FirebaseError) {
-      return thunkApi.rejectWithValue(error.message);
+      // return thunkApi.rejectWithValue(error.message);
     }
     return thunkApi.rejectWithValue('Det gick tyvärr inte att logga in');
   }
@@ -63,29 +61,25 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
       state.isLoading = true;
-      state.errorMsg = '';
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.user = action.payload;
       state.isLoading = false;
     });
-    builder.addCase(registerUser.rejected, (state, action) => {
-      // Om det är ett firebase fel se till att spara en användarvänlig text
-      state.errorMsg = action.payload || '';
+    builder.addCase(registerUser.rejected, (state) => {
+      state.errorMsg = 'Något gick fel';
       state.isLoading = false;
     });
 
     builder.addCase(login.pending, (state) => {
       state.isLoading = true;
-      state.errorMsg = '';
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state.user = { id: action.payload.id, email: action.payload.email };
       state.isLoading = false;
     });
-    builder.addCase(login.rejected, (state, action) => {
-      // Om det är ett firebase fel se till att spara en användarvänlig text
-      state.errorMsg = action.payload || '';
+    builder.addCase(login.rejected, (state) => {
+      state.errorMsg = 'Mail och eller lösenordet är fel';
       state.isLoading = false;
     });
   },
