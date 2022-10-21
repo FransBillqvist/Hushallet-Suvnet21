@@ -9,6 +9,7 @@ import SmallButton from '../Components/Buttons/SmallButton';
 import AvatarCard from '../Components/Cards/AvatarCard';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { getHouseHoldByCode } from '../Store/householdSlice';
 import { setProfileName } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
@@ -61,10 +62,12 @@ export default function ProfileScreen({ navigation }: Props) {
               name: name,
               avatar: chosenAvatar,
               role: householdMember,
-              householdId: '',
+              householdId: '123456', // DENNA SKA ÄNDRAS SÅ ATT DETTA HÄMTAS ISTÄLLET FÖR HÅRDKODAS
             };
             console.log(newProfile);
             dispatch(setProfileName(name));
+            dispatch(getHouseHoldByCode('1q2uur')); // DENNA SKA FLYTTAS TILL EN ANNAN SCREEN
+            navigation.navigate('HomeScreen');
           }}
           startIcon={<MaterialIcons name='add-circle-outline' size={21} color='black' />}
         >
