@@ -6,7 +6,9 @@ import BigButton from '../Components/Buttons/BigButton';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getHouseHoldByCode } from '../Store/householdSlice';
+import { profileAlreadyInHousehold } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
+import { auth } from '../Config/firebase';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
 
@@ -15,7 +17,8 @@ export default function ManagerScreen({ navigation }: Props) {
   const [isHide, setIsHide] = React.useState(true);
   const buttonValue = isHide ? 'Gå med hushåll' : 'stäng';
   const dispatch = useAppDispatch();
-  const households = useAppSelector((state) => state.household.households);
+  const userId = useAppSelector((state) => state.user.user?.uid);
+  const userIdAsString = userId as string;
 
   return (
     <View style={styles.container}>
@@ -36,10 +39,16 @@ export default function ManagerScreen({ navigation }: Props) {
             onPress={async () => {
               const result = await dispatch(getHouseHoldByCode(inviteCode))
                 .unwrap();
-              console.log(result);
               if(result)
               {
-                navigation.navigate('ProfileScreen');
+                const profileExists  = await dispatch(profileAlreadyInHousehold([userIdAsString, result.id])).unwrap();
+                if(profileExists){
+
+                  navigation.navigate('HomeScreen');
+                }
+                else{
+                  navigation.navigate('ProfileScreen');
+                }
               }
               }}>
             Skicka förfrågan
