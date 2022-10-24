@@ -4,28 +4,16 @@ import { db } from '../Config/firebase';
 import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
 
-interface HouseholdsState {
+interface HouseholdState {
   households: Household[];
   isLoading: boolean;
   error: string;
 }
 
-const initialState: HouseholdsState = {
+const initialState: HouseholdState = {
   households: [],
   isLoading: false,
   error: '',
-};
-
-interface HouseholdState {
-  household: Household;
-}
-
-const initialHouseholdState: HouseholdState = {
-  household: {
-    id: '',
-    name: '',
-    code: '',
-  },
 };
 
 export const setHouseholdName = createAsyncThunk<string, string>(
@@ -49,22 +37,14 @@ export const getHouseHoldByCode = createAsyncThunk<Household, string>(
   },
 );
 
-export const getAllHouseholdsByProfileId = createAsyncThunk<Household[], Profile[]>(
-  'household/gethouseholdsbyprofileid',
-  async (profiles, thunkApi) => {
+export const getHouseholdByProfileId = createAsyncThunk<Household, Profile>(
+  'household/gethouseholdbyprofileid',
+  async (profile, thunkApi) => {
     try {
-      const households: Household[] = [];
-
-      profiles.forEach((profile) => {
-        const q = query(collection(db, 'Household'), where('id', '==', profile.householdId));
-        getDocs(q).then((snapshot) => {
-          snapshot.docs.forEach((doc) => {
-            households.push(doc.data() as Household);
-          });
-        });
-      });
-
-      return households;
+      const q = query(collection(db, 'Household'), where('id', '==', profile.householdId));
+      const querySnapshot = await getDocs(q);
+      const household = querySnapshot.docs[0].data() as Household;
+      return household;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
@@ -105,16 +85,16 @@ const householdSlice = createSlice({
       console.log('rejected');
     });
 
-    builder.addCase(getAllHouseholdsByProfileId.pending, (state) => {
+    builder.addCase(getHouseholdByProfileId.pending, (state) => {
       state.isLoading = true;
       console.log('pending');
     });
-    builder.addCase(getAllHouseholdsByProfileId.fulfilled, (state, action) => {
+    builder.addCase(getHouseholdByProfileId.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.households.push(...action.payload);
+      state.households.push(action.payload);
       console.log('fulfilled');
     });
-    builder.addCase(getAllHouseholdsByProfileId.rejected, (state) => {
+    builder.addCase(getHouseholdByProfileId.rejected, (state) => {
       state.isLoading = false;
       console.log('rejected');
     });
