@@ -16,8 +16,7 @@ import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
 
-// const avatarArray: string[] = ['🦊', '🐳', '🐷', '🐥', '🐸', '🐬', '🐙', '🦄']; // DESSA SKA FILTRERAS BORT BEROENDE PÅ VILKA SOM REDAN FINNS I HUSHÅLLET
-const avatarsInUseArray: string[] = ['🐷', '🐸', '🐙', '🦄'];
+const avatarsInUseArray: string[] = ['🐷', '🐸', '🐙', '🦄']; // SKA ÄNDRAS SÅ ATT AVATARER SOM ANVÄNDS HÄMTAS FRÅN DB
 
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
