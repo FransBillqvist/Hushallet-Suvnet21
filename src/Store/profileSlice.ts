@@ -1,8 +1,7 @@
 import { collection, getDocs, query, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../Config/firebase';
-import { Profile, Role } from '../Data/profile';
-import { useAppSelector } from '../Store/store';
+import { Profile } from '../Data/profile';
 
 interface ProfileState {
   profiles: Profile[];
@@ -32,6 +31,25 @@ export const profileAlreadyInHousehold = createAsyncThunk<boolean, string[]>(
       const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
       const profile = profiles.find((profile) => profile.userId === input[0]);
       if (profile) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const getCurrentAmountOfProfiles = createAsyncThunk<boolean, string>(
+  'profile/getcurrentamountofprofiles',
+  async (householdId, thunkApi) => {
+    try {
+      const q = query(collection(db, 'Profile'), where('householdId', '==', householdId));
+      const querySnapshot = await getDocs(q);
+      const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
+      const amountOfProfiles = profiles.length;
+      if (amountOfProfiles >= 8) {
         return true;
       } else {
         return false;
@@ -103,6 +121,19 @@ const profileSlice = createSlice({
       state.isLoading = false;
       //   state.error = action.payload || 'Unknown error';
       console.log('rejected');
+    });
+
+    builder.addCase(getCurrentAmountOfProfiles.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(getCurrentAmountOfProfiles.fulfilled, (state) => {
+      state.isLoading = false;
+      console.log('pending');
+    });
+    builder.addCase(getCurrentAmountOfProfiles.rejected, (state, action) => {
+      state.isLoading = false;
+      console.log('Failed');
     });
   },
 });
