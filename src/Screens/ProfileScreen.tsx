@@ -10,8 +10,7 @@ import { filterAvatarList } from '../Components/filterAvatarList';
 import { getTheme } from '../Components/theme';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { getHouseHoldByCode } from '../Store/householdSlice';
-import { setProfileName, profileAlreadyInHousehold } from '../Store/profileSlice';
+import { setProfileName } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
@@ -19,14 +18,11 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
+  const householdId = useAppSelector((state) => state.household.singleHousehold?.id);
   const avatarsInHousehold: string[] = [];
   useAppSelector((state) =>
     state.profile.profiles
-      .filter(
-        (profile) =>
-          profile.householdId ===
-          'r0jbdm' /*ISTÄLLET FÖR EN STRÄNG SÅ SKA HUSHÅLLSID HÄMTAS FRÅN NÅGONSTANS*/,
-      )
+      .filter((profile) => profile.householdId === householdId)
       .forEach((profile) => avatarsInHousehold.push(profile.avatar)),
   );
   const [name, setName] = React.useState('');
@@ -71,7 +67,8 @@ export default function ProfileScreen({ navigation }: Props) {
               name: name,
               avatar: chosenAvatar,
               role: householdMember,
-              householdId: '123456', // DENNA SKA ÄNDRAS SÅ ATT DETTA HÄMTAS ISTÄLLET FÖR HÅRDKODAS
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              householdId: householdId!,
             };
             console.log(newProfile);
             dispatch(setProfileName(name));

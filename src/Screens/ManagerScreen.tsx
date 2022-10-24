@@ -6,7 +6,7 @@ import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getHouseHoldByCode } from '../Store/householdSlice';
-import { profileAlreadyInHousehold } from '../Store/profileSlice';
+import { getProfilesForHousehold, profileAlreadyInHousehold } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
@@ -50,6 +50,7 @@ export default function ManagerScreen({ navigation }: Props) {
                 if (profileExists) {
                   navigation.navigate('HomeScreen');
                 } else {
+                  await dispatch(getProfilesForHousehold(result.id));
                   navigation.navigate('ProfileScreen');
                 }
               }
