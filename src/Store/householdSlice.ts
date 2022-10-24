@@ -32,6 +32,7 @@ export const getHouseHoldByCode = createAsyncThunk<Household, string>(
       const q = query(collection(db, 'Household'), where('code', '==', code));
       const querySnapshot = await getDocs(q);
       const household = querySnapshot.docs[0].data() as Household;
+      thunkApi.dispatch(setHousehold(household));
       return household;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
@@ -56,7 +57,11 @@ export const getHouseholdByProfileId = createAsyncThunk<Household, Profile>(
 const householdSlice = createSlice({
   name: 'household',
   initialState,
-  reducers: {},
+  reducers: {
+    setHousehold: (state, action) => {
+      state.singleHousehold = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(setHouseholdName.pending, (state) => {
       state.isLoading = true;
@@ -102,5 +107,7 @@ const householdSlice = createSlice({
     });
   },
 });
+
+export const { setHousehold } = householdSlice.actions;
 
 export const householdReducer = householdSlice.reducer;

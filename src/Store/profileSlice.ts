@@ -2,7 +2,6 @@ import { collection, getDocs, query, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../Config/firebase';
 import { Profile, Role } from '../Data/profile';
-import { useAppSelector } from './store';
 
 interface ProfileState {
   profiles: Profile[];
@@ -17,7 +16,7 @@ const initialState: ProfileState = {
 };
 
 export const setProfileName = createAsyncThunk<string, string>(
-  'user/setprofilename',
+  'profile/setprofilename',
   async (name, thunkApi) => {
     return name;
   },
@@ -61,35 +60,55 @@ export const getCurrentAmountOfProfiles = createAsyncThunk<boolean, string>(
   },
 );
 
-export const addNewProfile = createAsyncThunk<Profile,{avatar: string, householdId: string, id: string, name: string, role: Role ,userId: string}, {rejectValue: string}>(
-    'profile/addnewprofile',
-    async({avatar, householdId, id, name, role, userId}, thunkApi) => {
-      try{
-        const q = query(collection(db,'Profile'));
-        const querySnapshot = await getDocs(q);
-        const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
-        const userExists = profiles.find(userId => userId === userId);
-        if(userExists){
-            const houseExists = profiles.find(householdId => householdId === householdId);
-            if(houseExists){
-              return thunkApi.rejectWithValue('User already exists in this household');
-            }
-        }
-        return
-        // const w = query(collection(db,'Profile'), where('householdId', '==', householdId));
-      }catch(error){
-        return thunkApi.rejectWithValue(error.message);
+export const getProfilesForHousehold = createAsyncThunk<Profile[], string>(
+  'profile/getprofilesforhousehold',
+  async (householdid, thunkApi) => {
+    try {
+      const profilesInDB: Profile[] = [];
+
+      const q = query(collection(db, 'Profile'), where('householdId', '==', householdid));
+      const querySnapshot = await getDocs(q);
+      profilesInDB.push(...querySnapshot.docs.map((doc) => doc.data() as Profile));
+
+      return profilesInDB;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const addNewProfile = createAsyncThunk<
+  Profile,
+  { avatar: string; householdId: string; id: string; name: string; role: Role; userId: string },
+  { rejectValue: string }
+>('profile/addnewprofile', async ({ avatar, householdId, id, name, role, userId }, thunkApi) => {
+  try {
+    const q = query(collection(db, 'Profile'));
+    const querySnapshot = await getDocs(q);
+    const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
+    const userExists = profiles.find((userId) => userId === userId);
+    if (userExists) {
+      const houseExists = profiles.find((householdId) => householdId === householdId);
+      if (houseExists) {
+        return thunkApi.rejectWithValue('User already exists in this household');
       }
-    })
+    }
+    return;
+    // const w = query(collection(db,'Profile'), where('householdId', '==', householdId));
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.message);
+  }
+});
 
 export const addProfileToHousehold = createAsyncThunk<Profile, Profile>(
   'profile/addprofile',
   async (profile, thunkApi) => {
-
-)
+    return null;
+  },
+);
 
 const profileSlice = createSlice({
-  name: 'user',
+  name: 'profile',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -134,6 +153,19 @@ const profileSlice = createSlice({
     builder.addCase(getCurrentAmountOfProfiles.rejected, (state, action) => {
       state.isLoading = false;
       console.log('Failed');
+    });
+    builder.addCase(getProfilesForHousehold.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(getProfilesForHousehold.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.profiles.push(...action.payload);
+      console.log('fulfilled');
+    });
+    builder.addCase(getProfilesForHousehold.rejected, (state) => {
+      state.isLoading = false;
+      console.log('rejected');
     });
   },
 });
