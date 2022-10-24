@@ -4,12 +4,10 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
+import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 import { login } from '../Store/userSlice';
-import { auth } from '../Config/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-import { getTheme } from '../Components/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
 
@@ -23,21 +21,21 @@ export default function StartScreen({ navigation }: Props) {
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <View style={styles.inputStyle}>
-          <Text style={styles.inputLabel}>Användarnamn</Text>
           <TextInput
+            mode='outlined'
             style={styles.inputTextField}
             value={email}
             onChangeText={setEmail}
-            placeholder='Användarnamn'
+            label='Email'
           ></TextInput>
         </View>
         <View style={styles.inputStyle}>
-          <Text style={styles.inputLabel}>Lösenord</Text>
           <TextInput
+            mode='outlined'
             style={styles.inputTextField}
             value={password}
             onChangeText={setPassword}
-            placeholder='Lösenord'
+            label='Lösenord'
           ></TextInput>
         </View>
       </View>
@@ -69,12 +67,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   inputTextField: {
-    borderWidth: 1,
     borderRadius: 7,
-    // borderColor: 'darkgrey',
     paddingHorizontal: 12,
-    paddingVertical: 8,
-    // backgroundColor: 'grey',
     fontSize: 15,
   },
   inputStyle: {
@@ -84,7 +78,6 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    maxWidth: 300,
     marginTop: 45,
   },
   ellerText: {
