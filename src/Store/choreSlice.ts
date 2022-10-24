@@ -7,27 +7,19 @@ import { Chore, ChoreCreate } from '../Data/chore';
 import { AppState } from '../Store/store';
 
 interface ChoreState {
-  name: string;
-  description: string;
-  demanding: number;
-  frequency: number;
-  householdId: string;
   isLoading: boolean;
   isRemoved: boolean;
   error: string;
-  chore: Chore[];
+  chores: Chore[];
+  singleChore: Chore;
 }
 
 const initialState: ChoreState = {
-  name: '',
-  description: '',
-  demanding: 0,
-  frequency: 0,
-  householdId: '',
   isLoading: false,
   isRemoved: false,
   error: '',
-  chore: [],
+  chores: [],
+  singleChore: { id: '', name: '', description: '', demanding: 0, frequency: 0, householdId: '' },
 };
 
 export const addChoreToDb = createAsyncThunk<ChoreCreate, ChoreCreate, { rejectValue: string }>(
@@ -69,7 +61,6 @@ export const getChores = createAsyncThunk<
         chores.push(doctorData);
       }
     });
-
     return chores;
   } catch (error) {
     console.error(error);
@@ -126,8 +117,9 @@ const choreSlice = createSlice({
     builder.addCase(getChores.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getChores.fulfilled, (state) => {
+    builder.addCase(getChores.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.chores = action.payload;
     });
     builder.addCase(getChores.rejected, (state, action) => {
       state.error = action.payload || '';
@@ -140,7 +132,7 @@ const choreSlice = createSlice({
     });
     builder.addCase(setChoreName.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.name = action.payload;
+      state.singleChore.name = action.payload;
       console.log('fulfilled');
     });
     builder.addCase(setChoreName.rejected, (state, action) => {
@@ -155,7 +147,7 @@ const choreSlice = createSlice({
     });
     builder.addCase(setChoreDescription.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.description = action.payload;
+      state.singleChore.description = action.payload;
       console.log('fulfilled');
     });
     builder.addCase(setChoreDemanding.pending, (state) => {
@@ -164,7 +156,7 @@ const choreSlice = createSlice({
     });
     builder.addCase(setChoreDemanding.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.demanding = action.payload;
+      state.singleChore.demanding = action.payload;
       console.log('fulfilled');
     });
     builder.addCase(setChoreFrequency.pending, (state) => {
@@ -173,7 +165,7 @@ const choreSlice = createSlice({
     });
     builder.addCase(setChoreFrequency.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.frequency = action.payload;
+      state.singleChore.frequency = action.payload;
       console.log('fulfilled');
     });
   },
