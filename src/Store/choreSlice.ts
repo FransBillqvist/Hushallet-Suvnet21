@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, where } from '@firebase/firestore';
+import { addDoc, collection, doc, getDocs, query, updateDoc, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { nanoid } from 'nanoid';
@@ -71,6 +71,34 @@ export const getChores = createAsyncThunk<
   }
 });
 
+export const editChore = createAsyncThunk<Chore, Chore, { rejectValue: string }>(
+  'household/editchore',
+  async (Chore, thunkApi) => {
+    try {
+      const q = query(collection(db, 'Chore'), where('id', '==', Chore.id));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const id = querySnapshot.docs[0].id;
+
+        const edit = doc(db, 'Chore', id);
+        await updateDoc(edit, {
+          name: Chore.name,
+          description: Chore.description,
+          demanding: Chore.demanding,
+          frequency: Chore.frequency,
+        });
+      }
+      return Chore;
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        return thunkApi.rejectWithValue(error.message);
+      }
+      return thunkApi.rejectWithValue('Det gick inte!');
+    }
+  },
+);
+
 export const setChoreName = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchorename',
   async (name, thunkApi) => {
@@ -125,6 +153,18 @@ const choreSlice = createSlice({
       state.error = action.payload || '';
       state.isLoading = false;
     });
+
+    // builder.addCase(editChore.pending, (state) => {
+    //   state.isLoading = true;
+    // });
+    // builder.addCase(editChore.fulfilled, (state, action) => {
+    //   state. = action.payload;
+    //   state.isLoading = false;
+    // });
+    // builder.addCase(editChore.rejected, (state, action) => {
+    //   state.error = action.payload || '';
+    //   state.isLoading = false;
+    // });
 
     builder.addCase(setChoreName.pending, (state) => {
       state.isLoading = true;

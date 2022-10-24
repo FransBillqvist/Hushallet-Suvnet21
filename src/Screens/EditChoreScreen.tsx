@@ -5,22 +5,23 @@ import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import DemandingCard from '../Components/Cards/DemandingCard';
+import { getTheme } from '../Components/theme';
 import { ChoreCreate } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { editChore } from '../Store/choreSlice';
 import { useAppDispatch } from '../Store/store';
-import { getTheme } from '../Components/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreScreen'>;
 
 export default function EditChoreScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const [originalchore, editedChore] = React.useState<ChoreCreate>({
-    id: '',
-    name: '',
-    description: '',
+    id: 'N2Mg_Anx_S"',
+    name: 'Jahapp',
+    description: 'Hemligt',
     demanding: 0,
-    frequency: 0,
-    householdId: '',
+    frequency: 2,
+    householdId: '7sTjL',
   });
 
   const handleChange = (key: string, value: string | number) => {
@@ -62,6 +63,7 @@ export default function EditChoreScreen({ navigation }: Props) {
       <BigButton
         theme={getTheme('dark')}
         onPress={() => {
+          dispatch(editChore(originalchore));
           navigation.navigate('HomeScreen');
         }}
       >
