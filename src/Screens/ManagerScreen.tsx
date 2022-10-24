@@ -3,12 +3,11 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
-import { Household } from '../Data/household';
+import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getHouseHoldByCode } from '../Store/householdSlice';
 import { profileAlreadyInHousehold } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
-import { auth } from '../Config/firebase';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
 
@@ -24,7 +23,9 @@ export default function ManagerScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Text>Hushålls-skärm</Text>
       <Text>Knapp: Skapa nytt hushåll(ägare)</Text>
-      <BigButton onPress={() => setIsHide(!isHide)}>{buttonValue}</BigButton>
+      <BigButton 
+      theme={getTheme('light')} //Ändra till Setting för att få rätt färg
+      onPress={() => setIsHide(!isHide)}>{buttonValue}</BigButton>
       {isHide ? (
         <></>
       ) : (
@@ -36,6 +37,7 @@ export default function ManagerScreen({ navigation }: Props) {
             onChangeText={setInviteCode}
           ></TextInput>
           <BigButton
+          theme={getTheme('light')} //Ändra till Setting för att få rätt färg
             onPress={async () => {
               const result = await dispatch(getHouseHoldByCode(inviteCode))
                 .unwrap();

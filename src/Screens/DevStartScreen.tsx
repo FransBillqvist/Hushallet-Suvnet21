@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { getTheme } from '../Components/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DevStartScreen'>;
 
@@ -11,6 +12,7 @@ export default function DevStartScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('ChoreScreen');
         }}
@@ -18,6 +20,7 @@ export default function DevStartScreen({ navigation }: Props) {
         <Text>Chore</Text>
       </BigButton>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('EditChoreScreen');
         }}
@@ -25,6 +28,7 @@ export default function DevStartScreen({ navigation }: Props) {
         <Text>EditChore</Text>
       </BigButton>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('CreateScreen');
         }}
@@ -32,6 +36,7 @@ export default function DevStartScreen({ navigation }: Props) {
         <Text>Create</Text>
       </BigButton>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('DetailScreen');
         }}
@@ -39,6 +44,7 @@ export default function DevStartScreen({ navigation }: Props) {
         <Text>Detail</Text>
       </BigButton>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('HomeScreen');
         }}
@@ -46,6 +52,7 @@ export default function DevStartScreen({ navigation }: Props) {
         <Text>Home</Text>
       </BigButton>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('ManagerScreen');
         }}
@@ -53,6 +60,7 @@ export default function DevStartScreen({ navigation }: Props) {
         <Text>Manager</Text>
       </BigButton>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('ProfileScreen');
         }}
@@ -60,6 +68,7 @@ export default function DevStartScreen({ navigation }: Props) {
         <Text>Profile</Text>
       </BigButton>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('RegisterScreen');
         }}
@@ -67,6 +76,7 @@ export default function DevStartScreen({ navigation }: Props) {
         <Text>Register</Text>
       </BigButton>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('StartScreen');
         }}
@@ -74,6 +84,7 @@ export default function DevStartScreen({ navigation }: Props) {
         <Text>Start</Text>
       </BigButton>
       <BigButton
+        theme={getTheme('dark')}
         onPress={function (): void {
           navigation.navigate('StatisticsScreen');
         }}

@@ -1,29 +1,25 @@
-import { Button } from 'native-base';
-import { useWindowDimensions } from 'react-native';
-import React, { ReactNode } from 'react';
-import { InterfaceButtonProps } from 'native-base/lib/typescript/components/primitives/Button/types';
+import React from 'react';
+import { Button } from 'react-native-paper';
+import { Props } from 'react-native-paper/lib/typescript/components/Button/Button';
+import { StyleSheet, Dimensions } from 'react-native';
 
-interface Props extends InterfaceButtonProps {
-  children?: ReactNode;
-  onPress: () => void;
-}
+interface ButtonProps extends Props {}
 
-const SmallButton = (props: Props) => {
+const windowWidth = Dimensions.get('window').width;
+
+const SmallButton = (props: ButtonProps) => {
   return (
     <Button
-      disabled={props.disabled}
-      rounded='full'
-      width={useWindowDimensions().width / 3}
-      bg='white.300'
-      shadow='1'
-      _text={{ color: 'black' }}
-      _pressed={{ bg: 'gray.200' }}
-      flexDir='row'
-      startIcon={props.startIcon}
-      onPress={props.onPress}
-    >
-      {props.children}
-    </Button>
+      {...props}
+      style={[props.style, styles.button]}
+      mode='outlined'
+      theme={undefined}
+    ></Button>
   );
 };
+const styles = StyleSheet.create({
+  button: {
+    width: windowWidth / 3,
+  },
+});
 export default SmallButton;

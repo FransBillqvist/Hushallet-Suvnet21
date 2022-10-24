@@ -9,6 +9,7 @@ import { IconButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import { db } from '../Config/firebase';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { getTheme } from '../Components/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
 
@@ -54,6 +55,7 @@ export default function CreateScreen({ navigation }: Props) {
       </View>
       <View style={styles.spacer}></View>
       <BigButton
+        theme={getTheme('dark')}
         disabled={code !== '' ? false : true}
         onPress={function (): void {
           AddHouse();

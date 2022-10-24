@@ -1,20 +1,34 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import ChoreCard from '../Components/Cards/ChoreCard';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DetailScreen'>;
 
-export default function DetailScreen({ navigation }: Props) {
-  return (
-    <View style={styles.container}>
-      <Text>Sysslns titel</Text>
-      <Text>Sysslans beskrivning</Text>
-      <Text>Energivärde: 6</Text>
+export default function DetailScreen(navigator: Props) {
+  const chores = useAppSelector((state) => state.chore);
 
-      <Text>Image: Liten pojke dammar</Text>
-    </View>
+  return (
+    <ScrollView>
+      <View>
+        <ChoreCard>
+          <Text>
+            {chores.chores[0].name}
+            {chores.chores[0].frequency}
+          </Text>
+        </ChoreCard>
+        <ChoreCard>
+          <Text>{chores.chores[0].description}</Text>
+        </ChoreCard>
+        <ChoreCard>
+          <Text>Energivärde: {chores.chores[0].demanding}</Text>
+        </ChoreCard>
+        <Text>Image: Liten pojke dammar</Text>
+      </View>
+    </ScrollView>
   );
 }
 
