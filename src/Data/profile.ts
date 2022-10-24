@@ -7,6 +7,6 @@ export type Profile = {
   householdId: string;
 };
 
-type Role = 'owner' | 'member';
+export type Role = 'owner' | 'member';
 
 export type ProfileCreate = Omit<Profile, 'id, userId, role, householdId'>;

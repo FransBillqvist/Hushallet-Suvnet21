@@ -11,14 +11,14 @@ import { getTheme } from '../Components/theme';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getHouseHoldByCode } from '../Store/householdSlice';
-import { setProfileName } from '../Store/profileSlice';
+import { setProfileName, profileAlreadyInHousehold } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
 
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
-  const userId = useAppSelector((state) => state.user.user?.id);
+  const userId = useAppSelector((state) => state.user.user?.uid);
   const avatarsInHousehold: string[] = [];
   useAppSelector((state) =>
     state.profile.profiles
@@ -31,9 +31,7 @@ export default function ProfileScreen({ navigation }: Props) {
   );
   const [name, setName] = React.useState('');
   const [chosenAvatar, setAvatar] = React.useState('');
-
   const nav = navigation.getState().routes.find((nav) => nav.name === 'CreateScreen');
-
   return (
     <View style={styles.container}>
       <View style={styles.inputStyle}>
@@ -77,7 +75,6 @@ export default function ProfileScreen({ navigation }: Props) {
             };
             console.log(newProfile);
             dispatch(setProfileName(name));
-            dispatch(getHouseHoldByCode('1q2uur')); // DENNA SKA FLYTTAS TILL EN ANNAN SCREEN
             navigation.navigate('HomeScreen');
           }}
         >
