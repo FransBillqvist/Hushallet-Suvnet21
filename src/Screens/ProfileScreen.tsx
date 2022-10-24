@@ -10,7 +10,7 @@ import { filterAvatarList } from '../Components/filterAvatarList';
 import { getTheme } from '../Components/theme';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { setProfileName } from '../Store/profileSlice';
+import { addNewProfile } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
@@ -58,7 +58,7 @@ export default function ProfileScreen({ navigation }: Props) {
           icon='plus-circle-outline'
           theme={getTheme('dark')}
           onPress={() => {
-            const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 32);
+            const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 8);
             const householdMember = nav ? 'owner' : 'member';
             const newProfile: Profile = {
               id: nanoId(),
@@ -70,11 +70,15 @@ export default function ProfileScreen({ navigation }: Props) {
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               householdId: householdId!,
             };
-            console.log(newProfile);
-            dispatch(setProfileName(name));
-            navigation.navigate('HomeScreen');
+            dispatch(addNewProfile(newProfile));
+            // if (newProfile.fulfilled(navigation.navigate('HomeScreen')))
+            // else {
+            //   alert("Fel!");
+            //   navigation.navigate('HomeScreen');
+            // }}}
           }}
         >
+          {/* {// dispatch(setProfileName(name));\} */}
           Skapa
         </SmallButton>
       </View>
