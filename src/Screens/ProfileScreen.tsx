@@ -6,16 +6,18 @@ import 'react-native-get-random-values';
 import { Text, TextInput } from 'react-native-paper';
 import SmallButton from '../Components/Buttons/SmallButton';
 import AvatarCard from '../Components/Cards/AvatarCard';
+import { filterAvatarList } from '../Components/filterAvatarList';
 import { getTheme } from '../Components/theme';
-import { RootStackParamList } from '../Navigation/RootNavigator';
 import { Profile } from '../Data/profile';
+import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getHouseHoldByCode } from '../Store/householdSlice';
 import { setProfileName } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
 
-const avatarArray: string[] = ['🦊', '🐳', '🐷', '🐥', '🐸', '🐬', '🐙', '🦄']; // DESSA SKA FILTRERAS BORT BEROENDE PÅ VILKA SOM REDAN FINNS I HUSHÅLLET
+// const avatarArray: string[] = ['🦊', '🐳', '🐷', '🐥', '🐸', '🐬', '🐙', '🦄']; // DESSA SKA FILTRERAS BORT BEROENDE PÅ VILKA SOM REDAN FINNS I HUSHÅLLET
+const avatarsInUseArray: string[] = ['🐷', '🐸', '🐙', '🦄'];
 
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
@@ -37,7 +39,7 @@ export default function ProfileScreen({ navigation }: Props) {
         />
       </View>
       <View style={styles.avatarCard}>
-        {avatarArray.map((avatar, index) => (
+        {filterAvatarList(avatarsInUseArray).map((avatar, index) => (
           <AvatarCard
             isActive={avatar === chosenAvatar}
             key={index}
