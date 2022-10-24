@@ -1,8 +1,7 @@
 import { collection, getDocs, query, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../Config/firebase';
-import { Profile, Role } from '../Data/profile';
-import { useAppSelector } from '../Store/store';
+import { Profile } from '../Data/profile';
 
 interface ProfileState {
   profiles: Profile[];
@@ -36,6 +35,23 @@ export const profileAlreadyInHousehold = createAsyncThunk<boolean, string[]>(
       } else {
         return false;
       }
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const getProfilesForHousehold = createAsyncThunk<Profile[], string>(
+  'profile/getprofilesforhousehold',
+  async (householdid, thunkApi) => {
+    try {
+      const profilesInDB: Profile[] = [];
+
+      const q = query(collection(db, 'Profile'), where('householdId', '==', householdid));
+      const querySnapshot = await getDocs(q);
+      profilesInDB.push(...querySnapshot.docs.map((doc) => doc.data() as Profile));
+
+      return profilesInDB;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
@@ -102,6 +118,20 @@ const profileSlice = createSlice({
     builder.addCase(profileAlreadyInHousehold.rejected, (state, action) => {
       state.isLoading = false;
       //   state.error = action.payload || 'Unknown error';
+      console.log('rejected');
+    });
+
+    builder.addCase(getProfilesForHousehold.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(getProfilesForHousehold.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.profiles.push(...action.payload);
+      console.log('fulfilled');
+    });
+    builder.addCase(getProfilesForHousehold.rejected, (state) => {
+      state.isLoading = false;
       console.log('rejected');
     });
   },
