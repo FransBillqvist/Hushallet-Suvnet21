@@ -6,20 +6,29 @@ import 'react-native-get-random-values';
 import { Text, TextInput } from 'react-native-paper';
 import SmallButton from '../Components/Buttons/SmallButton';
 import AvatarCard from '../Components/Cards/AvatarCard';
+import { filterAvatarList } from '../Components/filterAvatarList';
 import { getTheme } from '../Components/theme';
-import { RootStackParamList } from '../Navigation/RootNavigator';
 import { Profile } from '../Data/profile';
+import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getHouseHoldByCode } from '../Store/householdSlice';
 import { setProfileName, profileAlreadyInHousehold } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
 
-const avatarArray: string[] = ['🦊', '🐳', '🐷', '🐥', '🐸', '🐬', '🐙', '🦄']; // DESSA SKA FILTRERAS BORT BEROENDE PÅ VILKA SOM REDAN FINNS I HUSHÅLLET
-
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
+  const avatarsInHousehold: string[] = [];
+  useAppSelector((state) =>
+    state.profile.profiles
+      .filter(
+        (profile) =>
+          profile.householdId ===
+          'r0jbdm' /*ISTÄLLET FÖR EN STRÄNG SÅ SKA HUSHÅLLSID HÄMTAS FRÅN NÅGONSTANS*/,
+      )
+      .forEach((profile) => avatarsInHousehold.push(profile.avatar)),
+  );
   const [name, setName] = React.useState('');
   const [chosenAvatar, setAvatar] = React.useState('');
   const nav = navigation.getState().routes.find((nav) => nav.name === 'CreateScreen');
@@ -35,7 +44,7 @@ export default function ProfileScreen({ navigation }: Props) {
         />
       </View>
       <View style={styles.avatarCard}>
-        {avatarArray.map((avatar, index) => (
+        {filterAvatarList(avatarsInHousehold).map((avatar, index) => (
           <AvatarCard
             isActive={avatar === chosenAvatar}
             key={index}
