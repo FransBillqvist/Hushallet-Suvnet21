@@ -16,17 +16,18 @@ import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
 
-const avatarsInUseArray: string[] = ['🐷', '🐸', '🐙', '🦄']; // SKA ÄNDRAS SÅ ATT AVATARER SOM ANVÄNDS HÄMTAS FRÅN DB
-
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.id);
-  const profilesInHousehold = useAppSelector((state) =>
-    state.profile.profiles.filter(
-      (profile) =>
-        profile.householdId ===
-        '' /*ISTÄLLET FÖR EN STRÄNG SÅ SKA HUSHÅLLSID HÄMTAS FRÅN NÅGONSTANS*/,
-    ),
+  const avatarsInHousehold: string[] = [];
+  useAppSelector((state) =>
+    state.profile.profiles
+      .filter(
+        (profile) =>
+          profile.householdId ===
+          'r0jbdm' /*ISTÄLLET FÖR EN STRÄNG SÅ SKA HUSHÅLLSID HÄMTAS FRÅN NÅGONSTANS*/,
+      )
+      .forEach((profile) => avatarsInHousehold.push(profile.avatar)),
   );
   const [name, setName] = React.useState('');
   const [chosenAvatar, setAvatar] = React.useState('');
@@ -45,7 +46,7 @@ export default function ProfileScreen({ navigation }: Props) {
         />
       </View>
       <View style={styles.avatarCard}>
-        {filterAvatarList(avatarsInUseArray).map((avatar, index) => (
+        {filterAvatarList(avatarsInHousehold).map((avatar, index) => (
           <AvatarCard
             isActive={avatar === chosenAvatar}
             key={index}
