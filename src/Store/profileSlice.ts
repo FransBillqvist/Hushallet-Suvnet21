@@ -1,7 +1,8 @@
 import { collection, getDocs, query, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../Config/firebase';
-import { Profile } from '../Data/profile';
+import { Profile, Role } from '../Data/profile';
+import { useAppSelector } from './store';
 
 interface ProfileState {
   profiles: Profile[];
@@ -60,33 +61,32 @@ export const getCurrentAmountOfProfiles = createAsyncThunk<boolean, string>(
   },
 );
 
-// export const addNewProfile = createAsyncThunk<Profile,{avatar: string, householdId: string, id: string, name: string, role: Role ,userId: string}, {rejectValue: string}>(
-//     'profile/addnewprofile',
-//     async({avatar, householdId, id, name, role, userId}, thunkApi) => {
-//       try{
-//         const userId = useAppSelector((state) => state.user.user?.id);
-//         const q = query(collection(db,'Profile'));
-//         const querySnapshot = await getDocs(q);
-//         const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
-//         const userExists = profiles.find(userId => userId === userId);
-//         if(userExists){
-//             const houseExists = profiles.find(householdId => householdId === householdId);
-//             if(houseExists){
-//               return thunkApi.rejectWithValue('User already exists in this household');
-//             }
-//         }
-//         return
-//         // const w = query(collection(db,'Profile'), where('householdId', '==', householdId));
-//       }catch(error){
-//         return thunkApi.rejectWithValue(error.message);
-//       }
-//     })
+export const addNewProfile = createAsyncThunk<Profile,{avatar: string, householdId: string, id: string, name: string, role: Role ,userId: string}, {rejectValue: string}>(
+    'profile/addnewprofile',
+    async({avatar, householdId, id, name, role, userId}, thunkApi) => {
+      try{
+        const q = query(collection(db,'Profile'));
+        const querySnapshot = await getDocs(q);
+        const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
+        const userExists = profiles.find(userId => userId === userId);
+        if(userExists){
+            const houseExists = profiles.find(householdId => householdId === householdId);
+            if(houseExists){
+              return thunkApi.rejectWithValue('User already exists in this household');
+            }
+        }
+        return
+        // const w = query(collection(db,'Profile'), where('householdId', '==', householdId));
+      }catch(error){
+        return thunkApi.rejectWithValue(error.message);
+      }
+    })
 
-// export const addProfileToHousehold = createAsyncThunk<Profile, Profile>(
-//   'profile/addprofile',
-//   async (profile, thunkApi) => {
+export const addProfileToHousehold = createAsyncThunk<Profile, Profile>(
+  'profile/addprofile',
+  async (profile, thunkApi) => {
 
-// )
+)
 
 const profileSlice = createSlice({
   name: 'user',
