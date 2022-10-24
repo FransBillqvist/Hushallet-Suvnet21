@@ -21,6 +21,13 @@ const avatarsInUseArray: string[] = ['🐷', '🐸', '🐙', '🦄']; // SKA ÄN
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.id);
+  const profilesInHousehold = useAppSelector((state) =>
+    state.profile.profiles.filter(
+      (profile) =>
+        profile.householdId ===
+        '' /*ISTÄLLET FÖR EN STRÄNG SÅ SKA HUSHÅLLSID HÄMTAS FRÅN NÅGONSTANS*/,
+    ),
+  );
   const [name, setName] = React.useState('');
   const [chosenAvatar, setAvatar] = React.useState('');
 
