@@ -15,7 +15,7 @@ const initialState: HouseholdsState<Household> = {
   households: [],
   isLoading: false,
   error: '',
-  singleHousehold: {id: '', name: '', code: ''},
+  singleHousehold: { id: '', name: '', code: '' },
 };
 
 export const setHouseholdName = createAsyncThunk<string, string>(
@@ -52,7 +52,6 @@ export const getHouseholdByProfileId = createAsyncThunk<Household, Profile>(
     }
   },
 );
-
 
 const householdSlice = createSlice({
   name: 'household',

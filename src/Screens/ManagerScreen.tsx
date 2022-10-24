@@ -23,9 +23,12 @@ export default function ManagerScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Text>Hushålls-skärm</Text>
       <Text>Knapp: Skapa nytt hushåll(ägare)</Text>
-      <BigButton 
-      theme={getTheme('light')} //Ändra till Setting för att få rätt färg
-      onPress={() => setIsHide(!isHide)}>{buttonValue}</BigButton>
+      <BigButton
+        theme={getTheme('light')} //Ändra till Setting för att få rätt färg
+        onPress={() => setIsHide(!isHide)}
+      >
+        {buttonValue}
+      </BigButton>
       {isHide ? (
         <></>
       ) : (
@@ -37,22 +40,21 @@ export default function ManagerScreen({ navigation }: Props) {
             onChangeText={setInviteCode}
           ></TextInput>
           <BigButton
-          theme={getTheme('light')} //Ändra till Setting för att få rätt färg
+            theme={getTheme('light')} //Ändra till Setting för att få rätt färg
             onPress={async () => {
-              const result = await dispatch(getHouseHoldByCode(inviteCode))
-                .unwrap();
-              if(result)
-              {
-                const profileExists  = await dispatch(profileAlreadyInHousehold([userIdAsString, result.id])).unwrap();
-                if(profileExists){
-
+              const result = await dispatch(getHouseHoldByCode(inviteCode)).unwrap();
+              if (result) {
+                const profileExists = await dispatch(
+                  profileAlreadyInHousehold([userIdAsString, result.id]),
+                ).unwrap();
+                if (profileExists) {
                   navigation.navigate('HomeScreen');
-                }
-                else{
+                } else {
                   navigation.navigate('ProfileScreen');
                 }
               }
-              }}>
+            }}
+          >
             Skicka förfrågan
           </BigButton>
         </>
