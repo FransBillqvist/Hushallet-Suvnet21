@@ -16,12 +16,12 @@ type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreScreen'>;
 export default function EditChoreScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const [originalchore, editedChore] = React.useState<ChoreCreate>({
-    id: 'N2Mg_Anx_S"',
-    name: 'Jahapp',
-    description: 'Hemligt',
+    id: '',
+    name: '',
+    description: '',
     demanding: 0,
-    frequency: 2,
-    householdId: '7sTjL',
+    frequency: 0,
+    householdId: '',
   });
 
   const handleChange = (key: string, value: string | number) => {
