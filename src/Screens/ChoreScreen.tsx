@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { nanoid } from 'nanoid';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { RadioButton, Text, TextInput, Modal, Button, Portal } from 'react-native-paper';
+import { Button, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
@@ -46,10 +46,11 @@ export default function ChoreScreen({ navigation }: Props) {
       <Text style={{ fontSize: 24, marginBottom: 10 }}>Skapa en ny syssla</Text>
       <ChoreCard>
         <TextInput
+          style={styles.input}
           outlineColor='transparent'
           mode='outlined'
+          label='Titel'
           value={chore.name}
-          placeholder='Titel'
           onChangeText={(text: string) => handleChange('name', text)}
         />
       </ChoreCard>
@@ -58,8 +59,8 @@ export default function ChoreScreen({ navigation }: Props) {
           style={styles.input}
           outlineColor='transparent'
           mode='outlined'
+          label='Beskrivning'
           value={chore.description}
-          placeholder='Beskrivning'
           onChangeText={(text: string) => handleChange('description', text)}
         />
       </ChoreCard>
@@ -202,6 +203,5 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     borderRadius: 10,
-    backgroundColor: 'transparent',
   },
 });
