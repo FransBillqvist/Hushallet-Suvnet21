@@ -1,11 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { nanoid } from 'nanoid';
 import * as React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
-import DemandingCard from '../Components/Cards/DemandingCard';
+import { getTheme } from '../Components/theme';
 import { ChoreCreate } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import {
@@ -16,7 +16,6 @@ import {
   setChoreName,
 } from '../Store/choreSlice';
 import { useAppDispatch } from '../Store/store';
-import { getTheme } from '../Components/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChoreScreen'>;
 
@@ -35,51 +34,57 @@ export default function ChoreScreen({ navigation }: Props) {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={{ fontSize: 24 }}>Skapa en ny syssla</Text>
-        <ChoreCard>
+    <View style={styles.container}>
+      <Text style={{ fontSize: 24, marginBottom: 10 }}>Skapa en ny syssla</Text>
+      <ChoreCard>
+        <TextInput
+          value={chore.name}
+          placeholder='Titel'
+          onChangeText={(text: string) => handleChange('name', text)}
+        />
+      </ChoreCard>
+      <ChoreCard>
+        <TextInput
+          value={chore.description}
+          placeholder='Beskrivning'
+          onChangeText={(text: string) => handleChange('description', text)}
+        />
+      </ChoreCard>
+      <ChoreCard>
+        <Text>Återkommer</Text>
+        <Text>
+          Var
           <TextInput
-            value={chore.name}
-            placeholder='Titel'
-            onChangeText={(text: string) => handleChange('name', text)}
+            value={chore.frequency.toString()}
+            keyboardType='numeric'
+            onChangeText={(num: string) => handleChange('frequency', Number(num))}
           />
-        </ChoreCard>
-        <ChoreCard>
-          <TextInput
-            value={chore.description}
-            placeholder='Beskrivning'
-            onChangeText={(text: string) => handleChange('description', text)}
-          />
-        </ChoreCard>
-        <ChoreCard>
-          <Text>Återkommer</Text>
-          <Text>
-            Var
-            <TextInput
-              value={chore.frequency.toString()}
-              keyboardType='numeric'
-              onChangeText={(num: string) => handleChange('frequency', Number(num))}
-            />
-            dag
-          </Text>
-        </ChoreCard>
-        <DemandingCard />
-        <BigButton
-          theme={getTheme('dark')}
-          onPress={() => {
-            dispatch(setChoreName(chore.name));
-            dispatch(setChoreDescription(chore.description));
-            dispatch(setChoreFrequency(chore.frequency));
-            dispatch(setChoreDemanding(chore.demanding));
-            dispatch(addChoreToDb(chore));
-            navigation.navigate('HomeScreen');
-          }}
-        >
-          Lägg till syssla
-        </BigButton>
-      </View>
-    </ScrollView>
+          dag
+        </Text>
+      </ChoreCard>
+      <ChoreCard>
+        <Text>Energivärde:</Text>
+        <TextInput
+          value={chore.frequency.toString()}
+          keyboardType='numeric'
+          onChangeText={(num: string) => handleChange('demanding', Number(num))}
+        />
+      </ChoreCard>
+      <BigButton
+        theme={getTheme('dark')}
+        onPress={() => {
+          dispatch(setChoreName(chore.name));
+          dispatch(setChoreDescription(chore.description));
+          dispatch(setChoreFrequency(chore.frequency));
+          dispatch(setChoreDemanding(chore.demanding));
+          dispatch(addChoreToDb(chore));
+          navigation.navigate('HomeScreen');
+        }}
+        style={{ marginTop: 10 }}
+      >
+        Lägg till syssla
+      </BigButton>
+    </View>
   );
 }
 
