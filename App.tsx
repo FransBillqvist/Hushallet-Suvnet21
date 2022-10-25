@@ -9,7 +9,6 @@ import RootNavigator from './src/Navigation/RootNavigator';
 import { store } from './src/Store/store';
 import { LogBox } from 'react-native';
 
-
 export default function App() {
   const colorScheme = useColorScheme();
 
