@@ -56,26 +56,27 @@ export default function ManagerScreen({ navigation }: Props) {
           <BigButton
             theme={getTheme('light')} //Ändra till Setting för att få rätt färg
             onPress={async () => {
-              const result = await dispatch(getHouseHoldByCode(inviteCode)).unwrap();
-              const getHouseId = result.id;
-              const currentAmountOfProfiles = await dispatch(
-                getCurrentAmountOfProfiles(getHouseId),
-              );
-              if (currentAmountOfProfiles.payload) {
-                //någon kanske har tid att fixa en design åt detta meddelande?
-                alert('Huset är fullt, prata med hushållets ägare för att få plats.');
-              } else {
-                if (result) {
-                  const profileExists = await dispatch(
-                    profileAlreadyInHousehold([userIdAsString, result.id]),
-                  ).unwrap();
-                  if (profileExists) {
-                    navigation.navigate('HomeScreen');
-                  } else {
-                    await dispatch(getProfilesForHousehold(result.id));
-                    navigation.navigate('ProfileScreen');
+              try {
+                const result = await dispatch(getHouseHoldByCode(inviteCode)).unwrap();
+                const isHouseholdFull = await dispatch(getCurrentAmountOfProfiles(result.id));
+                if (isHouseholdFull.payload) {
+                  //någon kanske har tid att fixa en design åt detta meddelande?
+                  alert('Huset är fullt, prata med hushållets ägare för att få plats.');
+                } else {
+                  if (result) {
+                    const profileExists = await dispatch(
+                      profileAlreadyInHousehold([userIdAsString, result.id]),
+                    ).unwrap();
+                    if (profileExists) {
+                      navigation.navigate('HomeScreen');
+                    } else {
+                      await dispatch(getProfilesForHousehold(result.id));
+                      navigation.navigate('ProfileScreen');
+                    }
                   }
                 }
+              } catch {
+                alert('Inget hushåll existerar med denna kod.');
               }
             }}
           >
