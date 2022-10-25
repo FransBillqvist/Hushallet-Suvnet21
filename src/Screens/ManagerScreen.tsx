@@ -1,14 +1,18 @@
+import { map } from '@firebase/util';
+import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Button, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
+import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { getHouseHoldByCode } from '../Store/householdSlice';
+import { getHouseHoldByCode, getHouseholdByProfileId } from '../Store/householdSlice';
 import {
   getCurrentAmountOfProfiles,
+  getProfilesByUserId,
   getProfilesForHousehold,
   profileAlreadyInHousehold,
 } from '../Store/profileSlice';
@@ -23,10 +27,28 @@ export default function ManagerScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
   const userIdAsString = userId as string;
-
-  return (
-    <View style={styles.container}>
+  
+  const householdOnUser: Profile[] = [];
+  const profiles = useAppSelector((state) => state.profile?.profiles);
+  const listOfHouses = useAppSelector((state) => state.household?.households);
+  householdOnUser.push(...profiles.filter((profile) => profile.userId === userIdAsString));
+  //  householdOnUser.forEach((profile) => {
+    
+    // for(let i = 0; i < householdOnUser.length; i++){
+      
+      
+      // }
+      
+      return (
+        <View style={styles.container}>
       <Text style={{ fontSize: 24, marginBottom: 10 }}>Hushållsmöjligheter</Text>
+      <HugeButton icon='plus-circle-outline' theme={getTheme('light')} onPress={() => {const firststage = dispatch(getProfilesByUserId(userIdAsString));
+         dispatch(getHouseholdByProfileId(householdOnUser[0])), console.log(listOfHouses)}}>FRANS ÄR ETT FUCKING RETARD</HugeButton>
+         {listOfHouses.map((houses) => (
+          <View key={houses.id}>
+            <Text>{houses.name}</Text>
+            </View>
+         ))}
       <HugeButton
         icon='plus-circle-outline'
         theme={getTheme('light')} //Ändra till Setting för att få rätt färg

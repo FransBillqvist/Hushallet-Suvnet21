@@ -105,11 +105,32 @@ export const addNewProfile = createAsyncThunk<Profile, Profile, { rejectValue: s
   },
 );
 
+export const getProfilesByUserId = createAsyncThunk<Profile[], string>(
+  'profile/getprofilesbyuserid',
+  async (userId, thunkApi) => {
+    try {
+      const profilesInAccount: Profile[] = [];
+      const q = query(collection(db, 'Profile'), where('userId', '==', userId));
+      const querySnapshot = await getDocs(q);
+      profilesInAccount.push(...querySnapshot.docs.map((doc) => doc.data() as Profile));
+      console.log(typeof profilesInAccount);
+      return profilesInAccount;
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        return thunkApi.rejectWithValue(error.message);
+      }
+      return thunkApi.rejectWithValue('Databasfel, du har inget konto!');
+    }
+  },
+);
+
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    //setProfileName
     builder.addCase(setProfileName.pending, (state) => {
       state.isLoading = true;
       console.log('pending');
@@ -124,7 +145,7 @@ const profileSlice = createSlice({
     //   //   state.error = action.payload || 'Unknown error';
     //   console.log('rejected');
     // });
-
+    //profileAlreadyInHousehold
     builder.addCase(profileAlreadyInHousehold.pending, (state) => {
       state.isLoading = true;
       console.log('pending');
@@ -140,6 +161,7 @@ const profileSlice = createSlice({
       console.log('rejected');
     });
 
+    //getCurrentAmountOfProfiles
     builder.addCase(getCurrentAmountOfProfiles.pending, (state) => {
       state.isLoading = true;
       console.log('getCurrentAmountOfProfiles pending');
@@ -152,6 +174,8 @@ const profileSlice = createSlice({
       state.isLoading = false;
       console.log('getCurrentAmountOfProfiles Failed');
     });
+
+    //getProfilesForHousehold
     builder.addCase(getProfilesForHousehold.pending, (state) => {
       state.isLoading = true;
       console.log('getProfilesForHousehold pending');
@@ -166,6 +190,7 @@ const profileSlice = createSlice({
       console.log('getProfilesForHousehold rejected');
     });
 
+    //addNewProfile
     builder.addCase(addNewProfile.pending, (state) => {
       state.isLoading = true;
       console.log('addNewProfile pending');
@@ -178,6 +203,21 @@ const profileSlice = createSlice({
     builder.addCase(addNewProfile.rejected, (state) => {
       state.isLoading = false;
       console.log('rejected! add new profile ');
+    });
+
+    //getProfilesByUserId
+    builder.addCase(getProfilesByUserId.pending, (state) => {
+      state.isLoading = true;
+      console.log('getProfilesByUserId pending');
+    });
+    builder.addCase(getProfilesByUserId.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.profiles.push(...action.payload);
+      console.log('getProfilesByUserId fulfilled');
+    });
+    builder.addCase(getProfilesByUserId.rejected, (state) => {
+      state.isLoading = false;
+      console.log('rejected! getProfilesByUserId');
     });
   },
 });
