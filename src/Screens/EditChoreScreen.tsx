@@ -7,7 +7,7 @@ import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { ChoreCreate } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { editChore, setChoreFrequency } from '../Store/choreSlice';
+import { editChore } from '../Store/choreSlice';
 import { useAppDispatch } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreScreen'>;
@@ -57,6 +57,7 @@ export default function EditChoreScreen({ navigation }: Props) {
       </ChoreCard>
       <ChoreCard>
         <Text>Återkommer</Text>
+        <Text>{originalchore.frequency.toString()}</Text>
         <Text>
           Var
           <TextInput
@@ -119,11 +120,6 @@ export default function EditChoreScreen({ navigation }: Props) {
           </Modal>
         </Portal>
         <Button onPress={showModal}>Välj</Button>
-        {/* <TextInput
-          value={originalchore.frequency.toString()}
-          keyboardType='numeric'
-          onChangeText={(num: string) => handleChange('demanding', Number(num))}
-        /> */}
       </ChoreCard>
       {/*Needs to dispatch an edit thunk in ChoreSlice*/}
       <BigButton
