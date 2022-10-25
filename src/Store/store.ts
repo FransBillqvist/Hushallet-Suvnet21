@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { choreHistoryReducer } from './choreHistorySlice';
 import { choreReducer } from './choreSlice';
 import { householdReducer } from './householdSlice';
 import { profileReducer } from './profileSlice';
@@ -11,6 +12,7 @@ export const store = configureStore({
     household: householdReducer,
     profile: profileReducer,
     chore: choreReducer,
+    choreHistory: choreHistoryReducer,
   },
 });
 
