@@ -6,7 +6,11 @@ import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getHouseHoldByCode } from '../Store/householdSlice';
-import { getProfilesForHousehold, profileAlreadyInHousehold } from '../Store/profileSlice';
+import {
+  getCurrentAmountOfProfiles,
+  getProfilesForHousehold,
+  profileAlreadyInHousehold,
+} from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
@@ -43,15 +47,24 @@ export default function ManagerScreen({ navigation }: Props) {
             theme={getTheme('light')} //Ändra till Setting för att få rätt färg
             onPress={async () => {
               const result = await dispatch(getHouseHoldByCode(inviteCode)).unwrap();
-              if (result) {
-                const profileExists = await dispatch(
-                  profileAlreadyInHousehold([userIdAsString, result.id]),
-                ).unwrap();
-                if (profileExists) {
-                  navigation.navigate('HomeScreen');
-                } else {
-                  await dispatch(getProfilesForHousehold(result.id));
-                  navigation.navigate('ProfileScreen');
+              const getHouseId = result.id;
+              const currentAmountOfProfiles = await dispatch(
+                getCurrentAmountOfProfiles(getHouseId),
+              );
+              if (currentAmountOfProfiles.payload) {
+                //någon kanske har tid att fixa en design åt detta meddelande?
+                alert('Huset är fullt, prata med hushållets ägare för att få plats.');
+              } else {
+                if (result) {
+                  const profileExists = await dispatch(
+                    profileAlreadyInHousehold([userIdAsString, result.id]),
+                  ).unwrap();
+                  if (profileExists) {
+                    navigation.navigate('HomeScreen');
+                  } else {
+                    await dispatch(getProfilesForHousehold(result.id));
+                    navigation.navigate('ProfileScreen');
+                  }
                 }
               }
             }}

@@ -70,7 +70,6 @@ export default function RegisterScreen({ navigation }: Props) {
           </View>
         )}
       </Formik>
-      {errorMsg && <Text>{errorMsg}</Text>}
     </View>
   );
 }
