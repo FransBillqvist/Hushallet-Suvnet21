@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
-import DemandingCard from '../Components/Cards/DemandingCard';
 import { getTheme } from '../Components/theme';
 import { ChoreCreate } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
@@ -30,7 +29,7 @@ export default function EditChoreScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 24 }}>Redigera syssla</Text>
+      <Text style={{ fontSize: 24, marginBottom: 10 }}>Redigera syssla</Text>
       <ChoreCard>
         <TextInput
           value={originalchore.name}
@@ -38,7 +37,6 @@ export default function EditChoreScreen({ navigation }: Props) {
           onChangeText={(text: string) => handleChange('name', text)}
         />
       </ChoreCard>
-
       <ChoreCard>
         <TextInput
           value={originalchore.description}
@@ -58,7 +56,14 @@ export default function EditChoreScreen({ navigation }: Props) {
           dag
         </Text>
       </ChoreCard>
-      <DemandingCard />
+      <ChoreCard>
+        <Text>Energivärde:</Text>
+        <TextInput
+          value={originalchore.frequency.toString()}
+          keyboardType='numeric'
+          onChangeText={(num: string) => handleChange('demanding', Number(num))}
+        />
+      </ChoreCard>
       {/*Needs to dispatch an edit thunk in ChoreSlice*/}
       <BigButton
         theme={getTheme('dark')}
@@ -66,6 +71,7 @@ export default function EditChoreScreen({ navigation }: Props) {
           dispatch(editChore(originalchore));
           navigation.navigate('HomeScreen');
         }}
+        style={{ marginTop: 10 }}
       >
         Spara ändringar
       </BigButton>
