@@ -14,10 +14,14 @@ type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreScreen'>;
 
 export default function EditChoreScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
-  const [value, setValue] = React.useState('');
-  const [visible, setVisible] = React.useState(false);
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const [demandingValue, setDemandingValue] = React.useState('');
+  const [frequencyValue, setFrequencyValue] = React.useState('');
+  const [demandingVisible, setDemandingVisible] = React.useState(false);
+  const [frequencyVisible, setFrequencyVisible] = React.useState(false);
+  const showDemandingModal = () => setDemandingVisible(true);
+  const hideDemandingModal = () => setDemandingVisible(false);
+  const showFrequencyModal = () => setFrequencyVisible(true);
+  const hideFrequencyModal = () => setFrequencyVisible(false);
 
   const [originalchore, editedChore] = React.useState<ChoreCreate>({
     id: '',
@@ -57,26 +61,70 @@ export default function EditChoreScreen({ navigation }: Props) {
       </ChoreCard>
       <ChoreCard>
         <Text>Återkommer</Text>
-        <Text>{originalchore.frequency.toString()}</Text>
-        <Text>
-          Var
-          <TextInput
-            style={styles.input}
-            outlineColor='transparent'
-            mode='outlined'
-            value={originalchore.frequency.toString()}
-            keyboardType='numeric'
-            onChangeText={(num: string) => handleChange('frequency', Number(num))}
-          />
-          dag
-        </Text>
+        <Text>Var {originalchore.frequency.toString()}:e Dag</Text>
+        <Portal>
+          <Modal
+            visible={frequencyVisible}
+            onDismiss={hideFrequencyModal}
+            contentContainerStyle={containerStyle}
+          >
+            <RadioButton.Group
+              onValueChange={(newValue) => setFrequencyValue(newValue)}
+              value={frequencyValue}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text>1</Text>
+                <RadioButton value='1' />
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text>2</Text>
+                <RadioButton value='2' />
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text>3</Text>
+                <RadioButton value='3' />
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text>4</Text>
+                <RadioButton value='4' />
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text>5</Text>
+                <RadioButton value='5' />
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text>6</Text>
+                <RadioButton value='6' />
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text>7</Text>
+                <RadioButton value='7' />
+              </View>
+            </RadioButton.Group>
+            <Button
+              onPress={() => (
+                handleChange('frequency', Number(frequencyValue)), setFrequencyVisible(false)
+              )}
+            >
+              Ok
+            </Button>
+          </Modal>
+        </Portal>
+        <Button onPress={showFrequencyModal}>Välj</Button>
       </ChoreCard>
       <ChoreCard>
         <Text>Energivärde:</Text>
         <Text>{originalchore.demanding.toString()}</Text>
         <Portal>
-          <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-            <RadioButton.Group onValueChange={(newValue) => setValue(newValue)} value={value}>
+          <Modal
+            visible={demandingVisible}
+            onDismiss={hideDemandingModal}
+            contentContainerStyle={containerStyle}
+          >
+            <RadioButton.Group
+              onValueChange={(newValue) => setDemandingValue(newValue)}
+              value={demandingValue}
+            >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text>1</Text>
                 <RadioButton value='1' />
@@ -112,14 +160,14 @@ export default function EditChoreScreen({ navigation }: Props) {
             </RadioButton.Group>
             <Button
               onPress={() => (
-                handleChange('demanding', Number(value)), setVisible(false), console.log(value)
+                handleChange('demanding', Number(demandingValue)), setDemandingVisible(false)
               )}
             >
               Ok
             </Button>
           </Modal>
         </Portal>
-        <Button onPress={showModal}>Välj</Button>
+        <Button onPress={showDemandingModal}>Välj</Button>
       </ChoreCard>
       {/*Needs to dispatch an edit thunk in ChoreSlice*/}
       <BigButton
