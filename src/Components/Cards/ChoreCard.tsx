@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
     minHeight: 50,
     width: windowWidth - 20,
     padding: 10,
+    marginVertical: 5,
+    borderRadius: 10,
   },
 });
 
