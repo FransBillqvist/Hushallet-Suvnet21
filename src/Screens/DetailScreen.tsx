@@ -2,7 +2,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import HugeButton from '../Components/Buttons/HugeButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
+import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { useAppSelector } from '../Store/store';
 
@@ -27,6 +29,11 @@ export default function DetailScreen(navigator: Props) {
           <Text>Energivärde: {chores.chores[0].demanding}</Text>
         </ChoreCard>
         <Text>Image: Liten pojke dammar</Text>
+        <HugeButton 
+          icon='plus-circle-outline'
+          theme={getTheme('light')}
+          onPress={() => navigator.navigation.navigate('HomeScreen')}
+          style={{ marginBottom: 10 }}>Markera för klar</HugeButton>
       </View>
     </ScrollView>
   );

@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Button, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { RootStackParamList } from '../Navigation/RootNavigator';
@@ -12,9 +12,13 @@ type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const chores = useAppSelector((state) => state.chore);
+  const activeHouse = useAppSelector((state) => state.household.singleHousehold);
 
+  if(activeHouse?.name === '') {
+    navigation.navigate('ManagerScreen');
+  }
   React.useEffect(() => {
-    dispatch(getChores('VCOK0'));
+    dispatch(getChores(activeHouse?.id || 'VCOK0'));
   });
 
   return (
@@ -23,11 +27,12 @@ export default function HomeScreen({ navigation }: Props) {
         <View>
           {chores.chores.map((chore) => (
             <View key={chore.id}>
+              <Pressable  onPress={() => navigation.navigate('DetailScreen')} >
               <ChoreCard chore={chore}>
                 <Text>{chore.name}</Text>
                 <Text>{chore.frequency}</Text>
               </ChoreCard>
-              <Button title='To detailscreen' onPress={() => navigation.navigate('DetailScreen')} />
+            </Pressable>
             </View>
           ))}
         </View>
