@@ -1,5 +1,4 @@
 import { StatusBar } from 'expo-status-bar';
-import { NativeBaseProvider } from 'native-base';
 import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -14,14 +13,12 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <NativeBaseProvider>
-        <ReduxProvider store={store}>
-          <PaperProvider theme={getTheme(colorScheme)}>
-            <StatusBar style='auto' />
-            <RootNavigator colorScheme={colorScheme} />
-          </PaperProvider>
-        </ReduxProvider>
-      </NativeBaseProvider>
+      <ReduxProvider store={store}>
+        <PaperProvider theme={getTheme(colorScheme)}>
+          <StatusBar style='auto' />
+          <RootNavigator colorScheme={colorScheme} />
+        </PaperProvider>
+      </ReduxProvider>
     </SafeAreaProvider>
   );
 }
