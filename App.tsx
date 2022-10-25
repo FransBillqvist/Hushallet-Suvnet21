@@ -7,10 +7,12 @@ import { getTheme } from './src/Components/theme';
 import useColorScheme from './src/Hooks/useColorScheme';
 import RootNavigator from './src/Navigation/RootNavigator';
 import { store } from './src/Store/store';
+import { LogBox } from 'react-native';
 
 export default function App() {
   const colorScheme = useColorScheme();
 
+  LogBox.ignoreAllLogs();
   return (
     <SafeAreaProvider>
       <ReduxProvider store={store}>
