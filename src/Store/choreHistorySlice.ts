@@ -44,6 +44,23 @@ export const getChoreHistoryFromDbByProfileId = createAsyncThunk<ChoreHistory[],
   },
 );
 
+export const getChoreHistoryFromDbByChoreId = createAsyncThunk<ChoreHistory[], string>(
+  'household/getchorehistorybychoreid',
+  async (choreId, thunkApi) => {
+    try {
+      const choreHistories: ChoreHistory[] = [];
+      const q = query(collection(db, 'ChoreHistory'), where('choreId', '==', choreId));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.docs.forEach((doc) => {
+        if (doc.exists()) choreHistories.push(doc.data() as ChoreHistory);
+      });
+      return choreHistories;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
 const choreHistorySlice = createSlice({
   name: 'choreHistory',
   initialState,
@@ -73,6 +90,20 @@ const choreHistorySlice = createSlice({
       console.log('fulfill');
     });
     builder.addCase(getChoreHistoryFromDbByProfileId.rejected, (state) => {
+      state.isLoading = false;
+      console.log('rejected');
+    });
+
+    builder.addCase(getChoreHistoryFromDbByChoreId.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(getChoreHistoryFromDbByChoreId.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.choresHistory.push(...action.payload);
+      console.log('fulfill');
+    });
+    builder.addCase(getChoreHistoryFromDbByChoreId.rejected, (state) => {
       state.isLoading = false;
       console.log('rejected');
     });
