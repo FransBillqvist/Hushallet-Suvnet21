@@ -3,6 +3,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
+import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getHouseHoldByCode } from '../Store/householdSlice';
@@ -18,21 +19,30 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
 export default function ManagerScreen({ navigation }: Props) {
   const [inviteCode, setInviteCode] = React.useState('');
   const [isHide, setIsHide] = React.useState(true);
-  const buttonValue = isHide ? 'Gå med hushåll' : 'stäng';
+  const buttonValue = isHide ? 'Gå med i befintligt hushåll' : 'Stäng';
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
   const userIdAsString = userId as string;
 
   return (
     <View style={styles.container}>
-      <Text>Hushålls-skärm</Text>
-      <Text>Knapp: Skapa nytt hushåll(ägare)</Text>
-      <BigButton
+      <Text style={{ fontSize: 24, marginBottom: 10 }}>Hushållsmöjligheter</Text>
+      <HugeButton
+        icon='plus-circle-outline'
+        theme={getTheme('light')} //Ändra till Setting för att få rätt färg
+        onPress={() => navigation.navigate('CreateScreen')}
+        style={{ marginBottom: 10 }}
+      >
+        Skapa nytt hushåll
+      </HugeButton>
+
+      <HugeButton
+        icon='plus-circle-outline'
         theme={getTheme('light')} //Ändra till Setting för att få rätt färg
         onPress={() => setIsHide(!isHide)}
       >
         {buttonValue}
-      </BigButton>
+      </HugeButton>
       {isHide ? (
         <></>
       ) : (
@@ -73,7 +83,7 @@ export default function ManagerScreen({ navigation }: Props) {
           </BigButton>
         </>
       )}
-      <Text>Lista med hushåll</Text>
+      <Text>Lista med hushåll som användaren är med i</Text>
     </View>
   );
 }
@@ -90,6 +100,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: 'black',
+    marginTop: 10,
     marginBottom: 10,
   },
 });
