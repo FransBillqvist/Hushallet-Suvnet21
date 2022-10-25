@@ -1,4 +1,4 @@
-import { addDoc, collection } from '@firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../Config/firebase';
 import { ChoreHistory } from '../Data/choreHistory';
@@ -15,12 +15,29 @@ const initialState: ChoreHistoryState = {
 };
 
 export const addChoreHistoryToDb = createAsyncThunk<ChoreHistory, ChoreHistory>(
-  'househod/addchorehistory',
+  'household/addchorehistory',
   async (choreHistory, thunkApi) => {
     try {
       console.log(choreHistory.date);
       await addDoc(collection(db, 'ChoreHistory'), choreHistory);
       return choreHistory;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const getChoreHistoryFromDbByProfileId = createAsyncThunk<ChoreHistory[], string>(
+  'household/getchorehistorybyprofileid',
+  async (profileId, thunkApi) => {
+    try {
+      const choreHistories: ChoreHistory[] = [];
+      const q = query(collection(db, 'ChoreHistory'), where('profileId', '==', profileId));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.docs.forEach((doc) => {
+        if (doc.exists()) choreHistories.push(doc.data() as ChoreHistory);
+      });
+      return choreHistories;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
@@ -39,11 +56,25 @@ const choreHistorySlice = createSlice({
     builder.addCase(addChoreHistoryToDb.fulfilled, (state, action) => {
       state.isLoading = false;
       state.choresHistory.push(action.payload);
-      console.log('pending');
+      console.log('fulfill');
     });
     builder.addCase(addChoreHistoryToDb.rejected, (state) => {
       state.isLoading = false;
+      console.log('rejected');
+    });
+
+    builder.addCase(getChoreHistoryFromDbByProfileId.pending, (state) => {
+      state.isLoading = true;
       console.log('pending');
+    });
+    builder.addCase(getChoreHistoryFromDbByProfileId.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.choresHistory.push(...action.payload);
+      console.log('fulfill');
+    });
+    builder.addCase(getChoreHistoryFromDbByProfileId.rejected, (state) => {
+      state.isLoading = false;
+      console.log('rejected');
     });
   },
 });
