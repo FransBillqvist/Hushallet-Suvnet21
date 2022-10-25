@@ -38,7 +38,6 @@ export default function RegisterScreen({ navigation }: Props) {
               <TextInput
                 style={styles.inputTextField}
                 label='Ange din email'
-                mode='outlined'
                 onChangeText={props.handleChange('email')}
                 value={props.values.email}
                 onBlur={props.handleBlur('email')}
@@ -48,7 +47,6 @@ export default function RegisterScreen({ navigation }: Props) {
             <View style={styles.inputStyle}>
               <TextInput
                 style={styles.inputTextField}
-                mode='outlined'
                 onChangeText={props.handleChange('password')}
                 value={props.values.password}
                 onBlur={props.handleBlur('password')}
@@ -96,6 +94,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     paddingHorizontal: 12,
     fontSize: 15,
+    borderWidth: 1,
   },
   inputStyle: {
     marginTop: 10,
