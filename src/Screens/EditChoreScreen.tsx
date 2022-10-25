@@ -59,7 +59,7 @@ export default function EditChoreScreen({ navigation }: Props) {
       <ChoreCard>
         <Text>Energivärde:</Text>
         <TextInput
-          value={originalchore.frequency.toString()}
+          value={originalchore.demanding.toString()}
           keyboardType='numeric'
           onChangeText={(num: string) => handleChange('demanding', Number(num))}
         />

@@ -1,5 +1,6 @@
-import { collection, getDocs, query, where } from '@firebase/firestore';
+import { collection, doc, getDocs, query, updateDoc, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { FirebaseError } from 'firebase/app';
 import { db } from '../Config/firebase';
 import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
@@ -54,6 +55,31 @@ export const getHouseholdByProfileId = createAsyncThunk<Household, Profile>(
   },
 );
 
+export const editHouseholdName = createAsyncThunk<Household, Household, { rejectValue: string }>(
+  'household/editchore',
+  async (Household, thunkApi) => {
+    try {
+      const q = query(collection(db, 'Household'), where('id', '==', Household.id));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const id = querySnapshot.docs[0].id;
+
+        const edit = doc(db, 'Household', id);
+        await updateDoc(edit, {
+          name: Household.name,
+        });
+      }
+      return Household;
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        alert('Det finnns inget hushåll med detta id');
+      }
+      return thunkApi.rejectWithValue('Det gick inte');
+    }
+  },
+);
+
 const householdSlice = createSlice({
   name: 'household',
   initialState,
@@ -102,6 +128,21 @@ const householdSlice = createSlice({
       console.log('fulfilled');
     });
     builder.addCase(getHouseholdByProfileId.rejected, (state) => {
+      state.isLoading = false;
+      console.log('rejected');
+    });
+
+    builder.addCase(editHouseholdName.pending, (state) => {
+      // SLICES HÄR ÄR ICKET PÅBÖRJADE ÄN
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(editHouseholdName.fulfilled, (state, action) => {
+      state.isLoading = false;
+
+      console.log('fulfilled');
+    });
+    builder.addCase(editHouseholdName.rejected, (state) => {
       state.isLoading = false;
       console.log('rejected');
     });
