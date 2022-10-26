@@ -44,8 +44,9 @@ export default function EditChoreScreen({ navigation }: Props) {
           style={styles.input}
           outlineColor='transparent'
           mode='outlined'
+          label='Titel'
+          placeholder={originalchore.name}
           value={originalchore.name}
-          placeholder='Titel'
           onChangeText={(text: string) => handleChange('name', text)}
         />
       </ChoreCard>
@@ -54,8 +55,9 @@ export default function EditChoreScreen({ navigation }: Props) {
           style={styles.input}
           outlineColor='transparent'
           mode='outlined'
+          label='Beskrivning'
+          placeholder={originalchore.description}
           value={originalchore.description}
-          placeholder='Beskrivning'
           onChangeText={(text: string) => handleChange('description', text)}
         />
       </ChoreCard>
@@ -195,6 +197,5 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     borderRadius: 10,
-    backgroundColor: 'transparent',
   },
 });
