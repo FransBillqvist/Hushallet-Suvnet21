@@ -5,21 +5,82 @@ import { Button, Text } from 'react-native-paper';
 import ChorePieChart from '../Components/ChorePieChart';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 
+function setColor(name: string) {
+  if (name === '🦊') {
+    return 'red';
+  } else if (name === '🐳') {
+    return 'lightblue';
+  } else if (name === '🐷') {
+    return 'pink';
+  } else if (name === '🐥') {
+    return 'yellow';
+  } else if (name === '🐸') {
+    return '#F4D03F';
+  } else if (name === '🐬') {
+    return '#4D4F4F';
+  } else if (name === '🐙') {
+    return '#FF1493';
+  } else if (name === '🦄') {
+    return '#F1DEE6';
+  }
+}
+
 const testData = [
   {
-    name: 'Kalle',
-    contribution: 215,
-    color: '#FF7E46',
+    name: '🦊',
+    contribution: 1,
+    color: setColor('🦊'),
+    legendFontColor: 'transparent',
+    legendFontSize: 40,
   },
   {
-    name: 'Olle',
-    contribution: 215,
-    color: '#FCD933',
+    name: '🐳',
+    contribution: 1,
+    color: setColor('🐳'),
+    legendFontColor: 'transparent',
+    legendFontSize: 40,
   },
   {
-    name: 'Anna',
-    contribution: 215,
-    color: '#CD5D6F',
+    name: '🐷',
+    contribution: 1,
+    color: setColor('🐷'),
+    legendFontColor: 'transparent',
+    legendFontSize: 40,
+  },
+  {
+    name: '🐥',
+    contribution: 1,
+    color: setColor('🐥'),
+    legendFontColor: 'transparent',
+    legendFontSize: 40,
+  },
+  {
+    name: '🐸',
+    contribution: 1,
+    color: setColor('🐸'),
+    legendFontColor: 'transparent',
+    legendFontSize: 40,
+  },
+  {
+    name: '🐬',
+    contribution: 1,
+    color: setColor('🐬'),
+    legendFontColor: 'transparent',
+    legendFontSize: 40,
+  },
+  {
+    name: '🐙',
+    contribution: 1,
+    color: setColor('🐙'),
+    legendFontColor: 'transparent',
+    legendFontSize: 40,
+  },
+  {
+    name: '🦄',
+    contribution: 1,
+    color: setColor('🦄'),
+    legendFontColor: 'transparent',
+    legendFontSize: 40,
   },
 ];
 
