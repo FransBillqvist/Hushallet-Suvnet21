@@ -24,6 +24,7 @@ export default function EditChoreScreen({ navigation }: Props) {
   const hideFrequencyModal = () => setFrequencyVisible(false);
 
   const [originalchore, editedChore] = React.useState<ChoreCreate>({
+    // Tryck in ett chore id från firebase här för att ändra olika värden. Skall ändras för att bli dynamiskt senare.
     id: '',
     name: '',
     description: '',
