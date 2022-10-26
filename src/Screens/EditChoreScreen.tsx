@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { RadioButton, Text, TextInput, Modal, Button, Portal } from 'react-native-paper';
+import { Button, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
@@ -171,7 +171,6 @@ export default function EditChoreScreen({ navigation }: Props) {
         </Portal>
         <Button onPress={showDemandingModal}>Välj</Button>
       </ChoreCard>
-      {/*Needs to dispatch an edit thunk in ChoreSlice*/}
       <BigButton
         theme={getTheme('dark')}
         onPress={() => {
