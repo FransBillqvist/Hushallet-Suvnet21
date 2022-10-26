@@ -43,7 +43,6 @@ export default function ChoreScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 24, marginBottom: 10 }}>Skapa en ny syssla</Text>
       <ChoreCard>
         <TextInput
           style={styles.input}
@@ -54,16 +53,20 @@ export default function ChoreScreen({ navigation }: Props) {
           onChangeText={(text: string) => handleChange('name', text)}
         />
       </ChoreCard>
+
       <ChoreCard>
         <TextInput
           style={styles.input}
           outlineColor='transparent'
+          numberOfLines={4}
+          multiline={true}
           mode='outlined'
           label='Beskrivning'
           value={chore.description}
           onChangeText={(text: string) => handleChange('description', text)}
         />
       </ChoreCard>
+
       <ChoreCard>
         <Text>Återkommer</Text>
         <Text>Var {chore.frequency.toString()}:e Dag</Text>
@@ -174,20 +177,36 @@ export default function ChoreScreen({ navigation }: Props) {
         </Portal>
         <Button onPress={showDemandingModal}>Välj</Button>
       </ChoreCard>
-      <BigButton
-        theme={getTheme('dark')}
-        onPress={() => {
-          dispatch(setChoreName(chore.name));
-          dispatch(setChoreDescription(chore.description));
-          dispatch(setChoreFrequency(chore.frequency));
-          dispatch(setChoreDemanding(chore.demanding));
-          dispatch(addChoreToDb(chore));
-          navigation.navigate('HomeScreen');
-        }}
-        style={{ marginTop: 10 }}
-      >
-        Lägg till syssla
-      </BigButton>
+
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <View style={{ justifyContent: 'flex-end' }}>
+          <BigButton
+            theme={getTheme('dark')}
+            onPress={() => {
+              dispatch(setChoreName(chore.name));
+              dispatch(setChoreDescription(chore.description));
+              dispatch(setChoreFrequency(chore.frequency));
+              dispatch(setChoreDemanding(chore.demanding));
+              dispatch(addChoreToDb(chore));
+              navigation.navigate('HomeScreen');
+            }}
+            style={styles.bigButtonStyle}
+          >
+            Lägg till syssla
+          </BigButton>
+        </View>
+        <View style={{ justifyContent: 'flex-end' }}>
+          <BigButton
+            theme={getTheme('dark')}
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={styles.bigButtonStyle}
+          >
+            Stäng
+          </BigButton>
+        </View>
+      </View>
     </View>
   );
 }
@@ -197,11 +216,15 @@ const containerStyle = { backgroundColor: 'white', padding: 10 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   input: {
     width: '100%',
     borderRadius: 10,
+  },
+  bigButtonStyle: {
+    alignSelf: 'center',
+    marginTop: 10,
+    borderRadius: 0,
+    borderColor: 'lightgrey',
   },
 });
