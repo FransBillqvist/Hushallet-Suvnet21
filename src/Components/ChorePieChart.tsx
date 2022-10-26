@@ -15,6 +15,7 @@ const chartConfig = {
 
 interface Props extends AbstractChartProps {
   data: Array<unknown>;
+  hasLegend: boolean; //Visar avatarer till höger
 }
 
 const ChorePieChart = (props: Props) => {
@@ -29,7 +30,6 @@ const ChorePieChart = (props: Props) => {
       paddingLeft='0'
       // center={[10, 50]}
       absolute
-      hasLegend={true} //Visar statistik till höger
       // avoidFalseZero={false}
     />
   );
