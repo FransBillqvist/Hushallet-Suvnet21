@@ -16,7 +16,24 @@ type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const chores = useAppSelector((state) => state.chore);
-  
+  const householdId = useAppSelector((state) => state.household.singleHousehold?.id);
+  const householdIddAsString = householdId as string;
+
+  const [originalHouseHold, editedHousehold] = React.useState<Household>({
+    // Tryck in ett household id från firebase här för att ändra namn. Skall ändras för att bli dynamiskt senare.
+    id: '',
+    name: '',
+    code: '',
+  });
+
+  const handleHouseholdChange = (key: string, value: string | number) => {
+    editedHousehold((prev) => ({ ...prev, [key]: value }));
+  };
+
+  React.useEffect(() => {
+    dispatch(getChores(householdIddAsString));
+  }, [householdIddAsString]);
+
   return (
     <ScrollView>
       <View style={styles.container}>
