@@ -7,9 +7,14 @@ import { Button, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
+import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { getHouseHoldByCode, getHouseholdByProfileId } from '../Store/householdSlice';
+import {
+  addAllHouseholdsFromProfile,
+  getHouseHoldByCode,
+  getHouseholdByProfileId,
+} from '../Store/householdSlice';
 import {
   getCurrentAmountOfProfiles,
   getProfilesByUserId,
@@ -17,6 +22,7 @@ import {
   profileAlreadyInHousehold,
 } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
+import HomeScreen from './HomeScreen';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
 
@@ -27,28 +33,36 @@ export default function ManagerScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
   const userIdAsString = userId as string;
+  const profiles = useAppSelector((state) => state.profile.profiles);
+  const listOfHouses = useAppSelector((state) => state.household.households);
+  // let listOfNewHouses: Household[] = [];
   
-  const householdOnUser: Profile[] = [];
-  const profiles = useAppSelector((state) => state.profile?.profiles);
-  const listOfHouses = useAppSelector((state) => state.household?.households);
-  householdOnUser.push(...profiles.filter((profile) => profile.userId === userIdAsString));
-  //  householdOnUser.forEach((profile) => {
-    
-    // for(let i = 0; i < householdOnUser.length; i++){
-      
-      
-      // }
-      
-      return (
-        <View style={styles.container}>
+//SELECTOR?
+
+  React.useEffect(() => {
+      async function updateProfileList() {
+        console.log('Kör updateProfileList');
+        dispatch(getProfilesByUserId(userIdAsString));
+      }
+        updateProfileList();
+}, [])
+  
+  return (
+    <View style={styles.container}>
       <Text style={{ fontSize: 24, marginBottom: 10 }}>Hushållsmöjligheter</Text>
-      <HugeButton icon='plus-circle-outline' theme={getTheme('light')} onPress={() => {const firststage = dispatch(getProfilesByUserId(userIdAsString));
-         dispatch(getHouseholdByProfileId(householdOnUser[0])), console.log(listOfHouses)}}>FRANS ÄR ETT FUCKING RETARD</HugeButton>
-         {listOfHouses.map((houses) => (
-          <View key={houses.id}>
-            <Text>{houses.name}</Text>
-            </View>
-         ))}
+      
+      {listOfHouses.map((house) => (
+        <>
+          <HugeButton
+            icon='home'
+            theme={getTheme('light')}
+            onPress={() => navigation.navigate('HomeScreen')}
+            key={house.id}
+          >
+            <Text>{house.name}</Text>
+          </HugeButton>
+        </>
+      ))}
       <HugeButton
         icon='plus-circle-outline'
         theme={getTheme('light')} //Ändra till Setting för att få rätt färg

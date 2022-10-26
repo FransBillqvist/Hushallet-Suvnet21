@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { db } from '../Config/firebase';
 import { Profile } from '../Data/profile';
+import { addAllHouseholdsFromProfile } from './householdSlice';
 
 interface ProfileState {
   profiles: Profile[];
@@ -81,10 +82,6 @@ export const getProfilesForHousehold = createAsyncThunk<Profile[], string>(
 export const addNewProfile = createAsyncThunk<Profile, Profile, { rejectValue: string }>(
   'profile/addnewprofile',
   async (Profile, thunkApi) => {
-    // const q = query(collection(db, 'Profile'));
-    // const querySnapshot = await getDocs(q);
-    // const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
-    // const userNameExists = profiles.find((name) => Profile.name === Profile.name);
     try {
       await addDoc(collection(db, 'Profile'), {
         id: Profile.id,
@@ -113,7 +110,8 @@ export const getProfilesByUserId = createAsyncThunk<Profile[], string>(
       const q = query(collection(db, 'Profile'), where('userId', '==', userId));
       const querySnapshot = await getDocs(q);
       profilesInAccount.push(...querySnapshot.docs.map((doc) => doc.data() as Profile));
-      console.log(typeof profilesInAccount);
+      console.log(profilesInAccount);
+      thunkApi.dispatch(addAllHouseholdsFromProfile(profilesInAccount))
       return profilesInAccount;
     } catch (error) {
       console.error(error);
