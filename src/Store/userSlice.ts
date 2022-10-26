@@ -48,7 +48,8 @@ export const login = createAsyncThunk<
   } catch (error) {
     console.error(error);
     if (error instanceof FirebaseError) {
-      // return thunkApi.rejectWithValue(error.message);
+      alert('Fel användarnamn/lösenord');
+      return thunkApi.rejectWithValue('Fel användarnamn eller lösenord');
     }
     return thunkApi.rejectWithValue('Det gick tyvärr inte att logga in');
   }
