@@ -12,10 +12,12 @@ type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const chores = useAppSelector((state) => state.chore);
+  const householdId = useAppSelector((state) => state.household.singleHousehold?.id);
+  const householdIddAsString = householdId as string;
 
   React.useEffect(() => {
-    dispatch(getChores('VCOK0'));
-  });
+    dispatch(getChores(householdIddAsString));
+  }, [householdIddAsString]);
 
   return (
     <ScrollView>
