@@ -1,6 +1,7 @@
+import React from 'react';
+import { View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { AbstractChartProps } from 'react-native-chart-kit/dist/AbstractChart';
-import React from 'react';
 
 const chartConfig = {
   backgroundGradientFrom: '#1E2923',
@@ -19,19 +20,22 @@ interface Props extends AbstractChartProps {
 
 const ChorePieChart = (props: Props) => {
   return (
-    <PieChart
-      data={props.data}
-      width={250}
-      height={200}
-      chartConfig={chartConfig}
-      accessor='contribution'
-      backgroundColor='transparent'
-      paddingLeft='20'
-      // center={[10, 50]}
-      absolute
-      hasLegend={false} //Visar statistik till höger
-      avoidFalseZero={true}
-    />
+    <View>
+      <PieChart
+        data={props.data}
+        width={350}
+        height={200}
+        chartConfig={chartConfig}
+        accessor='contribution'
+        backgroundColor='transparent'
+        paddingLeft='0'
+        // center={[10, 50]}
+        absolute
+        hasLegend={true} //Visar statistik till höger
+        // avoidFalseZero={false}
+        style={{ marginVertical: 8, borderRadius: 16 }}
+      />
+    </View>
   );
 };
 export default ChorePieChart;
