@@ -29,6 +29,7 @@ export const registerUser = createAsyncThunk<
   } catch (error) {
     console.error(error);
     if (error instanceof FirebaseError) {
+      alert('Fel i databasen, möjligtvis så används den angivna e-posten redan.');
       return thunkApi.rejectWithValue(error.message);
     }
     return thunkApi.rejectWithValue('Det gick tyvärr inte att registrera denna användaren');
