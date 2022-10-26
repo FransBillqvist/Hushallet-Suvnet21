@@ -13,10 +13,6 @@ export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const chores = useAppSelector((state) => state.chore);
 
-  React.useEffect(() => {
-    dispatch(getChores('VCOK0'));
-  });
-
   return (
     <ScrollView>
       <View style={styles.container}>
