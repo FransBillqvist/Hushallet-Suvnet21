@@ -133,13 +133,13 @@ const householdSlice = createSlice({
     });
 
     builder.addCase(editHouseholdName.pending, (state) => {
-      // SLICES HÄR ÄR ICKET PÅBÖRJADE ÄN
       state.isLoading = true;
       console.log('pending');
     });
     builder.addCase(editHouseholdName.fulfilled, (state, action) => {
       state.isLoading = false;
-
+      const index = state.households.findIndex((h) => h.id == action.payload.id);
+      state.households.splice(index, 1, action.payload);
       console.log('fulfilled');
     });
     builder.addCase(editHouseholdName.rejected, (state) => {
