@@ -111,7 +111,7 @@ export const getProfilesByUserId = createAsyncThunk<Profile[], string>(
       const querySnapshot = await getDocs(q);
       profilesInAccount.push(...querySnapshot.docs.map((doc) => doc.data() as Profile));
       console.log(profilesInAccount);
-      thunkApi.dispatch(addAllHouseholdsFromProfile(profilesInAccount))
+      thunkApi.dispatch(addAllHouseholdsFromProfile(profilesInAccount));
       return profilesInAccount;
     } catch (error) {
       console.error(error);

@@ -46,12 +46,12 @@ export const getHouseholdByProfileId = createAsyncThunk<Household, Profile>(
   'household/gethouseholdbyprofileid',
   async (profile, thunkApi) => {
     try {
-      for(let i = 0; profile.name != ''; i++) {
-      const q = query(collection(db, 'Household'), where('id', '==', profile.householdId));
-      const querySnapshot = await getDocs(q);
-      const household = querySnapshot.docs[i].data() as Household;
-      
-      return household;
+      for (let i = 0; profile.name != ''; i++) {
+        const q = query(collection(db, 'Household'), where('id', '==', profile.householdId));
+        const querySnapshot = await getDocs(q);
+        const household = querySnapshot.docs[i].data() as Household;
+
+        return household;
       }
       return thunkApi.rejectWithValue('No household found');
     } catch (error) {
@@ -65,17 +65,17 @@ export const addAllHouseholdsFromProfile = createAsyncThunk<Household[], Profile
   async (profiles, thunkApi) => {
     try {
       // const state = thunkApi.getState() as AppState;
-      const householdids = profiles.map((pro) => pro.householdId)
+      const householdids = profiles.map((pro) => pro.householdId);
       const q = query(collection(db, 'Household'), where('id', 'in', householdids));
       const querySnapshot = await getDocs(q);
-      console.log('getDocs() ')
-      console.log( querySnapshot.docs)
-      const result = querySnapshot.docs.map(doc => doc.data() as Household) ;
+      console.log('getDocs() ');
+      console.log(querySnapshot.docs);
+      const result = querySnapshot.docs.map((doc) => doc.data() as Household);
       console.log('result FROM addAllHouseholdsFromProfile');
       console.log(result);
       return result;
-      } catch (error) {
-        console.error(error)
+    } catch (error) {
+      console.error(error);
       return thunkApi.rejectWithValue(error);
     }
   },

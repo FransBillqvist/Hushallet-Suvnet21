@@ -36,21 +36,21 @@ export default function ManagerScreen({ navigation }: Props) {
   const profiles = useAppSelector((state) => state.profile.profiles);
   const listOfHouses = useAppSelector((state) => state.household.households);
   // let listOfNewHouses: Household[] = [];
-  
-//SELECTOR?
+
+  //SELECTOR?
 
   React.useEffect(() => {
-      async function updateProfileList() {
-        console.log('Kör updateProfileList');
-        dispatch(getProfilesByUserId(userIdAsString));
-      }
-        updateProfileList();
-}, [])
-  
+    async function updateProfileList() {
+      console.log('Kör updateProfileList');
+      dispatch(getProfilesByUserId(userIdAsString));
+    }
+    updateProfileList();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 24, marginBottom: 10 }}>Hushållsmöjligheter</Text>
-      
+
       {listOfHouses.map((house) => (
         <>
           <HugeButton

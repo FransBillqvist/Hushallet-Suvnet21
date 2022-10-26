@@ -11,7 +11,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  user: {uid: '', email: ''},
+  user: { uid: '', email: '' },
   isLoading: false,
   errorMsg: '',
 };
