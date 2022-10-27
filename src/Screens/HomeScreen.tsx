@@ -29,11 +29,6 @@ export default function HomeScreen({ navigation }: Props) {
     editedHousehold((prev) => ({ ...prev, [key]: value }));
   };
 
-  // DETTA SKA ÄNDRAS SÅ ATT DET INTE LÄNGRE ÄR EN USEEFFECT, TA BORT DESSA RADER NÄR DET ÄR GJORT
-  // React.useEffect(() => {
-  //   dispatch(getChores(householdIddAsString));
-  // }, [householdIddAsString]);
-
   return (
     <ScrollView>
       <View style={styles.container}>

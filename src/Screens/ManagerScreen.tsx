@@ -6,6 +6,7 @@ import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { getChores } from '../Store/choreSlice';
 import { getHouseHoldByCode } from '../Store/householdSlice';
 import {
   getCurrentAmountOfProfiles,
@@ -35,7 +36,10 @@ export default function ManagerScreen({ navigation }: Props) {
         <HugeButton
           icon='home'
           theme={getTheme('light')}
-          onPress={() => navigation.navigate('HomeScreen')}
+          onPress={async () => {
+            await dispatch(getChores(house.id)).unwrap();
+            navigation.navigate('HomeScreen');
+          }}
           key={house.id}
         >
           <Text>{house.name}</Text>
