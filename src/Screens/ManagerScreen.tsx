@@ -14,6 +14,7 @@ import {
   addAllHouseholdsFromProfile,
   getHouseHoldByCode,
   getHouseholdByProfileId,
+  selectActiveHousehold
 } from '../Store/householdSlice';
 import {
   getCurrentAmountOfProfiles,
@@ -56,7 +57,7 @@ export default function ManagerScreen({ navigation }: Props) {
           <HugeButton
             icon='home'
             theme={getTheme('light')}
-            onPress={() => navigation.navigate('HomeScreen')}
+            onPress={() => {dispatch(selectActiveHousehold(house.id)), navigation.navigate('HomeScreen')}}
             key={house.id}
           >
             <Text>{house.name}</Text>
