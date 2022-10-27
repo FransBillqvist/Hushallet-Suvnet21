@@ -6,13 +6,8 @@ import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import {
-  addAllHouseholdsFromProfile,
-  getHouseHoldByCode,
-  getHouseholdByProfileId,
-  selectActiveHousehold,
-} from '../Store/householdSlice';
 import { getChores } from '../Store/choreSlice';
+import { getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
 import {
   getCurrentAmountOfProfiles,
   getProfilesForHousehold,
@@ -38,16 +33,21 @@ export default function ManagerScreen({ navigation }: Props) {
       <Text style={{ fontSize: 24, marginBottom: 10 }}>Hushållsmöjligheter</Text>
 
       {listOfHouses.map((house) => (
-          <HugeButton
-            icon='home'
-            theme={getTheme('light')}
-            onPress={async () => {
-              await dispatch(selectActiveHousehold(house.id)).unwrap().then(async () => {await dispatch(getChores(house.id)); navigation.navigate('HomeScreen')}
-            }}
-            key={house.id}
-          >
-            <Text>{house.name}</Text>
-          </HugeButton>
+        <HugeButton
+          icon='home'
+          theme={getTheme('light')}
+          onPress={async () => {
+            await dispatch(selectActiveHousehold(house.id))
+              .unwrap()
+              .then(async () => {
+                await dispatch(getChores(house.id));
+                navigation.navigate('HomeScreen');
+              });
+          }}
+          key={house.id}
+        >
+          <Text>{house.name}</Text>
+        </HugeButton>
       ))}
       <HugeButton
         icon='plus-circle-outline'
