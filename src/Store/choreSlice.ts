@@ -119,25 +119,47 @@ export const getASingleChore = createAsyncThunk<Chore, string, { rejectValue: st
 export const setChoreName = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchorename',
   async (name, thunkApi) => {
-    return name;
+    try {
+      return name;
+    } catch (error) {
+      console.error(error);
+    }
+    return thunkApi.rejectWithValue('Det gick inte att ändra sysslans namn just nu.');
   },
 );
 export const setChoreDescription = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchoredescription',
   async (description, thunkApi) => {
-    return description;
+    try {
+      return description;
+    } catch (error) {
+      console.error(error);
+    }
+    return thunkApi.rejectWithValue('Det gick inte att ändra sysslans beskrivning just nu.');
   },
 );
 export const setChoreDemanding = createAsyncThunk<number, number, { rejectValue: string }>(
   'user/setchoredemanding',
   async (demanding, thunkApi) => {
-    return demanding;
+    try {
+      return demanding;
+    } catch (error) {
+      console.error(error);
+    }
+    return thunkApi.rejectWithValue('Det gick inte att ändra sysslans energinivå just nu.');
   },
 );
 export const setChoreFrequency = createAsyncThunk<number, number, { rejectValue: string }>(
   'user/setchorefrequency',
   async (frequency, thunkApi) => {
-    return frequency;
+    try {
+      return frequency;
+    } catch (error) {
+      console.error(error);
+    }
+    return thunkApi.rejectWithValue(
+      'Det gick inte att ändra hur ofta sysslan ska göras för tillfället.',
+    );
   },
 );
 
@@ -149,15 +171,17 @@ const choreSlice = createSlice({
     //addChore
     builder.addCase(addChoreToDb.pending, (state) => {
       state.isLoading = true;
-      console.log('pending');
+      console.log('addChoreToDb pending');
     });
-    builder.addCase(addChoreToDb.fulfilled, (state) => {
+    builder.addCase(addChoreToDb.fulfilled, (state, action) => {
       state.isLoading = false;
-      console.log('fulfilled');
+      state.chores.push(action.payload);
+      console.log('addChoreToDb fulfilled');
     });
     builder.addCase(addChoreToDb.rejected, (state, action) => {
       state.error = action.payload || '';
       state.isLoading = false;
+      console.log('addChoreToDb rejected');
     });
     //
     //getChores
