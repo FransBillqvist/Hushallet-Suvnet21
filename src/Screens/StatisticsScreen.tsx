@@ -129,6 +129,8 @@ const totalData = [
   },
 ];
 
+//-------------------INDIVIDUAL TEST DATA-------------------------
+
 const choreOneData = [
   {
     name: getProfileAvatar(profileOne),
