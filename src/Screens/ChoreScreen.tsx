@@ -80,31 +80,31 @@ export default function ChoreScreen({ navigation }: Props) {
               onValueChange={(newValue) => setFrequencyValue(newValue)}
               value={frequencyValue}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>1</Text>
                 <RadioButton value='1' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>2</Text>
                 <RadioButton value='2' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>3</Text>
                 <RadioButton value='3' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>4</Text>
                 <RadioButton value='4' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>5</Text>
                 <RadioButton value='5' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>6</Text>
                 <RadioButton value='6' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>7</Text>
                 <RadioButton value='7' />
               </View>
@@ -133,35 +133,35 @@ export default function ChoreScreen({ navigation }: Props) {
               onValueChange={(newValue) => setDemandingValue(newValue)}
               value={demandingValue}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>1</Text>
                 <RadioButton value='1' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>2</Text>
                 <RadioButton value='2' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>3</Text>
                 <RadioButton value='3' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>4</Text>
                 <RadioButton value='4' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>5</Text>
                 <RadioButton value='5' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>6</Text>
                 <RadioButton value='6' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>7</Text>
                 <RadioButton value='7' />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.radioButtonStyle}>
                 <Text>8</Text>
                 <RadioButton value='8' />
               </View>
@@ -178,7 +178,7 @@ export default function ChoreScreen({ navigation }: Props) {
         <Button onPress={showDemandingModal}>Välj</Button>
       </ChoreCard>
 
-      <View style={{ flex: 1, flexDirection: 'row' }}>
+      <View style={styles.bigButtonContainer}>
         <View style={{ justifyContent: 'flex-end' }}>
           <BigButton
             theme={getTheme('dark')}
@@ -226,5 +226,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 0,
     borderColor: 'lightgrey',
+  },
+  bigButtonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  radioButtonStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
