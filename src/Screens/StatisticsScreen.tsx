@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import ChorePieChart from '../Components/ChorePieChart';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { Chore } from '../Data/chore';
 
 function setColor(name: string) {
   if (name === '🦊') {
@@ -25,62 +26,166 @@ function setColor(name: string) {
   }
 }
 
-const testData = [
+//TODO: Konvertera så att data hämtas från firebase
+function getTotalDemanding(profile: Profile) {
+  let totalDemanding = 0;
+  profile.choreList.forEach((chore) => {
+    totalDemanding += chore.demanding;
+  });
+  return totalDemanding;
+}
+
+function getProfileAvatar(profile: Profile) {
+  return profile.avatar;
+}
+
+//------------------------TEST DATA--------------------------
+interface Profile {
+  id: string;
+  userId: string;
+  name: string;
+  avatar: string;
+  role: string;
+  householdId: string;
+  choreList: Chore[];
+}
+
+const choreOne: Chore = {
+  id: '1',
+  name: 'Torka Golv',
+  description: 'Torka golv',
+  demanding: 2,
+  frequency: 2,
+  householdId: '1',
+};
+const choreTwo: Chore = {
+  id: '2',
+  name: 'Diska',
+  description: 'Diska',
+  demanding: 2,
+  frequency: 2,
+  householdId: '1',
+};
+const choreThree: Chore = {
+  id: '3',
+  name: 'Laga mat',
+  description: 'Laga mat',
+  demanding: 2,
+  frequency: 2,
+  householdId: '1',
+};
+
+const profileOne: Profile = {
+  id: '1',
+  userId: '1',
+  name: 'Bengt',
+  avatar: '🦊',
+  role: 'member',
+  householdId: '1',
+  choreList: [choreOne, choreTwo],
+};
+const profileTwo: Profile = {
+  id: '2',
+  userId: '2',
+  name: 'Anna',
+  avatar: '🐷',
+  role: 'member',
+  householdId: '1',
+  choreList: [choreOne, choreThree],
+};
+
+const profileThree: Profile = {
+  id: '3',
+  userId: '3',
+  name: 'Liz',
+  avatar: '🐥',
+  role: 'member',
+  householdId: '1',
+  choreList: [choreOne, choreTwo, choreThree],
+};
+
+//-------------------INDIVIDUAL TOTAL TEST DATA-------------------------
+const totalData = [
   {
-    name: '🦊',
-    contribution: 1,
-    color: setColor('🦊'),
+    name: getProfileAvatar(profileOne),
+    contribution: getTotalDemanding(profileOne),
+    color: setColor(getProfileAvatar(profileOne)),
     legendFontColor: 'transparent',
-    legendFontSize: 40,
+    legendFontSize: 30,
   },
   {
-    name: '🐳',
-    contribution: 1,
-    color: setColor('🐳'),
+    name: getProfileAvatar(profileTwo),
+    contribution: getTotalDemanding(profileTwo),
+    color: setColor(getProfileAvatar(profileTwo)),
     legendFontColor: 'transparent',
-    legendFontSize: 40,
+    legendFontSize: 30,
   },
   {
-    name: '🐷',
-    contribution: 1,
-    color: setColor('🐷'),
+    name: getProfileAvatar(profileThree),
+    contribution: getTotalDemanding(profileThree),
+    color: setColor(getProfileAvatar(profileThree)),
     legendFontColor: 'transparent',
-    legendFontSize: 40,
+    legendFontSize: 30,
+  },
+];
+
+//-------------------INDIVIDUAL TEST DATA-------------------------
+
+const choreOneData = [
+  {
+    name: getProfileAvatar(profileOne),
+    contribution: profileOne.choreList[0].demanding,
+    color: setColor(getProfileAvatar(profileOne)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
   },
   {
-    name: '🐥',
-    contribution: 1,
-    color: setColor('🐥'),
+    name: getProfileAvatar(profileThree),
+    contribution: profileThree.choreList[0].demanding,
+    color: setColor(getProfileAvatar(profileThree)),
     legendFontColor: 'transparent',
-    legendFontSize: 40,
+    legendFontSize: 30,
+  },
+];
+
+const choreTwoData = [
+  {
+    name: getProfileAvatar(profileOne),
+    contribution: profileOne.choreList[1].demanding,
+    color: setColor(getProfileAvatar(profileOne)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
   },
   {
-    name: '🐸',
-    contribution: 1,
-    color: setColor('🐸'),
+    name: getProfileAvatar(profileTwo),
+    contribution: profileTwo.choreList[1].demanding,
+    color: setColor(getProfileAvatar(profileTwo)),
     legendFontColor: 'transparent',
-    legendFontSize: 40,
+    legendFontSize: 30,
   },
   {
-    name: '🐬',
-    contribution: 1,
-    color: setColor('🐬'),
+    name: getProfileAvatar(profileThree),
+    contribution: profileThree.choreList[1].demanding,
+    color: setColor(getProfileAvatar(profileThree)),
     legendFontColor: 'transparent',
-    legendFontSize: 40,
+    legendFontSize: 30,
+  },
+];
+
+const choreThreeData = [
+  {
+    name: getProfileAvatar(profileTwo),
+    contribution: profileTwo.choreList[1].demanding,
+    color: setColor(getProfileAvatar(profileTwo)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
   },
   {
-    name: '🐙',
-    contribution: 1,
-    color: setColor('🐙'),
+    name: getProfileAvatar(profileThree),
+    contribution: profileThree.choreList[2].demanding,
+    color: setColor(getProfileAvatar(profileThree)),
     legendFontColor: 'transparent',
-    legendFontSize: 40,
-  },
-  {
-    name: '🦄',
-    contribution: 1,
-    color: setColor('🦄'),
-    legendFontColor: 'transparent',
-    legendFontSize: 40,
+    legendFontSize: 30,
   },
 ];
 
@@ -89,10 +194,25 @@ type Props = NativeStackScreenProps<RootStackParamList, 'StatisticsScreen'>;
 export default function StatisticsScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Text>Pil-vänster FÖRRA VECKAN pil-höger </Text>
+      {/* <Text>Pil-vänster FÖRRA VECKAN pil-höger </Text>
       <Text>Piechart: TOTALT</Text>
-      <Text>Display: Alla sysslors pie charts </Text>
-      <ChorePieChart data={testData} />
+      <Text>Display: Alla sysslors pie charts </Text> */}
+      <ChorePieChart width={400} height={150} hasLegend data={totalData} />
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        <View style={{ alignItems: 'center' }}>
+          <ChorePieChart width={120} height={100} hasLegend={false} data={choreOneData} />
+          <Text>{choreOne.name}</Text>
+        </View>
+        <View style={{ alignItems: 'center' }}>
+          <ChorePieChart width={120} height={100} hasLegend={false} data={choreTwoData} />
+          <Text>{choreTwo.name}</Text>
+        </View>
+        <View style={{ alignItems: 'center' }}>
+          <ChorePieChart width={120} height={100} hasLegend={false} data={choreThreeData} />
+          <Text>{choreThree.name}</Text>
+        </View>
+      </View>
+
       <Button onPress={() => navigation.navigate('RegisterScreen')}>Register</Button>
     </View>
   );
@@ -100,7 +220,7 @@ export default function StatisticsScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
