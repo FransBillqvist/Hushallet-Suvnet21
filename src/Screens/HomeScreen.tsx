@@ -41,11 +41,14 @@ export default function HomeScreen({ navigation }: Props) {
                 <Text>{chore.frequency}</Text>
               </ChoreCard>
               <Button title='To detailscreen' onPress={() => navigation.navigate('DetailScreen')} />
+              <Button
+                title='Redigera'
+                onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
+              />
             </View>
           ))}
         </View>
         <Button title='Lägg till en ny syssla' onPress={() => navigation.navigate('ChoreScreen')} />
-        <Button title='Redigera en syssla' onPress={() => navigation.navigate('EditChoreScreen')} />
       </View>
 
       <TextInput
