@@ -45,10 +45,11 @@ export default function HomeScreen({ navigation }: Props) {
                 title='To detailscreen'
                 onPress={async () => {
                   await dispatch(selectActiveHousehold(householdIddAsString))
-              .unwrap()
-              .then(async () => {
-                await dispatch(getASingleChore(chore.id));
-                   navigation.navigate('DetailScreen');});
+                    .unwrap()
+                    .then(async () => {
+                      await dispatch(getASingleChore(chore.id));
+                      navigation.navigate('DetailScreen');
+                    });
                 }}
               />
             </View>
