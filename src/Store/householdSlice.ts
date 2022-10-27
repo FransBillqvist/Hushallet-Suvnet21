@@ -109,22 +109,21 @@ export const editHouseholdName = createAsyncThunk<Household, Household, { reject
 
 export const selectActiveHousehold = createAsyncThunk<Household, string, { rejectValue: string }>(
   'household/selectactivehousehold',
-    async (id, thunkApi) => {
+  async (id, thunkApi) => {
     try {
       const q = query(collection(db, 'Household'), where('id', '==', id));
       const querySnapshot = await getDocs(q);
       const result = querySnapshot.docs.map((doc) => doc.data() as Household);
-      return result[0]
+      return result[0];
     } catch (error) {
       console.error(error);
-      if(error instanceof FirebaseError){
+      if (error instanceof FirebaseError) {
         alert('Det finns inget hushåll med detta id');
       }
       return thunkApi.rejectWithValue('Det gick inte');
     }
   },
 );
-
 
 const householdSlice = createSlice({
   name: 'household',

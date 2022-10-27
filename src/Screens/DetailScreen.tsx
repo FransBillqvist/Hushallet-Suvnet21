@@ -29,11 +29,14 @@ export default function DetailScreen(navigator: Props) {
           <Text>Energivärde: {chores.chores[0].demanding}</Text>
         </ChoreCard>
         <Text>Image: Liten pojke dammar</Text>
-        <HugeButton 
+        <HugeButton
           icon='plus-circle-outline'
           theme={getTheme('light')}
           onPress={() => navigator.navigation.navigate('HomeScreen')}
-          style={{ marginBottom: 10 }}>Markera för klar</HugeButton>
+          style={{ marginBottom: 10 }}
+        >
+          Markera för klar
+        </HugeButton>
       </View>
     </ScrollView>
   );
