@@ -104,7 +104,7 @@ const profileThree: Profile = {
   choreList: [choreOne, choreTwo, choreThree],
 };
 
-//-------------------TOTAL TEST DATA-------------------------
+//-------------------INDIVIDUAL TOTAL TEST DATA-------------------------
 const totalData = [
   {
     name: getProfileAvatar(profileOne),
