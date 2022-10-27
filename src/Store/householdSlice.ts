@@ -1,10 +1,9 @@
-import { collection, doc, getDocs, query, updateDoc, where } from '@firebase/firestore';
+import { addDoc, collection, doc, getDocs, query, updateDoc, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { db } from '../Config/firebase';
 import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
-import { AppState } from './store';
 
 interface HouseholdsState<Household> {
   households: Household[];
@@ -24,6 +23,19 @@ export const setHouseholdName = createAsyncThunk<string, string>(
   'user/sethouseholdname',
   async (name, thunkApi) => {
     return name;
+  },
+);
+
+export const createNewHousehold = createAsyncThunk<Household, Household>(
+  'household/createnewhousehold',
+  async (household, thunkApi) => {
+    try {
+      await addDoc(collection(db, 'Household'), household);
+      return household;
+    } catch (error) {
+      console.error(error);
+      return thunkApi.rejectWithValue(error);
+    }
   },
 );
 
@@ -127,6 +139,20 @@ const householdSlice = createSlice({
     builder.addCase(setHouseholdName.rejected, (state, action) => {
       state.isLoading = false;
       // state.error = action.payload || 'Unknown error';
+      console.log('rejected');
+    });
+
+    builder.addCase(createNewHousehold.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(createNewHousehold.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.singleHousehold = action.payload;
+      console.log('fulfilled');
+    });
+    builder.addCase(createNewHousehold.rejected, (state) => {
+      state.isLoading = false;
       console.log('rejected');
     });
 
