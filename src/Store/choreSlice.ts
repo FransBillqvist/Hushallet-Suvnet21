@@ -71,7 +71,7 @@ export const getChores = createAsyncThunk<
 });
 
 export const editChore = createAsyncThunk<Chore, Chore, { rejectValue: string }>(
-  'household/editchore',
+  'chores/editchore',
   async (Chore, thunkApi) => {
     try {
       const q = query(collection(db, 'Chore'), where('id', '==', Chore.id));

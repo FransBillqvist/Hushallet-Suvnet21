@@ -42,6 +42,10 @@ export default function HomeScreen({ navigation }: Props) {
                 <Text>{chore.frequency}</Text>
               </ChoreCard>
               <Button
+                title='Redigera'
+                onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
+                />
+              <Button
                 title='To detailscreen'
                 onPress={async () => {
                   await dispatch(selectActiveHousehold(householdIddAsString))
@@ -56,7 +60,6 @@ export default function HomeScreen({ navigation }: Props) {
           ))}
         </View>
         <Button title='Lägg till en ny syssla' onPress={() => navigation.navigate('ChoreScreen')} />
-        <Button title='Redigera en syssla' onPress={() => navigation.navigate('EditChoreScreen')} />
       </View>
 
       <TextInput
