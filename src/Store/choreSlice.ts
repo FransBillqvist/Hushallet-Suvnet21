@@ -155,23 +155,21 @@ const choreSlice = createSlice({
       state.error = action.payload || '';
       state.isLoading = false;
     });
-    //
+
     //editChore
     builder.addCase(editChore.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(editChore.fulfilled, (state, action) => {
-      // HÄR BEHÖVER VI ÄNDRA STATET SAMT PUSHA CHOREN MED UPPDATERADE VÄRDET TILL VÅRAN CHORE[] ARRAY
-      const id = state.chores.find((c) => c.id == action.payload.id);
-      console.log('Nu är vi I editChore inväntar ID');
-      console.log(action.payload.id);
+      const index = state.chores.findIndex((c) => c.id == action.payload.id);
+      state.chores.splice(index, 1, action.payload);
       state.isLoading = false;
     });
     builder.addCase(editChore.rejected, (state, action) => {
       state.error = action.payload || '';
       state.isLoading = false;
     });
-    //
+
     //setChoreName
     builder.addCase(setChoreName.pending, (state) => {
       state.isLoading = true;
@@ -187,7 +185,7 @@ const choreSlice = createSlice({
       state.error = action.payload || 'Unknown error';
       console.log('rejected');
     });
-    //
+
     //setChoreDescription
     builder.addCase(setChoreDescription.pending, (state) => {
       state.isLoading = true;
@@ -198,7 +196,7 @@ const choreSlice = createSlice({
       state.singleChore.description = action.payload;
       console.log('fulfilled');
     });
-    //
+
     //setChoreDemanding
     builder.addCase(setChoreDemanding.pending, (state) => {
       state.isLoading = true;
@@ -209,7 +207,7 @@ const choreSlice = createSlice({
       state.singleChore.demanding = action.payload;
       console.log('fulfilled');
     });
-    //
+
     //setChoreFrequency
     builder.addCase(setChoreFrequency.pending, (state) => {
       state.isLoading = true;

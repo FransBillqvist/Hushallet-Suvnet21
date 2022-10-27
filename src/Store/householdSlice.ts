@@ -4,6 +4,7 @@ import { FirebaseError } from 'firebase/app';
 import { db } from '../Config/firebase';
 import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
+import { AppState } from './store';
 
 interface HouseholdsState<Household> {
   households: Household[];
@@ -45,11 +46,36 @@ export const getHouseholdByProfileId = createAsyncThunk<Household, Profile>(
   'household/gethouseholdbyprofileid',
   async (profile, thunkApi) => {
     try {
-      const q = query(collection(db, 'Household'), where('id', '==', profile.householdId));
-      const querySnapshot = await getDocs(q);
-      const household = querySnapshot.docs[0].data() as Household;
-      return household;
+      for (let i = 0; profile.name != ''; i++) {
+        const q = query(collection(db, 'Household'), where('id', '==', profile.householdId));
+        const querySnapshot = await getDocs(q);
+        const household = querySnapshot.docs[i].data() as Household;
+
+        return household;
+      }
+      return thunkApi.rejectWithValue('No household found');
     } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const addAllHouseholdsFromProfile = createAsyncThunk<Household[], Profile[]>(
+  'household/addallhouseholdsfromprofile',
+  async (profiles, thunkApi) => {
+    try {
+      // const state = thunkApi.getState() as AppState;
+      const householdids = profiles.map((pro) => pro.householdId);
+      const q = query(collection(db, 'Household'), where('id', 'in', householdids));
+      const querySnapshot = await getDocs(q);
+      console.log('getDocs() ');
+      console.log(querySnapshot.docs);
+      const result = querySnapshot.docs.map((doc) => doc.data() as Household);
+      console.log('result FROM addAllHouseholdsFromProfile');
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.error(error);
       return thunkApi.rejectWithValue(error);
     }
   },
@@ -133,18 +159,37 @@ const householdSlice = createSlice({
     });
 
     builder.addCase(editHouseholdName.pending, (state) => {
-      // SLICES HÄR ÄR ICKET PÅBÖRJADE ÄN
       state.isLoading = true;
       console.log('pending');
     });
     builder.addCase(editHouseholdName.fulfilled, (state, action) => {
       state.isLoading = false;
-
+      const index = state.households.findIndex((h) => h.id == action.payload.id);
+      state.households.splice(index, 1, action.payload);
       console.log('fulfilled');
+      console.log('Here comes the payload');
+      console.log(action.payload);
+      console.log('Here comes the household array');
+      console.log(state.households);
     });
     builder.addCase(editHouseholdName.rejected, (state) => {
       state.isLoading = false;
       console.log('rejected');
+    });
+
+    //addAllHouseholdsFromProfile
+    builder.addCase(addAllHouseholdsFromProfile.pending, (state) => {
+      state.isLoading = true;
+      console.log('addAllHouseholdsFromProfile: pending');
+    });
+    builder.addCase(addAllHouseholdsFromProfile.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.households = action.payload;
+      console.log('addAllHouseholdsFromProfile: fulfilled');
+    });
+    builder.addCase(addAllHouseholdsFromProfile.rejected, (state) => {
+      state.isLoading = false;
+      console.log('addAllHouseholdsFromProfile: rejected');
     });
   },
 });

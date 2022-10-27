@@ -18,8 +18,13 @@ const logInValidationSchema = yup.object().shape({
 });
 
 export default function RegisterScreen({ navigation }: Props) {
-  const { isLoading, errorMsg } = useAppSelector((state) => state.user);
+  const loggedInEmail = useAppSelector((state) => state.user.user?.email);
   const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    if (loggedInEmail !== undefined) navigation.navigate('ManagerScreen');
+    [loggedInEmail];
+  });
 
   return (
     <View style={styles.container}>

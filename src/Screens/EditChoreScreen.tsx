@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { RadioButton, Text, TextInput, Modal, Button, Portal } from 'react-native-paper';
+import { Button, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
@@ -24,6 +24,7 @@ export default function EditChoreScreen({ navigation }: Props) {
   const hideFrequencyModal = () => setFrequencyVisible(false);
 
   const [originalchore, editedChore] = React.useState<ChoreCreate>({
+    // Tryck in ett chore id från firebase här för att ändra olika värden. Skall ändras för att bli dynamiskt senare.
     id: '',
     name: '',
     description: '',
@@ -44,8 +45,9 @@ export default function EditChoreScreen({ navigation }: Props) {
           style={styles.input}
           outlineColor='transparent'
           mode='outlined'
+          label='Titel'
+          placeholder={originalchore.name}
           value={originalchore.name}
-          placeholder='Titel'
           onChangeText={(text: string) => handleChange('name', text)}
         />
       </ChoreCard>
@@ -54,8 +56,9 @@ export default function EditChoreScreen({ navigation }: Props) {
           style={styles.input}
           outlineColor='transparent'
           mode='outlined'
+          label='Beskrivning'
+          placeholder={originalchore.description}
           value={originalchore.description}
-          placeholder='Beskrivning'
           onChangeText={(text: string) => handleChange('description', text)}
         />
       </ChoreCard>
@@ -169,7 +172,6 @@ export default function EditChoreScreen({ navigation }: Props) {
         </Portal>
         <Button onPress={showDemandingModal}>Välj</Button>
       </ChoreCard>
-      {/*Needs to dispatch an edit thunk in ChoreSlice*/}
       <BigButton
         theme={getTheme('dark')}
         onPress={() => {
@@ -195,6 +197,5 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     borderRadius: 10,
-    backgroundColor: 'transparent',
   },
 });

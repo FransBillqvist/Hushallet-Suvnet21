@@ -5,13 +5,13 @@ import app from '../Config/firebase';
 import { User } from '../Data/user';
 
 interface UserState {
-  user: User | undefined;
+  user: User;
   isLoading: boolean;
   errorMsg: string;
 }
 
 const initialState: UserState = {
-  user: undefined,
+  user: { uid: '', email: '' },
   isLoading: false,
   errorMsg: '',
 };
@@ -29,6 +29,7 @@ export const registerUser = createAsyncThunk<
   } catch (error) {
     console.error(error);
     if (error instanceof FirebaseError) {
+      alert('Fel i databasen, möjligtvis så används den angivna e-posten redan.');
       return thunkApi.rejectWithValue(error.message);
     }
     return thunkApi.rejectWithValue('Det gick tyvärr inte att registrera denna användaren');
@@ -48,7 +49,8 @@ export const login = createAsyncThunk<
   } catch (error) {
     console.error(error);
     if (error instanceof FirebaseError) {
-      // return thunkApi.rejectWithValue(error.message);
+      alert('Fel användarnamn/lösenord');
+      return thunkApi.rejectWithValue('Fel användarnamn eller lösenord');
     }
     return thunkApi.rejectWithValue('Det gick tyvärr inte att logga in');
   }
