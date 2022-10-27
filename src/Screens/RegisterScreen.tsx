@@ -33,8 +33,13 @@ export default function RegisterScreen({ navigation }: Props) {
         onSubmit={async (values, actions) => {
           console.log(values);
           actions.resetForm();
-          await dispatch(registerUser(values)).unwrap();
-          navigation.navigate('ManagerScreen');
+          await dispatch(registerUser(values))
+            .unwrap()
+            .then(async (value) => {
+              if (value.uid !== undefined) {
+                navigation.navigate('ManagerScreen');
+              }
+            });
         }}
         initialValues={{ email: '', password: '' }}
       >

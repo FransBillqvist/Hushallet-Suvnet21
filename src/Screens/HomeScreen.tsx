@@ -7,7 +7,6 @@ import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { getChores } from '../Store/choreSlice';
 import { editHouseholdName } from '../Store/householdSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
@@ -29,10 +28,6 @@ export default function HomeScreen({ navigation }: Props) {
   const handleHouseholdChange = (key: string, value: string | number) => {
     editedHousehold((prev) => ({ ...prev, [key]: value }));
   };
-
-  React.useEffect(() => {
-    dispatch(getChores(householdIddAsString));
-  }, [householdIddAsString]);
 
   return (
     <ScrollView>

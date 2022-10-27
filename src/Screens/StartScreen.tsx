@@ -8,7 +8,8 @@ import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
 import { useTogglePasswordVisibility } from '../Hooks/useTogglePasswordVisibility';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { useAppDispatch, useAppSelector } from '../Store/store';
+import { getProfilesByUserId } from '../Store/profileSlice';
+import { useAppDispatch } from '../Store/store';
 import { login } from '../Store/userSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
@@ -19,7 +20,6 @@ const logInValidationSchema = yup.object().shape({
 });
 
 export default function StartScreen({ navigation }: Props) {
-  const { isLoading, errorMsg } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 
@@ -27,9 +27,16 @@ export default function StartScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Formik
         validationSchema={logInValidationSchema}
-        onSubmit={(values, actions) => {
+        onSubmit={async (values, actions) => {
           actions.resetForm();
-          dispatch(login(values));
+          await dispatch(login(values))
+            .unwrap()
+            .then(async (value) => {
+              if (value.uid !== undefined) {
+                await dispatch(getProfilesByUserId(value.uid));
+                navigation.navigate('ManagerScreen');
+              }
+            });
           console.log(values);
         }}
         initialValues={{ email: '', password: '' }}
