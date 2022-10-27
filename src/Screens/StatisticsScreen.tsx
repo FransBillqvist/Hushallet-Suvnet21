@@ -134,14 +134,14 @@ const totalData = [
 const choreOneData = [
   {
     name: getProfileAvatar(profileOne),
-    contribution: profileOne.choreList[0].demanding,
+    contribution: 1,
     color: setColor(getProfileAvatar(profileOne)),
     legendFontColor: 'transparent',
     legendFontSize: 30,
   },
   {
     name: getProfileAvatar(profileThree),
-    contribution: profileThree.choreList[0].demanding,
+    contribution: 1,
     color: setColor(getProfileAvatar(profileThree)),
     legendFontColor: 'transparent',
     legendFontSize: 30,
@@ -151,21 +151,21 @@ const choreOneData = [
 const choreTwoData = [
   {
     name: getProfileAvatar(profileOne),
-    contribution: profileOne.choreList[1].demanding,
+    contribution: 1,
     color: setColor(getProfileAvatar(profileOne)),
     legendFontColor: 'transparent',
     legendFontSize: 30,
   },
   {
     name: getProfileAvatar(profileTwo),
-    contribution: profileTwo.choreList[1].demanding,
+    contribution: 1,
     color: setColor(getProfileAvatar(profileTwo)),
     legendFontColor: 'transparent',
     legendFontSize: 30,
   },
   {
     name: getProfileAvatar(profileThree),
-    contribution: profileThree.choreList[1].demanding,
+    contribution: 1,
     color: setColor(getProfileAvatar(profileThree)),
     legendFontColor: 'transparent',
     legendFontSize: 30,
@@ -175,14 +175,14 @@ const choreTwoData = [
 const choreThreeData = [
   {
     name: getProfileAvatar(profileTwo),
-    contribution: profileTwo.choreList[1].demanding,
+    contribution: 1,
     color: setColor(getProfileAvatar(profileTwo)),
     legendFontColor: 'transparent',
     legendFontSize: 30,
   },
   {
     name: getProfileAvatar(profileThree),
-    contribution: profileThree.choreList[2].demanding,
+    contribution: 1,
     color: setColor(getProfileAvatar(profileThree)),
     legendFontColor: 'transparent',
     legendFontSize: 30,
