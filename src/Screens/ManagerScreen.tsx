@@ -7,11 +7,7 @@ import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getChores } from '../Store/choreSlice';
-import {
-  addAllHouseholdsFromProfile,
-  getHouseHoldByCode,
-  selectActiveHousehold,
-} from '../Store/householdSlice';
+import { getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
 import {
   getCurrentAmountOfProfiles,
   getProfilesForHousehold,

@@ -8,7 +8,7 @@ import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getASingleChore } from '../Store/choreSlice';
-import { editHouseholdName } from '../Store/householdSlice';
+import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
@@ -41,35 +41,35 @@ export default function HomeScreen({ navigation }: Props) {
                 <Text>{chore.name}</Text>
                 <Text>{chore.frequency}</Text>
               </ChoreCard>
-              {activeProfile.role == 'owner' ? (
-                <Button
-                  title='Redigera'
-                  onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
-                />
-                <Button
-                  title='To detailscreen'
-                  onPress={async () => {
-                    await dispatch(selectActiveHousehold(householdIddAsString))
-                      .unwrap()
-                      .then(async () => {
-                        await dispatch(getASingleChore(chore.id));
-                        navigation.navigate('DetailScreen');
-                      });
-                  }}
-                />
+              {activeProfile.role == 'owner'} ? (
+              <Button
+                title='Redigera'
+                onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
+              />
+              <Button
+                title='To detailscreen'
+                onPress={async () => {
+                  await dispatch(selectActiveHousehold(householdIddAsString))
+                    .unwrap()
+                    .then(async () => {
+                      await dispatch(getASingleChore(chore.id));
+                      navigation.navigate('DetailScreen');
+                    });
+                }}
+              />
               ) : (
-                <Button
-                  title='To detailscreen'
-                  onPress={async () => {
-                    await dispatch(selectActiveHousehold(householdIddAsString))
-                      .unwrap()
-                      .then(async () => {
-                        await dispatch(getASingleChore(chore.id));
-                        navigation.navigate('DetailScreen');
-                      });
-                  }}
-                />
-              )}
+              <Button
+                title='To detailscreen'
+                onPress={async () => {
+                  await dispatch(selectActiveHousehold(householdIddAsString))
+                    .unwrap()
+                    .then(async () => {
+                      await dispatch(getASingleChore(chore.id));
+                      navigation.navigate('DetailScreen');
+                    });
+                }}
+              />
+              )
             </View>
           ))}
         </View>
