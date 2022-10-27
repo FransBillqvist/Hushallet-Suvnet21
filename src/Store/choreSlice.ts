@@ -116,7 +116,6 @@ export const getASingleChore = createAsyncThunk<Chore, string, { rejectValue: st
   },
 );
 
-
 export const setChoreName = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchorename',
   async (name, thunkApi) => {
@@ -244,7 +243,7 @@ const choreSlice = createSlice({
     });
     builder.addCase(getASingleChore.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.singleChore = action.payload
+      state.singleChore = action.payload;
       console.log('getASingleChore: fulfilled');
     });
     builder.addCase(getASingleChore.rejected, (state, action) => {

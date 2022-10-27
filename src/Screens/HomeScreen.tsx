@@ -41,7 +41,12 @@ export default function HomeScreen({ navigation }: Props) {
                 <Text>{chore.name}</Text>
                 <Text>{chore.frequency}</Text>
               </ChoreCard>
-              <Button title='To detailscreen' onPress={() => {dispatch(getASingleChore(chore.id)), navigation.navigate('DetailScreen')}} />
+              <Button
+                title='To detailscreen'
+                onPress={() => {
+                  dispatch(getASingleChore(chore.id)), navigation.navigate('DetailScreen');
+                }}
+              />
             </View>
           ))}
         </View>
