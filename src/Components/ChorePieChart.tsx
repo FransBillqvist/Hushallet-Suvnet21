@@ -31,7 +31,7 @@ const ChorePieChart = (props: Props) => {
       backgroundColor='transparent'
       paddingLeft='0'
       hasLegend={props.hasLegend}
-      // center={[10, 50]}
+      center={[35, 0]}
       absolute
       // avoidFalseZero={false}
     />
