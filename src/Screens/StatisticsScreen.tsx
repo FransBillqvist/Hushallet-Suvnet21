@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import ChorePieChart from '../Components/ChorePieChart';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { Chore } from '../Data/Chore';
+import { Chore } from '../Data/chore';
 
 function setColor(name: string) {
   if (name === '🦊') {
