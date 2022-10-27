@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { useAppDispatch, useAppSelector } from '../Store/store';
+import { useAppDispatch } from '../Store/store';
 import { registerUser } from '../Store/userSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RegisterScreen'>;
@@ -18,13 +18,7 @@ const logInValidationSchema = yup.object().shape({
 });
 
 export default function RegisterScreen({ navigation }: Props) {
-  const loggedInEmail = useAppSelector((state) => state.user.user?.email);
   const dispatch = useAppDispatch();
-
-  React.useEffect(() => {
-    if (loggedInEmail !== undefined) navigation.navigate('ManagerScreen');
-    [loggedInEmail];
-  });
 
   return (
     <View style={styles.container}>
