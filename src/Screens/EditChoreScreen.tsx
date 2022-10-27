@@ -32,11 +32,11 @@ export default function EditChoreScreen({ navigation }: Props) {
   const [originalchore, editedChore] = React.useState<ChoreCreate>({
     // behöver lösa object is possibly undefined varningarna, fungerar i övrigt!
     id: id,
-    name: specificChore.name,
-    description: specificChore.description,
-    demanding: specificChore.demanding,
-    frequency: specificChore.frequency,
-    householdId: specificChore.householdId,
+    name: specificChore?.name || '',
+    description: specificChore?.description || '',
+    demanding: specificChore?.demanding || 0,
+    frequency: specificChore?.frequency || 0,
+    householdId: specificChore?.householdId || '',
   });
 
   const handleChange = (key: string, value: string | number) => {
