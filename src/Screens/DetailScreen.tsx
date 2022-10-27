@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../Store/store';
 type Props = NativeStackScreenProps<RootStackParamList, 'DetailScreen'>;
 
 export default function DetailScreen(navigator: Props) {
-  const chores = useAppSelector((state) => state.chore);
+  const chores = useAppSelector((state) => state.chore.singleChore);
   const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
   const userId = useAppSelector((state) => state.user.user?.uid);
   const userIdAsString = userId as string;
@@ -25,15 +25,16 @@ export default function DetailScreen(navigator: Props) {
       <View>
         <ChoreCard>
           <Text>
-            {chores.chores[0].name}
-            {chores.chores[0].frequency}
+            {chores.name}
+
+            {chores.frequency}
           </Text>
         </ChoreCard>
         <ChoreCard>
-          <Text>{chores.chores[0].description}</Text>
+          <Text>{chores.description}</Text>
         </ChoreCard>
         <ChoreCard>
-          <Text>Energivärde: {chores.chores[0].demanding}</Text>
+          <Text>Energivärde: {chores.demanding}</Text>
         </ChoreCard>
         <Text>Image: Liten pojke dammar</Text>
         <HugeButton
@@ -42,7 +43,7 @@ export default function DetailScreen(navigator: Props) {
           onPress={() => {
             const isDone: ChoreHistory = {
               id: '-' + nanoId(),
-              choreId: chores.chores[0].id,
+              choreId: chores.id,
               profileId: userIdAsString,
               date: new Date().toISOString(),
             };
