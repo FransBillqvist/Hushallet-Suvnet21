@@ -30,10 +30,11 @@ export default function RegisterScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Formik
         validationSchema={logInValidationSchema}
-        onSubmit={(values, actions) => {
+        onSubmit={async (values, actions) => {
           console.log(values);
           actions.resetForm();
-          dispatch(registerUser(values));
+          await dispatch(registerUser(values)).unwrap();
+          navigation.navigate('ManagerScreen');
         }}
         initialValues={{ email: '', password: '' }}
       >
