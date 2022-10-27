@@ -5,13 +5,13 @@ import app from '../Config/firebase';
 import { User } from '../Data/user';
 
 interface UserState {
-  user: User | undefined;
+  user: User;
   isLoading: boolean;
   errorMsg: string;
 }
 
 const initialState: UserState = {
-  user: undefined,
+  user: { uid: '', email: '' },
   isLoading: false,
   errorMsg: '',
 };
