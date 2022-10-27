@@ -33,7 +33,6 @@ export const addChoreToDb = createAsyncThunk<ChoreCreate, ChoreCreate, { rejectV
         frequency: Chore.frequency,
         householdId: Chore.householdId,
       });
-
       return Chore;
     } catch (error) {
       console.error(error);
@@ -94,55 +93,52 @@ export const editChore = createAsyncThunk<Chore, Chore, { rejectValue: string }>
       if (error instanceof FirebaseError) {
         return thunkApi.rejectWithValue(error.message);
       }
-      return thunkApi.rejectWithValue('Det gick inte att ändra sysslan just nu!');
+      return thunkApi.rejectWithValue('Det gick inte!');
     }
   },
 );
 
+export const getASingleChore = createAsyncThunk<Chore, string, { rejectValue: string }>(
+  'household/getasinglechore',
+  async (id, thunkApi) => {
+    try {
+      const q = query(collection(db, 'Chore'), where('id', '==', id));
+      const querySnapshot = await getDocs(q);
+      const result = querySnapshot.docs.map((doc) => doc.data() as Chore);
+      return result[0];
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        alert('Kunde inte hämta sysslan, vänligen kontakta support!');
+      }
+      return thunkApi.rejectWithValue('Kunde inte hämta sysslan, vänligen kontakta support!');
+    }
+  },
+);
+
+
 export const setChoreName = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchorename',
   async (name, thunkApi) => {
-    try {
-      return name;
-    } catch (error) {
-      console.error(error);
-    }
-    return thunkApi.rejectWithValue('Det gick inte att ändra sysslans namn just nu.');
+    return name;
   },
 );
 export const setChoreDescription = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchoredescription',
   async (description, thunkApi) => {
-    try {
-      return description;
-    } catch (error) {
-      console.error(error);
-    }
-    return thunkApi.rejectWithValue('Det gick inte att ändra sysslans beskrivning just nu.');
+    return description;
   },
 );
 export const setChoreDemanding = createAsyncThunk<number, number, { rejectValue: string }>(
   'user/setchoredemanding',
   async (demanding, thunkApi) => {
-    try {
-      return demanding;
-    } catch (error) {
-      console.error(error);
-    }
-    return thunkApi.rejectWithValue('Det gick inte att ändra sysslans energinivå just nu.');
+    return demanding;
   },
 );
 export const setChoreFrequency = createAsyncThunk<number, number, { rejectValue: string }>(
   'user/setchorefrequency',
   async (frequency, thunkApi) => {
-    try {
-      return frequency;
-    } catch (error) {
-      console.error(error);
-    }
-    return thunkApi.rejectWithValue(
-      'Det gick inte att ändra hur ofta sysslan ska göras för tillfället.',
-    );
+    return frequency;
   },
 );
 
@@ -154,17 +150,15 @@ const choreSlice = createSlice({
     //addChore
     builder.addCase(addChoreToDb.pending, (state) => {
       state.isLoading = true;
-      console.log('addChoreToDb pending');
+      console.log('pending');
     });
-    builder.addCase(addChoreToDb.fulfilled, (state, action) => {
+    builder.addCase(addChoreToDb.fulfilled, (state) => {
       state.isLoading = false;
-      state.chores.push(action.payload);
-      console.log('addChoreToDb fulfilled');
+      console.log('fulfilled');
     });
     builder.addCase(addChoreToDb.rejected, (state, action) => {
       state.error = action.payload || '';
       state.isLoading = false;
-      console.log('addChoreToDb rejected');
     });
     //
     //getChores
@@ -241,6 +235,21 @@ const choreSlice = createSlice({
       state.isLoading = false;
       state.singleChore.frequency = action.payload;
       console.log('fulfilled');
+    });
+
+    // getASingleChore
+    builder.addCase(getASingleChore.pending, (state) => {
+      state.isLoading = true;
+      console.log('getASingleChore: pending');
+    });
+    builder.addCase(getASingleChore.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.singleChore = action.payload
+      console.log('getASingleChore: fulfilled');
+    });
+    builder.addCase(getASingleChore.rejected, (state, action) => {
+      state.error = action.payload || '';
+      state.isLoading = false;
     });
   },
 });
