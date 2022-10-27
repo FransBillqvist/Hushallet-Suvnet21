@@ -137,6 +137,13 @@ export const selectActiveHousehold = createAsyncThunk<Household, string, { rejec
   },
 );
 
+export const addHouseholdToHouseholdList = createAsyncThunk<Household, Household>(
+  'household/addHouseholdtohouseholdlist',
+  (household, thunkApi) => {
+    return household;
+  },
+);
+
 const householdSlice = createSlice({
   name: 'household',
   initialState,
@@ -181,7 +188,7 @@ const householdSlice = createSlice({
     });
     builder.addCase(getHouseHoldByCode.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.households.push(action.payload);
+      state.singleHousehold = action.payload;
       console.log('fulfilled');
     });
     builder.addCase(getHouseHoldByCode.rejected, (state) => {
@@ -250,6 +257,21 @@ const householdSlice = createSlice({
       state.isLoading = false;
       state.error = 'Det gick inte';
       console.log('selectActiveHousehold: rejected');
+    });
+
+    //addHouseholdToHouseholdList
+    builder.addCase(addHouseholdToHouseholdList.pending, (state) => {
+      state.isLoading = true;
+      console.log('addHouseholdToState: pending');
+    });
+    builder.addCase(addHouseholdToHouseholdList.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.households.push(action.payload);
+      console.log('addHouseholdToState: fulfilled');
+    });
+    builder.addCase(addHouseholdToHouseholdList.rejected, (state) => {
+      state.isLoading = false;
+      console.log('addHouseholdToState: rejected');
     });
   },
 });
