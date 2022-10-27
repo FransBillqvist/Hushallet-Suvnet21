@@ -10,6 +10,7 @@ import { filterAvatarList } from '../Components/filterAvatarList';
 import { getTheme } from '../Components/theme';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { addHouseholdToHouseholdList, createNewHousehold } from '../Store/householdSlice';
 import { addNewProfile } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
@@ -18,11 +19,11 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
 export default function ProfileScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
-  const householdId = useAppSelector((state) => state.household.singleHousehold?.id);
+  const household = useAppSelector((state) => state.household.singleHousehold);
   const avatarsInHousehold: string[] = [];
   useAppSelector((state) =>
     state.profile.profiles
-      .filter((profile) => profile.householdId === householdId)
+      .filter((profile) => profile.householdId === household?.id)
       .forEach((profile) => avatarsInHousehold.push(profile.avatar)),
   );
   const [name, setName] = React.useState('');
@@ -61,18 +62,22 @@ export default function ProfileScreen({ navigation }: Props) {
           onPress={async () => {
             const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 8);
             const householdMember = nav ? 'owner' : 'member';
-            const newProfile: Profile = {
-              id: nanoId(),
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              userId: userId!,
-              name: name,
-              avatar: chosenAvatar,
-              role: householdMember,
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              householdId: householdId!,
-            };
-            await dispatch(addNewProfile(newProfile)).unwrap();
-            navigation.navigate('HomeScreen');
+            if (userId && household) {
+              const newProfile: Profile = {
+                id: nanoId(),
+                userId: userId,
+                name: name,
+                avatar: chosenAvatar,
+                role: householdMember,
+                householdId: household.id,
+              };
+
+              if (householdMember == 'owner') dispatch(createNewHousehold(household));
+
+              await dispatch(addNewProfile(newProfile)).unwrap();
+              dispatch(addHouseholdToHouseholdList(household));
+              navigation.navigate('HomeScreen');
+            }
             // if (newProfile.fulfilled(navigation.navigate('HomeScreen')))
             // else {
             //   alert("Fel!");

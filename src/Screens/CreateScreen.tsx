@@ -8,7 +8,7 @@ import { IconButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { createNewHousehold } from '../Store/householdSlice';
+import { setHousehold } from '../Store/householdSlice';
 import { useAppDispatch } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
@@ -26,7 +26,7 @@ export default function CreateScreen({ navigation }: Props) {
   }
 
   const AddHouse = async () => {
-    await dispatch(createNewHousehold({ id: nanoId(), name: text, code: code }));
+    await dispatch(setHousehold({ id: nanoId(), name: text, code: code }));
     navigation.navigate('ProfileScreen');
   };
 
@@ -37,36 +37,51 @@ export default function CreateScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.inputsContainer}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={onChangeText}
-          placeholder={'Namn ge ditt hushåll'}
-          value={text}
-        ></TextInput>
+        <View style={styles.inputStyle}>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={onChangeText}
+            label='Namnge ditt hushåll'
+            value={text}
+          ></TextInput>
+        </View>
+        <View style={styles.spacer}></View>
+        <View style={styles.inputsContainer}>
+          {code !== '' ? (
+            <View>
+              <View style={styles.changingTextContainer}>
+                <Text style={styles.changingTextFont}>Hushållets inbjudningskod </Text>
+              </View>
+              <View style={styles.inviteCodeBox}>
+                <Text style={styles.showInviteCode}>
+                  {code}
+                  <IconButton icon='content-copy' onPress={copyToClipboard}></IconButton>
+                </Text>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.changingTextContainer}>
+              <Text style={styles.changingTextFont}>Din kod har inte genererats än.</Text>
+            </View>
+          )}
+        </View>
+        <View style={styles.spacer}></View>
       </View>
-      <View style={styles.spacer}></View>
-      <View style={styles.inputsContainer}>
-        {code !== '' ? (
-          <Text style={styles.showInviteCode}>
-            {code}
-            <IconButton icon='content-copy' onPress={copyToClipboard}></IconButton>
-          </Text>
-        ) : (
-          <Text style={{ fontSize: 20 }}>Din kod har inte genererats än.</Text>
-        )}
+      <View style={styles.buttonContainer}>
+        <View style={styles.buttonPosition}>
+          <BigButton
+            theme={getTheme('dark')}
+            disabled={code !== '' ? false : true}
+            onPress={function (): void {
+              AddHouse();
+              navigation.navigate('ProfileScreen');
+            }}
+            icon='home-plus-outline'
+          >
+            <Text style={styles.textForButton}>Skapa Hushåll</Text>
+          </BigButton>
+        </View>
       </View>
-      <View style={styles.spacer}></View>
-      <BigButton
-        theme={getTheme('dark')}
-        disabled={code !== '' ? false : true}
-        onPress={function (): void {
-          AddHouse();
-          navigation.navigate('ProfileScreen');
-        }}
-        icon='home-plus-outline'
-      >
-        <Text style={styles.textForButton}>Skapa Hushåll</Text>
-      </BigButton>
     </View>
   );
 }
@@ -75,20 +90,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   inputsContainer: {
-    minHeight: 50,
-    flexBasis: 80,
+    paddingHorizontal: 12,
+    width: '100%',
   },
   spacer: {
-    flexBasis: 50,
+    flexBasis: 25,
   },
   textInput: {
-    paddingLeft: 6,
-    minWidth: 300,
-    fontSize: 24,
-    borderRadius: 10,
+    borderRadius: 7,
+    fontSize: 15,
     borderWidth: 1,
   },
   showInviteCode: {
@@ -98,5 +110,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  inputStyle: {
+    marginTop: 10,
+  },
+  inviteCodeBox: {
+    alignItems: 'center',
+    paddingVertical: 25,
+    borderWidth: 1,
+    borderRadius: 7,
+  },
+  changingTextContainer: {
+    alignItems: 'center',
+  },
+  changingTextFont: {
+    fontSize: 20,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  buttonPosition: {
+    justifyContent: 'flex-end',
+    paddingBottom: 25,
   },
 });

@@ -88,17 +88,17 @@ export const getProfilesForHousehold = createAsyncThunk<Profile[], string, { rej
 
 export const addNewProfile = createAsyncThunk<Profile, Profile, { rejectValue: string }>(
   'profile/addnewprofile',
-  async (Profile, thunkApi) => {
+  async (profile, thunkApi) => {
     try {
       await addDoc(collection(db, 'Profile'), {
-        id: Profile.id,
-        name: Profile.name,
-        avatar: Profile.avatar,
-        householdId: Profile.householdId,
-        role: Profile.role,
-        userId: Profile.userId,
+        id: profile.id,
+        name: profile.name,
+        avatar: profile.avatar,
+        householdId: profile.householdId,
+        role: profile.role,
+        userId: profile.userId,
       });
-      return Profile;
+      return profile;
     } catch (error) {
       console.error(error);
       if (error instanceof FirebaseError) {
@@ -216,9 +216,9 @@ const profileSlice = createSlice({
       state.isLoading = true;
       console.log('addNewProfile pending');
     });
-    builder.addCase(addNewProfile.fulfilled, (state) => {
+    builder.addCase(addNewProfile.fulfilled, (state, action) => {
       state.isLoading = false;
-      // state.profiles.push(action.payload);
+      state.profiles.push(action.payload);
       console.log('addNewProfile fulfilled');
     });
     builder.addCase(addNewProfile.rejected, (state) => {

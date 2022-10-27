@@ -3,8 +3,8 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
-import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getTheme } from '../Components/theme';
+import { RootStackParamList } from '../Navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DevStartScreen'>;
 
