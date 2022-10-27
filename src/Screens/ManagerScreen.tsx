@@ -1,14 +1,10 @@
-import { map } from '@firebase/util';
-import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
-import { Household } from '../Data/household';
-import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import {
   addAllHouseholdsFromProfile,
@@ -16,14 +12,13 @@ import {
   getHouseholdByProfileId,
   selectActiveHousehold,
 } from '../Store/householdSlice';
+import { getChores } from '../Store/choreSlice';
 import {
   getCurrentAmountOfProfiles,
-  getProfilesByUserId,
   getProfilesForHousehold,
   profileAlreadyInHousehold,
 } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
-import HomeScreen from './HomeScreen';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
 
@@ -34,37 +29,25 @@ export default function ManagerScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
   const userIdAsString = userId as string;
-  const profiles = useAppSelector((state) => state.profile.profiles);
   const listOfHouses = useAppSelector((state) => state.household.households);
-  // let listOfNewHouses: Household[] = [];
 
   //SELECTOR?
-
-  React.useEffect(() => {
-    async function updateProfileList() {
-      console.log('Kör updateProfileList');
-      dispatch(getProfilesByUserId(userIdAsString));
-    }
-    updateProfileList();
-  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 24, marginBottom: 10 }}>Hushållsmöjligheter</Text>
 
       {listOfHouses.map((house) => (
-        <>
           <HugeButton
             icon='home'
             theme={getTheme('light')}
-            onPress={() => {
-              dispatch(selectActiveHousehold(house.id)), navigation.navigate('HomeScreen');
+            onPress={async () => {
+              await dispatch(selectActiveHousehold(house.id)).unwrap().then(async () => {await dispatch(getChores(house.id)); navigation.navigate('HomeScreen')}
             }}
             key={house.id}
           >
             <Text>{house.name}</Text>
           </HugeButton>
-        </>
       ))}
       <HugeButton
         icon='plus-circle-outline'
