@@ -39,7 +39,7 @@ function getProfileAvatar(profile: Profile) {
   return profile.avatar;
 }
 
-//------------------------TEST DATA-------------------------
+//------------------------TEST DATA--------------------------
 interface Profile {
   id: string;
   userId: string;
