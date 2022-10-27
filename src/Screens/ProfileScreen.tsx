@@ -28,6 +28,7 @@ export default function ProfileScreen({ navigation }: Props) {
   const [name, setName] = React.useState('');
   const [chosenAvatar, setAvatar] = React.useState('');
   const nav = navigation.getState().routes.find((nav) => nav.name === 'CreateScreen');
+
   return (
     <View style={styles.container}>
       <View style={styles.inputStyle}>
@@ -57,7 +58,7 @@ export default function ProfileScreen({ navigation }: Props) {
           style={styles.button}
           icon='plus-circle-outline'
           theme={getTheme('dark')}
-          onPress={() => {
+          onPress={async () => {
             const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 8);
             const householdMember = nav ? 'owner' : 'member';
             const newProfile: Profile = {
@@ -70,7 +71,8 @@ export default function ProfileScreen({ navigation }: Props) {
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               householdId: householdId!,
             };
-            dispatch(addNewProfile(newProfile));
+            await dispatch(addNewProfile(newProfile)).unwrap();
+            navigation.navigate('HomeScreen');
             // if (newProfile.fulfilled(navigation.navigate('HomeScreen')))
             // else {
             //   alert("Fel!");
