@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { nanoid } from 'nanoid';
+import { customAlphabet } from 'nanoid';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper';
@@ -15,12 +15,16 @@ import {
   setChoreFrequency,
   setChoreName,
 } from '../Store/choreSlice';
-import { useAppDispatch } from '../Store/store';
+import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChoreScreen'>;
 
 export default function ChoreScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
+  const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
+  const householdId = useAppSelector((state) => state.household.singleHousehold?.id);
+  const householdIdAsString = householdId as string;
+
   const [demandingValue, setDemandingValue] = React.useState('');
   const [frequencyValue, setFrequencyValue] = React.useState('');
   const [demandingVisible, setDemandingVisible] = React.useState(false);
@@ -30,12 +34,12 @@ export default function ChoreScreen({ navigation }: Props) {
   const showFrequencyModal = () => setFrequencyVisible(true);
   const hideFrequencyModal = () => setFrequencyVisible(false);
   const [chore, newChore] = React.useState<ChoreCreate>({
-    id: nanoid(10),
+    id: '+' + nanoId(10),
     name: '',
     description: '',
     demanding: 0,
     frequency: 0,
-    householdId: nanoid(5),
+    householdId: householdIdAsString,
   });
   const handleChange = (key: string, value: string | number) => {
     newChore((prev) => ({ ...prev, [key]: value }));

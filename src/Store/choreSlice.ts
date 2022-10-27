@@ -1,7 +1,6 @@
 import { addDoc, collection, doc, getDocs, query, updateDoc, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
-import { nanoid } from 'nanoid';
 import { db } from '../Config/firebase';
 import { Chore, ChoreCreate } from '../Data/chore';
 import { AppState } from '../Store/store';
@@ -27,7 +26,7 @@ export const addChoreToDb = createAsyncThunk<ChoreCreate, ChoreCreate, { rejectV
   async (Chore, thunkApi) => {
     try {
       await addDoc(collection(db, 'Chore'), {
-        id: nanoid(10),
+        id: Chore.id,
         name: Chore.name,
         description: Chore.description,
         demanding: Chore.demanding,

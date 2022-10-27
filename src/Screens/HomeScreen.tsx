@@ -16,13 +16,14 @@ export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const chores = useAppSelector((state) => state.chore);
   const householdId = useAppSelector((state) => state.household.singleHousehold?.id);
+  const householdCode = useAppSelector((state) => state.household.singleHousehold?.code);
   const householdIddAsString = householdId as string;
+  const householdCodeAsString = householdCode as string;
 
   const [originalHouseHold, editedHousehold] = React.useState<Household>({
-    // Tryck in ett household id från firebase här för att ändra namn. Skall ändras för att bli dynamiskt senare.
-    id: '',
+    id: householdIddAsString,
     name: '',
-    code: '',
+    code: householdCodeAsString,
   });
 
   const handleHouseholdChange = (key: string, value: string | number) => {
