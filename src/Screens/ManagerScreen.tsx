@@ -7,7 +7,7 @@ import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getChores } from '../Store/choreSlice';
-import { getHouseHoldByCode } from '../Store/householdSlice';
+import { getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
 import {
   getCurrentAmountOfProfiles,
   getProfilesForHousehold,
@@ -37,8 +37,12 @@ export default function ManagerScreen({ navigation }: Props) {
           icon='home'
           theme={getTheme('light')}
           onPress={async () => {
-            await dispatch(getChores(house.id)).unwrap();
-            navigation.navigate('HomeScreen');
+            await dispatch(selectActiveHousehold(house.id))
+              .unwrap()
+              .then(async () => {
+                await dispatch(getChores(house.id));
+                navigation.navigate('HomeScreen');
+              });
           }}
           key={house.id}
         >

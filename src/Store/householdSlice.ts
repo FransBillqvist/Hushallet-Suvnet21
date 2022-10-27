@@ -76,16 +76,17 @@ export const addAllHouseholdsFromProfile = createAsyncThunk<Household[], Profile
   'household/addallhouseholdsfromprofile',
   async (profiles, thunkApi) => {
     try {
-      // const state = thunkApi.getState() as AppState;
-      const householdids = profiles.map((pro) => pro.householdId);
-      const q = query(collection(db, 'Household'), where('id', 'in', householdids));
-      const querySnapshot = await getDocs(q);
-      console.log('getDocs() ');
-      console.log(querySnapshot.docs);
-      const result = querySnapshot.docs.map((doc) => doc.data() as Household);
-      console.log('result FROM addAllHouseholdsFromProfile');
-      console.log(result);
-      return result;
+      if (profiles.length > 0) {
+        const householdids = profiles.map((pro) => pro.householdId);
+        const q = query(collection(db, 'Household'), where('id', 'in', householdids));
+        const querySnapshot = await getDocs(q);
+        console.log('getDocs() ');
+        console.log(querySnapshot.docs);
+        const result = querySnapshot.docs.map((doc) => doc.data() as Household);
+        console.log('result FROM addAllHouseholdsFromProfile');
+        console.log(result);
+        return result;
+      } else return [];
     } catch (error) {
       console.error(error);
       return thunkApi.rejectWithValue(error);
@@ -112,6 +113,24 @@ export const editHouseholdName = createAsyncThunk<Household, Household, { reject
       console.error(error);
       if (error instanceof FirebaseError) {
         alert('Det finnns inget hushåll med detta id');
+      }
+      return thunkApi.rejectWithValue('Det gick inte');
+    }
+  },
+);
+
+export const selectActiveHousehold = createAsyncThunk<Household, string, { rejectValue: string }>(
+  'household/selectactivehousehold',
+  async (id, thunkApi) => {
+    try {
+      const q = query(collection(db, 'Household'), where('id', '==', id));
+      const querySnapshot = await getDocs(q);
+      const result = querySnapshot.docs.map((doc) => doc.data() as Household);
+      return result[0];
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        alert('Det finns inget hushåll med detta id');
       }
       return thunkApi.rejectWithValue('Det gick inte');
     }
@@ -216,6 +235,21 @@ const householdSlice = createSlice({
     builder.addCase(addAllHouseholdsFromProfile.rejected, (state) => {
       state.isLoading = false;
       console.log('addAllHouseholdsFromProfile: rejected');
+    });
+    //selectActiveHousehold
+    builder.addCase(selectActiveHousehold.pending, (state) => {
+      state.isLoading = true;
+      console.log('selectActiveHousehold: pending');
+    });
+    builder.addCase(selectActiveHousehold.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.singleHousehold = action.payload;
+      console.log('selectActiveHousehold: fulfilled');
+    });
+    builder.addCase(selectActiveHousehold.rejected, (state) => {
+      state.isLoading = false;
+      state.error = 'Det gick inte';
+      console.log('selectActiveHousehold: rejected');
     });
   },
 });
