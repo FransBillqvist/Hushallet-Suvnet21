@@ -7,6 +7,7 @@ import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { getASingleChore } from '../Store/choreSlice';
 import { editHouseholdName } from '../Store/householdSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
@@ -40,7 +41,7 @@ export default function HomeScreen({ navigation }: Props) {
                 <Text>{chore.name}</Text>
                 <Text>{chore.frequency}</Text>
               </ChoreCard>
-              <Button title='To detailscreen' onPress={() => navigation.navigate('DetailScreen')} />
+              <Button title='To detailscreen' onPress={() => {dispatch(getASingleChore(chore.id)), navigation.navigate('DetailScreen')}} />
             </View>
           ))}
         </View>
