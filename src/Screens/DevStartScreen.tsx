@@ -22,14 +22,6 @@ export default function DevStartScreen({ navigation }: Props) {
       <BigButton
         theme={getTheme('dark')}
         onPress={function (): void {
-          navigation.navigate('EditChoreScreen');
-        }}
-      >
-        <Text>EditChore</Text>
-      </BigButton>
-      <BigButton
-        theme={getTheme('dark')}
-        onPress={function (): void {
           navigation.navigate('CreateScreen');
         }}
       >
