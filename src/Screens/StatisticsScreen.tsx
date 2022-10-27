@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import ChorePieChart from '../Components/ChorePieChart';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { Chore } from '../Data/chore';
+import { Chore } from '../Data/Chore';
 
 function setColor(name: string) {
   if (name === '🦊') {
@@ -67,9 +67,9 @@ const choreTwo: Chore = {
   householdId: '1',
 };
 const choreThree: Chore = {
-  id: '2',
-  name: 'Diska',
-  description: 'Diska',
+  id: '3',
+  name: 'Laga mat',
+  description: 'Laga mat',
   demanding: 2,
   frequency: 2,
   householdId: '1',
@@ -85,8 +85,8 @@ const profileOne: Profile = {
   choreList: [choreOne, choreTwo],
 };
 const profileTwo: Profile = {
-  id: '1',
-  userId: '1',
+  id: '2',
+  userId: '2',
   name: 'Anna',
   avatar: '🐷',
   role: 'member',
@@ -95,8 +95,8 @@ const profileTwo: Profile = {
 };
 
 const profileThree: Profile = {
-  id: '1',
-  userId: '1',
+  id: '3',
+  userId: '3',
   name: 'Liz',
   avatar: '🐥',
   role: 'member',
@@ -129,6 +129,64 @@ const totalData = [
   },
 ];
 
+const choreOneData = [
+  {
+    name: getProfileAvatar(profileOne),
+    contribution: profileOne.choreList[0].demanding,
+    color: setColor(getProfileAvatar(profileOne)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
+  },
+  {
+    name: getProfileAvatar(profileThree),
+    contribution: profileThree.choreList[0].demanding,
+    color: setColor(getProfileAvatar(profileThree)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
+  },
+];
+
+const choreTwoData = [
+  {
+    name: getProfileAvatar(profileOne),
+    contribution: profileOne.choreList[1].demanding,
+    color: setColor(getProfileAvatar(profileOne)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
+  },
+  {
+    name: getProfileAvatar(profileTwo),
+    contribution: profileTwo.choreList[1].demanding,
+    color: setColor(getProfileAvatar(profileTwo)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
+  },
+  {
+    name: getProfileAvatar(profileThree),
+    contribution: profileThree.choreList[1].demanding,
+    color: setColor(getProfileAvatar(profileThree)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
+  },
+];
+
+const choreThreeData = [
+  {
+    name: getProfileAvatar(profileTwo),
+    contribution: profileTwo.choreList[1].demanding,
+    color: setColor(getProfileAvatar(profileTwo)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
+  },
+  {
+    name: getProfileAvatar(profileThree),
+    contribution: profileThree.choreList[2].demanding,
+    color: setColor(getProfileAvatar(profileThree)),
+    legendFontColor: 'transparent',
+    legendFontSize: 30,
+  },
+];
+
 type Props = NativeStackScreenProps<RootStackParamList, 'StatisticsScreen'>;
 
 export default function StatisticsScreen({ navigation }: Props) {
@@ -137,8 +195,21 @@ export default function StatisticsScreen({ navigation }: Props) {
       {/* <Text>Pil-vänster FÖRRA VECKAN pil-höger </Text>
       <Text>Piechart: TOTALT</Text>
       <Text>Display: Alla sysslors pie charts </Text> */}
-      <ChorePieChart hasLegend data={totalData} />
-      <View>{/* <ChorePieChar data={}></ChorePieChar> */}</View>
+      <ChorePieChart width={400} height={150} hasLegend data={totalData} />
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        <View style={{ alignItems: 'center' }}>
+          <ChorePieChart width={120} height={100} hasLegend={false} data={choreOneData} />
+          <Text>{choreOne.name}</Text>
+        </View>
+        <View style={{ alignItems: 'center' }}>
+          <ChorePieChart width={120} height={100} hasLegend={false} data={choreTwoData} />
+          <Text>{choreTwo.name}</Text>
+        </View>
+        <View style={{ alignItems: 'center' }}>
+          <ChorePieChart width={120} height={100} hasLegend={false} data={choreThreeData} />
+          <Text>{choreThree.name}</Text>
+        </View>
+      </View>
 
       <Button onPress={() => navigation.navigate('RegisterScreen')}>Register</Button>
     </View>
