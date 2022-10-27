@@ -8,7 +8,7 @@ import { IconButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { createNewHousehold } from '../Store/householdSlice';
+import { setHousehold } from '../Store/householdSlice';
 import { useAppDispatch } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateScreen'>;
@@ -26,7 +26,7 @@ export default function CreateScreen({ navigation }: Props) {
   }
 
   const AddHouse = async () => {
-    await dispatch(createNewHousehold({ id: nanoId(), name: text, code: code }));
+    await dispatch(setHousehold({ id: nanoId(), name: text, code: code }));
     navigation.navigate('ProfileScreen');
   };
 
