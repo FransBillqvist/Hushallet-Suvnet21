@@ -16,17 +16,8 @@ import {
   setChoreName,
 } from '../Store/choreSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
-import { Formik } from 'formik';
-import * as yup from 'yup';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChoreScreen'>;
-
-const choreValidationSchema = yup.object().shape({
-  name: yup.string().required('Namn är obligatoriskt'),
-  description: yup.string().required('Beskrivning är obligatoriskt'),
-  frequency: yup.string().required('Frekvens är obligatoriskt'),
-  demanding: yup.string().required('Krävande är obligatoriskt'),
-});
 
 export default function ChoreScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
@@ -56,48 +47,29 @@ export default function ChoreScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Formik
-        validationSchema={choreValidationSchema}
-        onSubmit={async (values, actions) => {
-          actions.resetForm();
-        }}
-        initialValues={{ name: '', description: '', frequency: '0', demanding: '0' }}
-      >
-        {(props) => (
-          <View style={styles.inputContainer}>
-            <View style={styles.inputStyle}>
-              <TextInput
-                style={styles.input}
-                outlineColor='transparent'
-                mode='outlined'
-                label='Titel'
-                value={props.values.name}
-                // onChangeText={(text: string) => handleChange('name', text)}
-                onBlur={props.handleBlur('name')}
-                onChangeText={props.handleChange('name')}
-              />
-            </View>
-            <Text style={styles.errorMessage}>{props.touched.name && props.errors.name}</Text>
-            <View style={styles.inputStyle}>
-              <TextInput
-                style={styles.input}
-                outlineColor='transparent'
-                numberOfLines={4}
-                multiline={true}
-                mode='outlined'
-                label='Beskrivning'
-                value={props.values.description}
-                // onChangeText={(text: string) => handleChange('description', text)}
-                onBlur={props.handleBlur('description')}
-                onChangeText={props.handleChange('description')}
-              />
-            </View>
-            <Text style={styles.errorMessage}>
-              {props.touched.description && props.errors.description}
-            </Text>
-          </View>
-        )}
-      </Formik>
+      <ChoreCard>
+        <TextInput
+          style={styles.input}
+          outlineColor='transparent'
+          mode='outlined'
+          label='Titel'
+          value={chore.name}
+          onChangeText={(text: string) => handleChange('name', text)}
+        />
+      </ChoreCard>
+
+      <ChoreCard>
+        <TextInput
+          style={styles.input}
+          outlineColor='transparent'
+          numberOfLines={4}
+          multiline={true}
+          mode='outlined'
+          label='Beskrivning'
+          value={chore.description}
+          onChangeText={(text: string) => handleChange('description', text)}
+        />
+      </ChoreCard>
 
       <ChoreCard>
         <Text>Återkommer</Text>
@@ -248,18 +220,10 @@ const containerStyle = { backgroundColor: 'white', padding: 10 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
   input: {
     width: '100%',
     borderRadius: 10,
-  },
-  inputStyle: {
-    marginTop: 10,
-  },
-  inputContainer: {
-    paddingHorizontal: 15,
-    width: '100%',
   },
   bigButtonStyle: {
     alignSelf: 'center',
@@ -274,12 +238,5 @@ const styles = StyleSheet.create({
   radioButtonStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  errorMessage: {
-    color: 'red',
-    fontWeight: 'bold',
-    marginBottom: 2,
-    marginTop: 6,
-    textAlign: 'center',
   },
 });
