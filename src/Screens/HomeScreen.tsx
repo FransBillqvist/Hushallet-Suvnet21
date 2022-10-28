@@ -7,7 +7,10 @@ import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { getChoreHistoryFromDbByProfileId } from '../Store/choreHistorySlice';
+import {
+  emptyChoreHistoryState,
+  getChoreHistoryFromDbByProfileId,
+} from '../Store/choreHistorySlice';
 import { getASingleChore } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
@@ -68,7 +71,8 @@ export default function HomeScreen({ navigation }: Props) {
         <Button title='Lägg till en ny syssla' onPress={() => navigation.navigate('ChoreScreen')} />
         <Button
           title='Gå till statistiken'
-          onPress={() => {
+          onPress={async () => {
+            await dispatch(emptyChoreHistoryState());
             profiles
               .filter((pro) => pro.householdId == householdId)
               .forEach(async (pro) => {

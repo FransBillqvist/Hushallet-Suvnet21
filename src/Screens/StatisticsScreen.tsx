@@ -3,6 +3,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import ChorePieChart from '../Components/ChorePieChart';
+import { PieChart } from '../Components/PieChart';
 import { Chore } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { useAppSelector } from '../Store/store';
@@ -190,7 +191,8 @@ const choreThreeData = [
   },
 ];
 
-interface TotalData {
+export interface PieData {
+  choreTitle?: string;
   name: string;
   contribution: number;
   color: string;
@@ -201,7 +203,8 @@ interface TotalData {
 type Props = NativeStackScreenProps<RootStackParamList, 'StatisticsScreen'>;
 
 export default function StatisticsScreen({ navigation }: Props) {
-  const totalData: TotalData[] = [];
+  const totalData: PieData[] = [];
+  const everyPieData: JSX.Element[] = [];
 
   const household = useAppSelector((state) => state.household.singleHousehold);
   const profilesInHousehold = useAppSelector((state) =>
@@ -212,7 +215,6 @@ export default function StatisticsScreen({ navigation }: Props) {
 
   profilesInHousehold.forEach((pro) => {
     let contribution = 0;
-    // const contributed = choreHistories.find((cH) => cH.profileId == pro.id);
     const choresDoneByProfile = choreHistories.filter((cH) => cH.profileId == pro.id);
     if (choresDoneByProfile.length > 0) {
       choresDoneByProfile.forEach((cH) => {
@@ -227,6 +229,25 @@ export default function StatisticsScreen({ navigation }: Props) {
       legendFontColor: 'transparent',
       legendFontSize: 30,
     });
+  });
+
+  choresInHousehold.forEach((choreHousehold) => {
+    const choreHasBeenDone = choreHistories.filter((cH) => cH.choreId == choreHousehold.id);
+    if (choreHasBeenDone.length > 0) {
+      const choreData: PieData[] = [];
+      choreHasBeenDone.forEach((choreDone) => {
+        const avatar = profilesInHousehold.find((pro) => pro.id == choreDone.profileId)?.avatar;
+        choreData.push({
+          choreTitle: choreHousehold.name,
+          name: avatar || '',
+          contribution: 1,
+          color: setColor(avatar || '') || '',
+          legendFontColor: 'transparent',
+          legendFontSize: 30,
+        });
+      });
+      everyPieData.push(PieChart(choreData));
+    }
   });
 
   return (
@@ -244,18 +265,15 @@ export default function StatisticsScreen({ navigation }: Props) {
       <Text>Display: Alla sysslors pie charts </Text> */}
       <ChorePieChart width={500} height={300} hasLegend data={totalData} />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-        <View style={{ alignItems: 'center' }}>
-          <ChorePieChart width={120} height={100} hasLegend={false} data={choreOneData} />
-          <Text>{choreOne.name}</Text>
-        </View>
-        <View style={{ alignItems: 'center' }}>
+        {everyPieData}
+        {/* <View style={{ alignItems: 'center' }}>
           <ChorePieChart width={120} height={100} hasLegend={false} data={choreTwoData} />
           <Text>{choreTwo.name}</Text>
         </View>
         <View style={{ alignItems: 'center' }}>
           <ChorePieChart width={120} height={100} hasLegend={false} data={choreThreeData} />
           <Text>{choreThree.name}</Text>
-        </View>
+        </View> */}
       </View>
     </View>
   );
