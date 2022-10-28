@@ -1,10 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import ChorePieChart from '../Components/ChorePieChart';
-import { RootStackParamList } from '../Navigation/RootNavigator';
 import { Chore } from '../Data/chore';
+import { RootStackParamList } from '../Navigation/RootNavigator';
+import { useAppSelector } from '../Store/store';
 
 function setColor(name: string) {
   if (name === '🦊') {
@@ -189,15 +190,59 @@ const choreThreeData = [
   },
 ];
 
+interface TotalData {
+  name: string;
+  contribution: number;
+  color: string;
+  legendFontColor: string;
+  legendFontSize: number;
+}
+
 type Props = NativeStackScreenProps<RootStackParamList, 'StatisticsScreen'>;
 
 export default function StatisticsScreen({ navigation }: Props) {
+  const totalData: TotalData[] = [];
+
+  const household = useAppSelector((state) => state.household.singleHousehold);
+  const profilesInHousehold = useAppSelector((state) =>
+    state.profile.profiles.filter((pro) => pro.householdId == household?.id),
+  );
+  const choresInHousehold = useAppSelector((state) => state.chore.chores);
+  const choreHistories = useAppSelector((state) => state.choreHistory.choresHistory);
+
+  profilesInHousehold.forEach((pro) => {
+    let contribution = 0;
+    // const contributed = choreHistories.find((cH) => cH.profileId == pro.id);
+    const choresDoneByProfile = choreHistories.filter((cH) => cH.profileId == pro.id);
+    if (choresDoneByProfile.length > 0) {
+      choresDoneByProfile.forEach((cH) => {
+        contribution += choresInHousehold.find((chore) => chore.id == cH.choreId)?.demanding || 0;
+      });
+    }
+
+    totalData.push({
+      name: pro.avatar,
+      contribution: contribution,
+      color: setColor(pro.avatar) || '',
+      legendFontColor: 'transparent',
+      legendFontSize: 30,
+    });
+  });
+
   return (
     <View style={styles.container}>
+      <Text>Nuvarande vecka</Text>
+      {choreHistories.map((cH) => (
+        <>
+          <Text key={cH.id}>
+            {cH.date} + {cH.profileId} + {cH.id}
+          </Text>
+        </>
+      ))}
       {/* <Text>Pil-vänster FÖRRA VECKAN pil-höger </Text>
       <Text>Piechart: TOTALT</Text>
       <Text>Display: Alla sysslors pie charts </Text> */}
-      <ChorePieChart width={400} height={150} hasLegend data={totalData} />
+      <ChorePieChart width={500} height={300} hasLegend data={totalData} />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         <View style={{ alignItems: 'center' }}>
           <ChorePieChart width={120} height={100} hasLegend={false} data={choreOneData} />
@@ -212,8 +257,6 @@ export default function StatisticsScreen({ navigation }: Props) {
           <Text>{choreThree.name}</Text>
         </View>
       </View>
-
-      <Button onPress={() => navigation.navigate('RegisterScreen')}>Register</Button>
     </View>
   );
 }
