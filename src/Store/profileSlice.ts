@@ -118,7 +118,6 @@ export const getProfilesByUserId = createAsyncThunk<Profile[], string, { rejectV
       const querySnapshot = await getDocs(q);
       profilesInAccount.push(...querySnapshot.docs.map((doc) => doc.data() as Profile));
       console.log(profilesInAccount);
-      thunkApi.dispatch(getCurrentProfile(profilesInAccount));
       thunkApi.dispatch(addAllHouseholdsFromProfile(profilesInAccount));
       return profilesInAccount;
     } catch (error) {
@@ -150,7 +149,11 @@ export const getCurrentProfile = createAsyncThunk<Profile, Profile[], { rejectVa
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
-  reducers: {},
+  reducers: {
+    flushCurrentProfile: (state) => {
+      state.currentProfile = initialState.currentProfile;
+    },
+  },
   extraReducers: (builder) => {
     //setProfileName
     builder.addCase(setProfileName.pending, (state) => {
@@ -203,7 +206,7 @@ const profileSlice = createSlice({
     });
     builder.addCase(getProfilesForHousehold.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.profiles.push(...action.payload);
+      state.profiles = action.payload;
       console.log('getProfilesForHousehold fulfilled');
     });
     builder.addCase(getProfilesForHousehold.rejected, (state) => {
@@ -218,6 +221,7 @@ const profileSlice = createSlice({
     });
     builder.addCase(addNewProfile.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.currentProfile = action.payload;
       state.profiles.push(action.payload);
       console.log('addNewProfile fulfilled');
     });
@@ -257,5 +261,7 @@ const profileSlice = createSlice({
     });
   },
 });
+
+export const { flushCurrentProfile } = profileSlice.actions;
 
 export const profileReducer = profileSlice.reducer;

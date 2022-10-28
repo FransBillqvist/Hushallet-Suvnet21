@@ -27,7 +27,6 @@ export default function CreateScreen({ navigation }: Props) {
 
   const AddHouse = async () => {
     await dispatch(setHousehold({ id: nanoId(), name: text, code: code }));
-    navigation.navigate('ProfileScreen');
   };
 
   const copyToClipboard = () => {
