@@ -24,26 +24,34 @@ export default function HomeScreen({ navigation }: Props) {
   const householdIddAsString = householdId as string;
   const householdCodeAsString = householdCode as string;
   const activeProfile = useAppSelector((state) => state.profile.currentProfile);
-  const date = new Date().toISOString().slice(0, 10);
+  const currentDate = new Date();
   const [originalHouseHold, editedHousehold] = React.useState<Household>({
     id: householdIddAsString,
     name: '',
     code: householdCodeAsString,
   });
 
-  async function DaysPast() {
-      try{
-        const choreInList = await dispatch(getChores(householdIddAsString)).unwrap();
+      async function DaysPast(choreId: string) {
+        // const choreInList = await dispatch(getChores(householdIddAsString)).unwrap();
         // const choreHistory = await dispatch(getChoreHistoryFromDbByChoreId(choreInList[0].id)).unwrap();
-        const lastestChore = await dispatch(getDateWhenLatestDoneChoreHistoryWithChoreId(choreInList[0].id)).unwrap();
+        const lastestChore = await dispatch(getDateWhenLatestDoneChoreHistoryWithChoreId(choreId)).unwrap();
         
-        const result = lastestChore;
+        const choreDoneDate= new Date(lastestChore[0].date);
+        const diffrenceInSec = Math.abs(currentDate.getTime() - choreDoneDate.getTime());
+        const diffrenceInDays = Math.ceil(diffrenceInSec / (1000 * 3600 * 24)); 
+
         console.log('ÄR RESULT');
-        console.log(result);
+        console.log(diffrenceInDays);
+        
+        const result: string[] = []; 
+        const numberToString = diffrenceInDays.toString();
+        result.push(numberToString);
+        // const result = diffrenceInDays.toString();
+        // const numberOfDays: React.ElementType = () => {
+        //   return <>{diffrenceInDays}</>;
+        // };
+
         return result;
-      } catch (error) {
-        console.log(error);
-      }
     }
     
   
@@ -56,33 +64,35 @@ export default function HomeScreen({ navigation }: Props) {
     <ScrollView>
       <View style={styles.container}>
         <View>
-          {chores.chores.map((chore) => (
-            <View key={chore.id}>
-              <Pressable
-                onPress={async () => {
-                  await dispatch(selectActiveHousehold(householdIddAsString))
-                    .unwrap()
-                    .then(async () => {
-                      await dispatch(getASingleChore(chore.id)).then(async () => {DaysPast()});
-                      navigation.navigate('DetailScreen');
-                    });
-                }}
+          {chores.chores.map((chore) => {
+            return (
+              <View key={chore.id}>
+                <Pressable
+                  onPress={async () => {
+                    await dispatch(selectActiveHousehold(householdIddAsString))
+                      .unwrap()
+                      .then(async () => {
+                        await dispatch(getASingleChore(chore.id));
+                        navigation.navigate('DetailScreen');
+                      });
+                  } }
                 >
-                <ChoreCard chore={chore}>
-                  <Text>{chore.name}</Text>
-                  <Text>{'Dagens:'+date}</Text>
-                  {activeProfile.role == 'owner' ? (
-                    <IconButton
-                      icon='pencil-outline'
-                      onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
-                    ></IconButton>
-                  ) : (
-                    <></>
-                  )}
-                </ChoreCard>
-              </Pressable>
-            </View>
-          ))}
+                  <ChoreCard chore={chore}>
+                  <>{DaysPast(chore.id)}</>
+                    <Text>{chore.name}</Text>
+                    {activeProfile.role == 'owner' ? (
+                      <IconButton
+                        icon='pencil-outline'
+                        onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
+                      ></IconButton>
+                    ) : (
+                      <></>
+                    )}
+                  </ChoreCard>
+                </Pressable>
+              </View>
+            );
+          })}
         </View>
         <Button title='Lägg till en ny syssla' onPress={() => navigation.navigate('ChoreScreen')} />
       </View>
