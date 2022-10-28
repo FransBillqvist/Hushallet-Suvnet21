@@ -23,10 +23,7 @@ export default function ManagerScreen({ navigation }: Props) {
   const buttonValue = isHide ? 'Gå med i befintligt hushåll' : 'Stäng';
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
-  // const userIdAsString = userId as string;
   const listOfHouses = useAppSelector((state) => state.household.households);
-
-  //SELECTOR?
 
   return (
     <View style={styles.container}>
@@ -45,6 +42,7 @@ export default function ManagerScreen({ navigation }: Props) {
               });
           }}
           key={house.id}
+          style={styles.marginBot}
         >
           <Text>{house.name}</Text>
         </HugeButton>
@@ -53,7 +51,7 @@ export default function ManagerScreen({ navigation }: Props) {
         icon='plus-circle-outline'
         theme={getTheme('light')} //Ändra till Setting för att få rätt färg
         onPress={() => navigation.navigate('CreateScreen')}
-        style={{ marginBottom: 10 }}
+        style={styles.marginBot}
       >
         Skapa nytt hushåll
       </HugeButton>
@@ -106,7 +104,6 @@ export default function ManagerScreen({ navigation }: Props) {
           </BigButton>
         </>
       )}
-      <Text>Lista med hushåll som användaren är med i</Text>
     </View>
   );
 }
@@ -124,6 +121,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     marginTop: 10,
+    marginBottom: 10,
+  },
+  marginBot: {
     marginBottom: 10,
   },
 });
