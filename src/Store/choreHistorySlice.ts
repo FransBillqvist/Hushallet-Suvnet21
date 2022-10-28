@@ -1,5 +1,6 @@
 import { addDoc, collection, getDocs, query, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { date } from 'yup';
 import { db } from '../Config/firebase';
 import { ChoreHistory } from '../Data/choreHistory';
 
@@ -61,6 +62,41 @@ export const getChoreHistoryFromDbByChoreId = createAsyncThunk<ChoreHistory[], s
   },
 );
 
+export const getDateWhenLatestDoneChoreHistoryWithChoreId = createAsyncThunk<ChoreHistory[], string>(
+  'household/getlastestdatefromchorehistory',
+  async (choreId, thunkApi) => {
+    try {
+      let worstcase:ChoreHistory = {id: '', choreId: choreId, profileId: '', date: new Date(0).toISOString().slice(0, 10)};
+      const choreHistories: ChoreHistory[] = [];
+      const q = query(collection(db, 'ChoreHistory'), where('choreId', '==', choreId));
+      const querySnapshot = await getDocs(q);
+      console.log(querySnapshot.docs); // tom array
+      querySnapshot.forEach((doc) => {
+        if (doc.exists()){
+          console.log('jag finns kanske...')
+
+        }else{
+          console.log('jag finns inte')
+        }
+        const loopdate = new Date(doc.data().date);
+        console.log(loopdate);
+        console.log(new Date(worstcase.date));
+        if(loopdate > new Date(worstcase.date)) {
+          
+          worstcase = doc.data() as ChoreHistory;
+        }});
+        choreHistories.push(worstcase);
+        return choreHistories;
+      }
+      catch (error) {
+        return thunkApi.rejectWithValue(error);
+      }
+    },
+    );
+    
+    // const findProfileId = querySnapshot.docs.map((doc) => doc.data().profileId);
+    // const findChoreHistoryId = querySnapshot.docs.map((doc) => doc.data().id);
+
 const choreHistorySlice = createSlice({
   name: 'choreHistory',
   initialState,
@@ -108,6 +144,22 @@ const choreHistorySlice = createSlice({
       console.log('fulfill');
     });
     builder.addCase(getChoreHistoryFromDbByChoreId.rejected, (state) => {
+      state.isLoading = false;
+      console.log('rejected');
+    });
+
+
+    //getDateWhenLatestDoneChoreHistoryWithChoreId
+    builder.addCase(getDateWhenLatestDoneChoreHistoryWithChoreId.pending, (state) => {
+      state.isLoading = true;
+      console.log('pending');
+    });
+    builder.addCase(getDateWhenLatestDoneChoreHistoryWithChoreId.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.choresHistory.push(...action.payload);
+      console.log('fulfill');
+    });
+    builder.addCase(getDateWhenLatestDoneChoreHistoryWithChoreId.rejected, (state) => {
       state.isLoading = false;
       console.log('rejected');
     });
