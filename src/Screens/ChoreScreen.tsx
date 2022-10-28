@@ -5,7 +5,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper';
 import * as yup from 'yup';
-import BigButton from '../Components/Buttons/BigButton';
+import SmallButton from '../Components/Buttons/SmallButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { ChoreCreate } from '../Data/chore';
@@ -71,12 +71,12 @@ export default function ChoreScreen({ navigation }: Props) {
         initialValues={{ name: '', description: '' }}
       >
         {(props) => (
-          <View>
-            <View>
+          <View style={{ flex: 1 }}>
+            <View style={styles.textInputContainer}>
               <TextInput
                 style={styles.input}
                 outlineColor='transparent'
-                mode='outlined'
+                mode='flat'
                 label='Titel'
                 value={props.values.name}
                 // onChangeText={(text: string) => handleChange('name', text)}
@@ -85,13 +85,13 @@ export default function ChoreScreen({ navigation }: Props) {
               />
               <Text style={styles.errorMessage}>{props.touched.name && props.errors.name}</Text>
             </View>
-            <View>
+            <View style={styles.textInputContainer}>
               <TextInput
                 style={styles.input}
                 outlineColor='transparent'
                 numberOfLines={4}
                 multiline={true}
-                mode='outlined'
+                mode='flat'
                 label='Beskrivning'
                 value={props.values.description}
                 // onChangeText={(text: string) => handleChange('description', text)}
@@ -217,26 +217,19 @@ export default function ChoreScreen({ navigation }: Props) {
               </ChoreCard>
             </View>
 
-            <View style={styles.bigButtonContainer}>
-              <View style={{ justifyContent: 'flex-end' }}>
-                <BigButton
-                  theme={getTheme('dark')}
-                  onPress={props.handleSubmit}
-                  style={styles.bigButtonStyle}
-                >
-                  Lägg till syssla
-                </BigButton>
-              </View>
-              <View style={{ justifyContent: 'flex-end' }}>
-                <BigButton
+            <View style={styles.smallButtonContainer}>
+              <View style={styles.smallButtonPosition}>
+                <SmallButton theme={getTheme('dark')} onPress={props.handleSubmit}>
+                  Lägg till
+                </SmallButton>
+                <SmallButton
                   theme={getTheme('dark')}
                   onPress={() => {
                     navigation.goBack();
                   }}
-                  style={styles.bigButtonStyle}
                 >
                   Stäng
-                </BigButton>
+                </SmallButton>
               </View>
             </View>
           </View>
@@ -251,20 +244,23 @@ const containerStyle = { backgroundColor: 'white', padding: 10 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 12,
+  },
+  textInputContainer: {
+    paddingHorizontal: 12,
   },
   input: {
-    width: '100%',
-    borderRadius: 10,
+    borderRadius: 5,
+    borderWidth: 1,
   },
-  bigButtonStyle: {
-    alignSelf: 'center',
-    marginTop: 10,
-    borderRadius: 0,
-    borderColor: 'lightgrey',
+  smallButtonContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingHorizontal: 12,
   },
-  bigButtonContainer: {
-    // flex: 1,
+  smallButtonPosition: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   radioButtonStyle: {
     flexDirection: 'row',
