@@ -14,6 +14,7 @@ import ProfileScreen from '../Screens/ProfileScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
 import StartScreen from '../Screens/StartScreen';
 import StatisticsScreen from '../Screens/StatisticsScreen';
+import { useAppSelector } from '../Store/store';
 // import { useAppSelector } from "../Store/store";
 
 declare global {
@@ -40,6 +41,8 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchemeName }) {
   // const user = useAppSelector((state) => state.user.user)
+  const activeHouse = useAppSelector((state) => state.household.singleHousehold);
+  const homeName: string = activeHouse?.name || 'Household';
   return (
     <NavigationContainer theme={getTheme(colorScheme)}>
       <RootStack.Navigator>
@@ -53,7 +56,7 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
         {/* </> */}
         {/* ) : ( */}
         {/* <> */}
-        <RootStack.Screen name='HomeScreen' component={HomeScreen} />
+        <RootStack.Screen name='HomeScreen' component={HomeScreen} options={{ title: homeName }} />
         <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
         <RootStack.Screen name='ChoreScreen' component={ChoreScreen} />
         <RootStack.Screen name='CreateScreen' component={CreateScreen} />
