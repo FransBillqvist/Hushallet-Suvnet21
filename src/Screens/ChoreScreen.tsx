@@ -53,111 +53,38 @@ export default function ChoreScreen({ navigation }: Props) {
   };
 
   return (
-  <ScrollView>
-    <View style={styles.container}>
-      <Formik
-        validationSchema={formValidationSchema}
-        onSubmit={(values) => {
-          chore.name = values.name;
-          chore.description = values.description;
-          handleChange('name', values.name);
-          handleChange('description', values.description);
-          dispatch(setChoreName(chore.name));
-          dispatch(setChoreDescription(chore.description));
-          dispatch(setChoreFrequency(chore.frequency));
-          dispatch(setChoreDemanding(chore.demanding));
-          dispatch(addChoreToDb(chore));
-          navigation.navigate('HomeScreen');
-        }}
-        initialValues={{ name: '', description: '' }}
-      >
-        {(props) => (
-          <View style={{ flex: 1 }}>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                style={styles.input}
-                outlineColor='transparent'
-                mode='flat'
-                label='Titel'
-                value={props.values.name}
-                // onChangeText={(text: string) => handleChange('name', text)}
-                onChangeText={props.handleChange('name')}
-                onBlur={props.handleBlur('name')}
-              />
-              <Text style={styles.errorMessage}>{props.touched.name && props.errors.name}</Text>
-            </View>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                style={styles.input}
-                outlineColor='transparent'
-                numberOfLines={4}
-                multiline={true}
-                mode='flat'
-                label='Beskrivning'
-                value={props.values.description}
-                // onChangeText={(text: string) => handleChange('description', text)}
-                onChangeText={props.handleChange('description')}
-                onBlur={props.handleBlur('description')}
-              />
-              <Text style={styles.errorMessage}>
-                {props.touched.description && props.errors.description}
-              </Text>
-            </View>
-            <View>
-              <ChoreCard>
-                <Text>Återkommer</Text>
-                <Text>Var {chore.frequency.toString()}:e Dag</Text>
-                <Portal>
-                  <Modal
-                    visible={frequencyVisible}
-                    onDismiss={hideFrequencyModal}
-                    contentContainerStyle={containerStyle}
-                  >
-                    <RadioButton.Group
-                      onValueChange={(newValue) => setFrequencyValue(newValue)}
-                      value={frequencyValue}
-                    >
-                      <View style={styles.radioButtonStyle}>
-                        <Text>1</Text>
-                        <RadioButton value='1' />
-                      </View>
-                      <View style={styles.radioButtonStyle}>
-                        <Text>2</Text>
-                        <RadioButton value='2' />
-                      </View>
-                      <View style={styles.radioButtonStyle}>
-                        <Text>3</Text>
-                        <RadioButton value='3' />
-                      </View>
-                      <View style={styles.radioButtonStyle}>
-                        <Text>4</Text>
-                        <RadioButton value='4' />
-                      </View>
-                      <View style={styles.radioButtonStyle}>
-                        <Text>5</Text>
-                        <RadioButton value='5' />
-                      </View>
-                      <View style={styles.radioButtonStyle}>
-                        <Text>6</Text>
-                        <RadioButton value='6' />
-                      </View>
-                      <View style={styles.radioButtonStyle}>
-                        <Text>7</Text>
-                        <RadioButton value='7' />
-                      </View>
-                    </RadioButton.Group>
-                    <Button
-                      onPress={() => (
-                        handleChange('frequency', Number(frequencyValue)),
-                        setFrequencyVisible(false)
-                      )}
-                    >
-                      Ok
-                    </Button>
-                  </Modal>
-                </Portal>
-                <Button onPress={showFrequencyModal}>Välj</Button>
+    <ScrollView>
+      <View style={styles.container}>
+        <Formik
+          validationSchema={formValidationSchema}
+          onSubmit={(values) => {
+            chore.name = values.name;
+            chore.description = values.description;
+            handleChange('name', values.name);
+            handleChange('description', values.description);
+            dispatch(setChoreName(chore.name));
+            dispatch(setChoreDescription(chore.description));
+            dispatch(setChoreFrequency(chore.frequency));
+            dispatch(setChoreDemanding(chore.demanding));
+            dispatch(addChoreToDb(chore));
+            navigation.navigate('HomeScreen');
+          }}
+          initialValues={{ name: '', description: '' }}
+        >
+          {(props) => (
+            <View style={styles.container}>
+              <ChoreCard style={{ marginTop: 14 }}>
+                <TextInput
+                  style={styles.input}
+                  outlineColor='transparent'
+                  mode='outlined'
+                  label='Titel'
+                  value={props.values.name}
+                  onChangeText={props.handleChange('name')}
+                  onBlur={props.handleBlur('name')}
+                />
               </ChoreCard>
+              <Text style={styles.errorMessage}>{props.touched.name && props.errors.name}</Text>
               <ChoreCard style={{ minHeight: 129 }}>
                 <TextInput
                   style={styles.input}
@@ -170,10 +97,10 @@ export default function ChoreScreen({ navigation }: Props) {
                   onChangeText={props.handleChange('description')}
                   onBlur={props.handleBlur('description')}
                 />
-                <Text style={styles.errorMessage}>
-                  {props.touched.description && props.errors.description}
-                </Text>
               </ChoreCard>
+              <Text style={styles.errorMessage}>
+                {props.touched.description && props.errors.description}
+              </Text>
               <View>
                 <ChoreCard>
                   <Text>Återkommer</Text>
@@ -238,27 +165,71 @@ export default function ChoreScreen({ navigation }: Props) {
                       onDismiss={hideDemandingModal}
                       contentContainerStyle={containerStyle}
                     >
-                      Ok
-                    </Button>
-                  </Modal>
-                </Portal>
-                <Button onPress={showDemandingModal}>Välj</Button>
-              </ChoreCard>
-            </View>
+                      <RadioButton.Group
+                        onValueChange={(newValue) => setDemandingValue(newValue)}
+                        value={demandingValue}
+                      >
+                        <View style={styles.radioButtonStyle}>
+                          <Text>1</Text>
+                          <RadioButton value='1' />
+                        </View>
+                        <View style={styles.radioButtonStyle}>
+                          <Text>2</Text>
+                          <RadioButton value='2' />
+                        </View>
+                        <View style={styles.radioButtonStyle}>
+                          <Text>3</Text>
+                          <RadioButton value='3' />
+                        </View>
+                        <View style={styles.radioButtonStyle}>
+                          <Text>4</Text>
+                          <RadioButton value='4' />
+                        </View>
+                        <View style={styles.radioButtonStyle}>
+                          <Text>5</Text>
+                          <RadioButton value='5' />
+                        </View>
+                        <View style={styles.radioButtonStyle}>
+                          <Text>6</Text>
+                          <RadioButton value='6' />
+                        </View>
+                        <View style={styles.radioButtonStyle}>
+                          <Text>7</Text>
+                          <RadioButton value='7' />
+                        </View>
+                        <View style={styles.radioButtonStyle}>
+                          <Text>8</Text>
+                          <RadioButton value='8' />
+                        </View>
+                      </RadioButton.Group>
+                      <Button
+                        onPress={() => (
+                          handleChange('demanding', Number(demandingValue)),
+                          setDemandingVisible(false)
+                        )}
+                      >
+                        Ok
+                      </Button>
+                    </Modal>
+                  </Portal>
+                  <Button onPress={showDemandingModal}>Välj</Button>
+                </ChoreCard>
+              </View>
 
-            <View style={styles.smallButtonContainer}>
-              <View style={styles.smallButtonPosition}>
-                <SmallButton theme={getTheme('dark')} onPress={props.handleSubmit}>
-                  Lägg till
-                </SmallButton>
-                <SmallButton
-                  theme={getTheme('dark')}
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  Stäng
-                </SmallButton>
+              <View style={styles.smallButtonContainer}>
+                <View style={styles.smallButtonPosition}>
+                  <SmallButton theme={getTheme('dark')} onPress={props.handleSubmit}>
+                    Lägg till
+                  </SmallButton>
+                  <SmallButton
+                    theme={getTheme('dark')}
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  >
+                    Stäng
+                  </SmallButton>
+                </View>
               </View>
             </View>
           )}
@@ -273,14 +244,15 @@ const containerStyle = { backgroundColor: 'white', padding: 10 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textInputContainer: {
     paddingHorizontal: 12,
   },
   input: {
-    borderRadius: 5,
-    borderWidth: 1,
+    width: '100%',
+    borderRadius: 10,
   },
   smallButtonContainer: {
     flex: 1,
@@ -300,5 +272,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 6,
     textAlign: 'center',
+    flexDirection: 'row',
   },
 });
