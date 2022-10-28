@@ -21,15 +21,15 @@ export default function DetailScreen(navigator: Props) {
 
   return (
     <ScrollView>
-      <View>
-        <ChoreCard>
+      <View style={styles.container}>
+        <ChoreCard style={{ marginTop: 14 }}>
           <Text>{chores.name}</Text>
           <Text>{chores.frequency}</Text>
         </ChoreCard>
-        <ChoreCard>
+        <ChoreCard style={{ minHeight: 129 }}>
           <Text>{chores.description}</Text>
         </ChoreCard>
-        <ChoreCard>
+        <ChoreCard style={{ minHeight: 70 }}>
           <Text>Energivärde:</Text>
           <Text>{chores.demanding}</Text>
         </ChoreCard>
@@ -46,7 +46,7 @@ export default function DetailScreen(navigator: Props) {
             dispatch(addChoreHistoryToDb(isDone));
             navigator.navigation.navigate('HomeScreen');
           }}
-          style={{ alignSelf: 'center' }}
+          style={{ alignSelf: 'center', marginTop: 10 }}
         >
           Markera som klar
         </HugeButton>
