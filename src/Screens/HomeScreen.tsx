@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Button, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { IconButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
@@ -50,17 +50,16 @@ export default function HomeScreen({ navigation }: Props) {
                 <ChoreCard chore={chore}>
                   <Text>{chore.name}</Text>
                   <Text>{chore.frequency}</Text>
+                  {activeProfile.role == 'owner' ? (
+                    <IconButton
+                      icon='pencil-outline'
+                      onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
+                    ></IconButton>
+                  ) : (
+                    <></>
+                  )}
                 </ChoreCard>
               </Pressable>
-
-              {activeProfile.role == 'owner' ? (
-                <Button
-                  title='Redigera'
-                  onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
-                />
-              ) : (
-                <></>
-              )}
             </View>
           ))}
         </View>
