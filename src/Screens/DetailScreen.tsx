@@ -23,19 +23,16 @@ export default function DetailScreen(navigator: Props) {
     <ScrollView>
       <View>
         <ChoreCard>
-          <Text>
-            {chores.name}
-
-            {chores.frequency}
-          </Text>
+          <Text>{chores.name}</Text>
+          <Text>{chores.frequency}</Text>
         </ChoreCard>
         <ChoreCard>
           <Text>{chores.description}</Text>
         </ChoreCard>
         <ChoreCard>
-          <Text>Energivärde: {chores.demanding}</Text>
+          <Text>Energivärde:</Text>
+          <Text>{chores.demanding}</Text>
         </ChoreCard>
-        <Text>Image: Liten pojke dammar</Text>
         <HugeButton
           icon='plus-circle-outline'
           theme={getTheme('light')}
@@ -49,9 +46,9 @@ export default function DetailScreen(navigator: Props) {
             dispatch(addChoreHistoryToDb(isDone));
             navigator.navigation.navigate('HomeScreen');
           }}
-          style={{ marginBottom: 10 }}
+          style={{ alignSelf: 'center' }}
         >
-          Markera för klar
+          Markera som klar
         </HugeButton>
       </View>
     </ScrollView>
