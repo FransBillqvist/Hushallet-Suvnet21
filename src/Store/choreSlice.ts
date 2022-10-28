@@ -71,7 +71,7 @@ export const getChores = createAsyncThunk<
 });
 
 export const editChore = createAsyncThunk<Chore, Chore, { rejectValue: string }>(
-  'household/editchore',
+  'chores/editchore',
   async (Chore, thunkApi) => {
     try {
       const q = query(collection(db, 'Chore'), where('id', '==', Chore.id));
@@ -98,28 +98,68 @@ export const editChore = createAsyncThunk<Chore, Chore, { rejectValue: string }>
   },
 );
 
+export const getASingleChore = createAsyncThunk<Chore, string, { rejectValue: string }>(
+  'household/getasinglechore',
+  async (id, thunkApi) => {
+    try {
+      const q = query(collection(db, 'Chore'), where('id', '==', id));
+      const querySnapshot = await getDocs(q);
+      const result = querySnapshot.docs.map((doc) => doc.data() as Chore);
+      return result[0];
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        alert('Kunde inte hämta sysslan, vänligen kontakta support!');
+      }
+      return thunkApi.rejectWithValue('Kunde inte hämta sysslan, vänligen kontakta support!');
+    }
+  },
+);
+
 export const setChoreName = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchorename',
   async (name, thunkApi) => {
-    return name;
+    try {
+      return name;
+    } catch (error) {
+      console.error(error);
+    }
+    return thunkApi.rejectWithValue('Det gick inte att ändra sysslans namn just nu.');
   },
 );
 export const setChoreDescription = createAsyncThunk<string, string, { rejectValue: string }>(
   'user/setchoredescription',
   async (description, thunkApi) => {
-    return description;
+    try {
+      return description;
+    } catch (error) {
+      console.error(error);
+    }
+    return thunkApi.rejectWithValue('Det gick inte att ändra sysslans beskrivning just nu.');
   },
 );
 export const setChoreDemanding = createAsyncThunk<number, number, { rejectValue: string }>(
   'user/setchoredemanding',
   async (demanding, thunkApi) => {
-    return demanding;
+    try {
+      return demanding;
+    } catch (error) {
+      console.error(error);
+    }
+    return thunkApi.rejectWithValue('Det gick inte att ändra sysslans energinivå just nu.');
   },
 );
 export const setChoreFrequency = createAsyncThunk<number, number, { rejectValue: string }>(
   'user/setchorefrequency',
   async (frequency, thunkApi) => {
-    return frequency;
+    try {
+      return frequency;
+    } catch (error) {
+      console.error(error);
+    }
+    return thunkApi.rejectWithValue(
+      'Det gick inte att ändra hur ofta sysslan ska göras för tillfället.',
+    );
   },
 );
 
@@ -131,15 +171,17 @@ const choreSlice = createSlice({
     //addChore
     builder.addCase(addChoreToDb.pending, (state) => {
       state.isLoading = true;
-      console.log('pending');
+      console.log('addChoreToDb pending');
     });
-    builder.addCase(addChoreToDb.fulfilled, (state) => {
+    builder.addCase(addChoreToDb.fulfilled, (state, action) => {
       state.isLoading = false;
-      console.log('fulfilled');
+      state.chores.push(action.payload);
+      console.log('addChoreToDb fulfilled');
     });
     builder.addCase(addChoreToDb.rejected, (state, action) => {
       state.error = action.payload || '';
       state.isLoading = false;
+      console.log('addChoreToDb rejected');
     });
     //
     //getChores
@@ -216,6 +258,21 @@ const choreSlice = createSlice({
       state.isLoading = false;
       state.singleChore.frequency = action.payload;
       console.log('fulfilled');
+    });
+
+    // getASingleChore
+    builder.addCase(getASingleChore.pending, (state) => {
+      state.isLoading = true;
+      console.log('getASingleChore: pending');
+    });
+    builder.addCase(getASingleChore.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.singleChore = action.payload;
+      console.log('getASingleChore: fulfilled');
+    });
+    builder.addCase(getASingleChore.rejected, (state, action) => {
+      state.error = action.payload || '';
+      state.isLoading = false;
     });
   },
 });

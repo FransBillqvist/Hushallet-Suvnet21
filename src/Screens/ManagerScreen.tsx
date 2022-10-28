@@ -23,7 +23,7 @@ export default function ManagerScreen({ navigation }: Props) {
   const buttonValue = isHide ? 'Gå med i befintligt hushåll' : 'Stäng';
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
-  const userIdAsString = userId as string;
+  // const userIdAsString = userId as string;
   const listOfHouses = useAppSelector((state) => state.household.households);
 
   //SELECTOR?
@@ -87,7 +87,7 @@ export default function ManagerScreen({ navigation }: Props) {
                 } else {
                   if (result) {
                     const profileExists = await dispatch(
-                      profileAlreadyInHousehold([userIdAsString, result.id]),
+                      profileAlreadyInHousehold([userId, result.id]),
                     ).unwrap();
                     if (profileExists) {
                       navigation.navigate('HomeScreen');

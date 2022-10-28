@@ -1,3 +1,4 @@
+import { RouteProp, useRoute } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -8,11 +9,16 @@ import { getTheme } from '../Components/theme';
 import { ChoreCreate } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { editChore } from '../Store/choreSlice';
-import { useAppDispatch } from '../Store/store';
+import { useAppDispatch, useAppSelector } from '../Store/store';
 
+type EditChoreScreenProp = RouteProp<RootStackParamList, 'EditChoreScreen'>;
 type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreScreen'>;
 
 export default function EditChoreScreen({ navigation }: Props) {
+  const route = useRoute<EditChoreScreenProp>();
+  const { id } = route.params;
+  const chores = useAppSelector((state) => state.chore.chores);
+  const specificChore = chores.find((chore) => chore.id === id);
   const dispatch = useAppDispatch();
   const [demandingValue, setDemandingValue] = React.useState('');
   const [frequencyValue, setFrequencyValue] = React.useState('');
@@ -24,13 +30,13 @@ export default function EditChoreScreen({ navigation }: Props) {
   const hideFrequencyModal = () => setFrequencyVisible(false);
 
   const [originalchore, editedChore] = React.useState<ChoreCreate>({
-    // Tryck in ett chore id från firebase här för att ändra olika värden. Skall ändras för att bli dynamiskt senare.
-    id: '',
-    name: '',
-    description: '',
-    demanding: 0,
-    frequency: 0,
-    householdId: '',
+    // behöver lösa object is possibly undefined varningarna, fungerar i övrigt!
+    id: id,
+    name: specificChore?.name || '',
+    description: specificChore?.description || '',
+    demanding: specificChore?.demanding || 0,
+    frequency: specificChore?.frequency || 0,
+    householdId: specificChore?.householdId || '',
   });
 
   const handleChange = (key: string, value: string | number) => {

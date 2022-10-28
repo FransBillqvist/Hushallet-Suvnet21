@@ -9,12 +9,14 @@ interface ProfileState {
   profiles: Profile[];
   isLoading: boolean;
   error: string;
+  currentProfile: Profile;
 }
 
 const initialState: ProfileState = {
   profiles: [],
   isLoading: false,
   error: '',
+  currentProfile: { id: '', userId: '', name: '', avatar: '', role: 'member', householdId: '' },
 };
 
 export const setProfileName = createAsyncThunk<string, string>(
@@ -24,45 +26,49 @@ export const setProfileName = createAsyncThunk<string, string>(
   },
 );
 
-export const profileAlreadyInHousehold = createAsyncThunk<boolean, string[]>(
-  'profile/profileinhousehold',
-  async (input, thunkApi) => {
-    try {
-      const q = query(collection(db, 'Profile'), where('householdId', '==', input[1]));
-      const querySnapshot = await getDocs(q);
-      const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
-      const profile = profiles.find((profile) => profile.userId === input[0]);
-      if (profile) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  },
-);
+export const profileAlreadyInHousehold = createAsyncThunk<
+  boolean,
+  string[],
+  { rejectValue: string }
+>('profile/profileinhousehold', async (input, thunkApi) => {
+  try {
+    const q = query(collection(db, 'Profile'), where('householdId', '==', input[1]));
+    const querySnapshot = await getDocs(q);
+    const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
+    const profile = profiles.find((profile) => profile.userId === input[0]);
 
-export const getCurrentAmountOfProfiles = createAsyncThunk<boolean, string>(
-  'profile/getcurrentamountofprofiles',
-  async (householdId, thunkApi) => {
-    try {
-      const q = query(collection(db, 'Profile'), where('householdId', '==', householdId));
-      const querySnapshot = await getDocs(q);
-      const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
-      const amountOfProfiles = profiles.length;
-      if (amountOfProfiles >= 8) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
+    if (profile) return true;
+    else {
+      return false;
     }
-  },
-);
+  } catch (error) {
+    console.error(error);
+    return thunkApi.rejectWithValue('Ett fel inträffade!');
+  }
+});
 
-export const getProfilesForHousehold = createAsyncThunk<Profile[], string>(
+export const getCurrentAmountOfProfiles = createAsyncThunk<
+  boolean,
+  string,
+  { rejectValue: string }
+>('profile/getcurrentamountofprofiles', async (householdId, thunkApi) => {
+  try {
+    const q = query(collection(db, 'Profile'), where('householdId', '==', householdId));
+    const querySnapshot = await getDocs(q);
+    const profiles = querySnapshot.docs.map((doc) => doc.data() as Profile);
+    const amountOfProfiles = profiles.length;
+    if (amountOfProfiles >= 8) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+    return thunkApi.rejectWithValue('Ett fel inträffade!');
+  }
+});
+
+export const getProfilesForHousehold = createAsyncThunk<Profile[], string, { rejectValue: string }>(
   'profile/getprofilesforhousehold',
   async (householdid, thunkApi) => {
     try {
@@ -74,35 +80,36 @@ export const getProfilesForHousehold = createAsyncThunk<Profile[], string>(
 
       return profilesInDB;
     } catch (error) {
-      return thunkApi.rejectWithValue(error);
+      console.error(error);
+      return thunkApi.rejectWithValue('Ett fel inträffade!');
     }
   },
 );
 
 export const addNewProfile = createAsyncThunk<Profile, Profile, { rejectValue: string }>(
   'profile/addnewprofile',
-  async (Profile, thunkApi) => {
+  async (profile, thunkApi) => {
     try {
       await addDoc(collection(db, 'Profile'), {
-        id: Profile.id,
-        name: Profile.name,
-        avatar: Profile.avatar,
-        householdId: Profile.householdId,
-        role: Profile.role,
-        userId: Profile.userId,
+        id: profile.id,
+        name: profile.name,
+        avatar: profile.avatar,
+        householdId: profile.householdId,
+        role: profile.role,
+        userId: profile.userId,
       });
-      return Profile;
+      return profile;
     } catch (error) {
       console.error(error);
       if (error instanceof FirebaseError) {
         return thunkApi.rejectWithValue(error.message);
       }
-      return thunkApi.rejectWithValue('Databasfel, vänligen kontakta support!');
+      return thunkApi.rejectWithValue('Något gick snett, vänligen kontakta support!');
     }
   },
 );
 
-export const getProfilesByUserId = createAsyncThunk<Profile[], string>(
+export const getProfilesByUserId = createAsyncThunk<Profile[], string, { rejectValue: string }>(
   'profile/getprofilesbyuserid',
   async (userId, thunkApi) => {
     try {
@@ -111,6 +118,7 @@ export const getProfilesByUserId = createAsyncThunk<Profile[], string>(
       const querySnapshot = await getDocs(q);
       profilesInAccount.push(...querySnapshot.docs.map((doc) => doc.data() as Profile));
       console.log(profilesInAccount);
+      thunkApi.dispatch(getCurrentProfile(profilesInAccount));
       thunkApi.dispatch(addAllHouseholdsFromProfile(profilesInAccount));
       return profilesInAccount;
     } catch (error) {
@@ -119,6 +127,22 @@ export const getProfilesByUserId = createAsyncThunk<Profile[], string>(
         return thunkApi.rejectWithValue(error.message);
       }
       return thunkApi.rejectWithValue('Databasfel, du har inget konto!');
+    }
+  },
+);
+
+export const getCurrentProfile = createAsyncThunk<Profile, Profile[], { rejectValue: string }>(
+  'profile/getcurrentprofile',
+  async (profiles, thunkApi) => {
+    try {
+      const profile = profiles.find((profile) => profile.userId === profiles[0].userId) as Profile;
+      return profile;
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        return thunkApi.rejectWithValue(error.message);
+      }
+      return thunkApi.rejectWithValue('Något gick snett, kontakta supporten!');
     }
   },
 );
@@ -133,16 +157,15 @@ const profileSlice = createSlice({
       state.isLoading = true;
       console.log('pending');
     });
-    builder.addCase(setProfileName.fulfilled, (state, action) => {
+    builder.addCase(setProfileName.fulfilled, (state) => {
       state.isLoading = false;
       // state.profiles[index].name = action.payload;
       console.log('fulfilled');
     });
-    // builder.addCase(setProfileName.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   //   state.error = action.payload || 'Unknown error';
-    //   console.log('rejected');
-    // });
+    builder.addCase(setProfileName.rejected, (state) => {
+      state.isLoading = false;
+      console.log('rejected');
+    });
     //profileAlreadyInHousehold
     builder.addCase(profileAlreadyInHousehold.pending, (state) => {
       state.isLoading = true;
@@ -168,7 +191,7 @@ const profileSlice = createSlice({
       state.isLoading = false;
       console.log('getCurrentAmountOfProfiles pending');
     });
-    builder.addCase(getCurrentAmountOfProfiles.rejected, (state, action) => {
+    builder.addCase(getCurrentAmountOfProfiles.rejected, (state) => {
       state.isLoading = false;
       console.log('getCurrentAmountOfProfiles Failed');
     });
@@ -193,9 +216,9 @@ const profileSlice = createSlice({
       state.isLoading = true;
       console.log('addNewProfile pending');
     });
-    builder.addCase(addNewProfile.fulfilled, (state) => {
+    builder.addCase(addNewProfile.fulfilled, (state, action) => {
       state.isLoading = false;
-      // state.profiles.push(action.payload);
+      state.profiles.push(action.payload);
       console.log('addNewProfile fulfilled');
     });
     builder.addCase(addNewProfile.rejected, (state) => {
@@ -215,7 +238,22 @@ const profileSlice = createSlice({
     });
     builder.addCase(getProfilesByUserId.rejected, (state) => {
       state.isLoading = false;
-      console.log('rejected! getProfilesByUserId');
+      console.log('Rejected getProfilesByUserId');
+    });
+
+    //getCurrentProfile
+    builder.addCase(getCurrentProfile.pending, (state) => {
+      state.isLoading = true;
+      console.log('getCurrentProfile pending');
+    });
+    builder.addCase(getCurrentProfile.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentProfile = action.payload;
+      console.log('getCurrentProfile fulfilled');
+    });
+    builder.addCase(getCurrentProfile.rejected, (state) => {
+      state.isLoading = false;
+      console.log('rejected getCurrentProfile');
     });
   },
 });
