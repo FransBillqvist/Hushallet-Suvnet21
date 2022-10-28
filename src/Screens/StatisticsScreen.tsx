@@ -88,14 +88,7 @@ export default function StatisticsScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text>Nuvarande vecka</Text>
-      {choreHistories.map((cH) => (
-        <>
-          <Text key={cH.id}>
-            {cH.date} + {cH.profileId} + {cH.id}
-          </Text>
-        </>
-      ))}
+      <Text variant='headlineMedium'>Nuvarande vecka</Text>
       <ChorePieChart width={500} height={300} hasLegend data={totalData} />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>{everyPieData}</View>
     </View>
