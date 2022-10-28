@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Button, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
@@ -37,40 +37,29 @@ export default function HomeScreen({ navigation }: Props) {
         <View>
           {chores.chores.map((chore) => (
             <View key={chore.id}>
-              <ChoreCard chore={chore}>
-                <Text>{chore.name}</Text>
-                <Text>{chore.frequency}</Text>
-              </ChoreCard>
+              <Pressable
+                onPress={async () => {
+                  await dispatch(selectActiveHousehold(householdIddAsString))
+                    .unwrap()
+                    .then(async () => {
+                      await dispatch(getASingleChore(chore.id));
+                      navigation.navigate('DetailScreen');
+                    });
+                }}
+              >
+                <ChoreCard chore={chore}>
+                  <Text>{chore.name}</Text>
+                  <Text>{chore.frequency}</Text>
+                </ChoreCard>
+              </Pressable>
+
               {activeProfile.role == 'owner' ? (
-                <View>
-                  <Button
-                    title='Redigera'
-                    onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
-                  />
-                  <Button
-                    title='Detaljsida'
-                    onPress={async () => {
-                      await dispatch(selectActiveHousehold(householdIddAsString))
-                        .unwrap()
-                        .then(async () => {
-                          await dispatch(getASingleChore(chore.id));
-                          navigation.navigate('DetailScreen');
-                        });
-                    }}
-                  />
-                </View>
-              ) : (
                 <Button
-                  title='Detaljsida'
-                  onPress={async () => {
-                    await dispatch(selectActiveHousehold(householdIddAsString))
-                      .unwrap()
-                      .then(async () => {
-                        await dispatch(getASingleChore(chore.id));
-                        navigation.navigate('DetailScreen');
-                      });
-                  }}
+                  title='Redigera'
+                  onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
                 />
+              ) : (
+                <></>
               )}
             </View>
           ))}
