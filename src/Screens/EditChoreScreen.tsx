@@ -45,7 +45,6 @@ export default function EditChoreScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 24, marginBottom: 10 }}>Redigera syssla</Text>
       <ChoreCard>
         <TextInput
           style={styles.input}

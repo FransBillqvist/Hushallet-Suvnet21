@@ -51,23 +51,51 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
         {/* {!user ? ( */}
         {/* <> */}
         <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
-        <RootStack.Screen name='StartScreen' component={StartScreen} />
-        <RootStack.Screen name='RegisterScreen' component={RegisterScreen} />
+        <RootStack.Screen
+          name='StartScreen'
+          component={StartScreen}
+          options={{ title: 'Inloggning' }}
+        />
+        <RootStack.Screen
+          name='RegisterScreen'
+          component={RegisterScreen}
+          options={{ title: 'Registrera ny användare' }}
+        />
         {/* </> */}
         {/* ) : ( */}
         {/* <> */}
         <RootStack.Screen name='HomeScreen' component={HomeScreen} options={{ title: homeName }} />
-        <RootStack.Screen name='ManagerScreen' component={ManagerScreen} />
-        <RootStack.Screen name='ChoreScreen' component={ChoreScreen} />
-        <RootStack.Screen name='CreateScreen' component={CreateScreen} />
+        <RootStack.Screen
+          name='ManagerScreen'
+          component={ManagerScreen}
+          options={{ title: 'Välj hushåll' }}
+        />
+        <RootStack.Screen
+          name='ChoreScreen'
+          component={ChoreScreen}
+          options={{ title: 'Skapa en ny syssla' }}
+        />
+        <RootStack.Screen name='CreateScreen' component={CreateScreen} options={{ title: '' }} />
         <RootStack.Screen
           name='EditChoreScreen'
           component={EditChoreScreen}
-          options={{ title: 'Redigera' }}
+          options={{ title: 'Redigera en syssla' }}
         />
-        <RootStack.Screen name='StatisticsScreen' component={StatisticsScreen} />
-        <RootStack.Screen name='ProfileScreen' component={ProfileScreen} />
-        <RootStack.Screen name='DetailScreen' component={DetailScreen} />
+        <RootStack.Screen
+          name='StatisticsScreen'
+          component={StatisticsScreen}
+          options={{ title: 'Statistik' }}
+        />
+        <RootStack.Screen
+          name='ProfileScreen'
+          component={ProfileScreen}
+          options={{ title: 'Skapa en ny profil' }}
+        />
+        <RootStack.Screen
+          name='DetailScreen'
+          component={DetailScreen}
+          options={{ title: 'Hushållet' }}
+        />
         {/* </> */}
         {/* )} */}
       </RootStack.Navigator>
