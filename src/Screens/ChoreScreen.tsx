@@ -57,7 +57,8 @@ export default function ChoreScreen({ navigation }: Props) {
       <Formik
         validationSchema={formValidationSchema}
         onSubmit={(values) => {
-          console.log(chore);
+          chore.name = values.name;
+          chore.description = values.description;
           handleChange('name', values.name);
           handleChange('description', values.description);
           dispatch(setChoreName(chore.name));
