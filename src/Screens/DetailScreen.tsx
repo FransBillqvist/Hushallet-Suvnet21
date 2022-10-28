@@ -16,8 +16,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'DetailScreen'>;
 export default function DetailScreen(navigator: Props) {
   const chores = useAppSelector((state) => state.chore.singleChore);
   const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
-  const userId = useAppSelector((state) => state.user.user?.uid);
-  const userIdAsString = userId as string;
+  const profileId = useAppSelector((state) => state.profile.currentProfile.id);
   const dispatch = useAppDispatch();
 
   return (
@@ -44,7 +43,7 @@ export default function DetailScreen(navigator: Props) {
             const isDone: ChoreHistory = {
               id: '-' + nanoId(),
               choreId: chores.id,
-              profileId: userIdAsString,
+              profileId: profileId,
               date: new Date().toISOString(),
             };
             dispatch(addChoreHistoryToDb(isDone));

@@ -6,10 +6,17 @@ import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import {
+  emptyChoreHistoryState,
+  getChoreHistoryFromDbByProfileId,
+} from '../Store/choreHistorySlice';
 import { getChores } from '../Store/choreSlice';
 import { getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
 import {
+  flushCurrentProfile,
   getCurrentAmountOfProfiles,
+  getCurrentProfile,
+  getProfilesByUserId,
   getProfilesForHousehold,
   profileAlreadyInHousehold,
 } from '../Store/profileSlice';
@@ -24,6 +31,7 @@ export default function ManagerScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user?.uid);
   const listOfHouses = useAppSelector((state) => state.household.households);
+  const profiles = useAppSelector((state) => state.profile.profiles);
 
   return (
     <View style={styles.container}>
@@ -34,10 +42,22 @@ export default function ManagerScreen({ navigation }: Props) {
           icon='home'
           theme={getTheme('light')}
           onPress={async () => {
+            dispatch(flushCurrentProfile());
             await dispatch(selectActiveHousehold(house.id))
               .unwrap()
               .then(async () => {
+                await dispatch(getProfilesForHousehold(house.id));
+                await dispatch(getProfilesByUserId(userId));
                 await dispatch(getChores(house.id));
+                dispatch(emptyChoreHistoryState());
+                await dispatch(
+                  getCurrentProfile(profiles.filter((profile) => profile.householdId == house.id)),
+                );
+                profiles
+                  .filter((pro) => pro.householdId == house.id)
+                  .forEach(async (pro) => {
+                    dispatch(await getChoreHistoryFromDbByProfileId(pro.id));
+                  });
                 navigation.navigate('HomeScreen');
               });
           }}

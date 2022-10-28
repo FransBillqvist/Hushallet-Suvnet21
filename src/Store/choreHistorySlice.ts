@@ -64,7 +64,11 @@ export const getChoreHistoryFromDbByChoreId = createAsyncThunk<ChoreHistory[], s
 const choreHistorySlice = createSlice({
   name: 'choreHistory',
   initialState,
-  reducers: {},
+  reducers: {
+    emptyChoreHistoryState: (state) => {
+      state.choresHistory = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(addChoreHistoryToDb.pending, (state) => {
       state.isLoading = true;
@@ -109,5 +113,7 @@ const choreHistorySlice = createSlice({
     });
   },
 });
+
+export const { emptyChoreHistoryState } = choreHistorySlice.actions;
 
 export const choreHistoryReducer = choreHistorySlice.reducer;
