@@ -1,7 +1,7 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
@@ -44,150 +44,152 @@ export default function EditChoreScreen({ navigation }: Props) {
   };
 
   return (
-    <View style={styles.container}>
-      <ChoreCard>
-        <TextInput
-          style={styles.input}
-          outlineColor='transparent'
-          mode='outlined'
-          label='Titel'
-          placeholder={originalchore.name}
-          value={originalchore.name}
-          onChangeText={(text: string) => handleChange('name', text)}
-        />
-      </ChoreCard>
-      <ChoreCard>
-        <TextInput
-          style={styles.input}
-          outlineColor='transparent'
-          mode='outlined'
-          label='Beskrivning'
-          placeholder={originalchore.description}
-          value={originalchore.description}
-          onChangeText={(text: string) => handleChange('description', text)}
-        />
-      </ChoreCard>
-      <ChoreCard>
-        <Text>Återkommer</Text>
-        <Text>Var {originalchore.frequency.toString()}:e Dag</Text>
-        <Portal>
-          <Modal
-            visible={frequencyVisible}
-            onDismiss={hideFrequencyModal}
-            contentContainerStyle={containerStyle}
-          >
-            <RadioButton.Group
-              onValueChange={(newValue) => setFrequencyValue(newValue)}
-              value={frequencyValue}
+    <ScrollView>
+      <View style={styles.container}>
+        <ChoreCard style={{ marginTop: 14 }}>
+          <TextInput
+            style={styles.input}
+            outlineColor='transparent'
+            mode='outlined'
+            label='Titel'
+            placeholder={originalchore.name}
+            value={originalchore.name}
+            onChangeText={(text: string) => handleChange('name', text)}
+          />
+        </ChoreCard>
+        <ChoreCard style={{ minHeight: 129 }}>
+          <TextInput
+            style={styles.input}
+            outlineColor='transparent'
+            mode='outlined'
+            label='Beskrivning'
+            placeholder={originalchore.description}
+            value={originalchore.description}
+            onChangeText={(text: string) => handleChange('description', text)}
+          />
+        </ChoreCard>
+        <ChoreCard style={{ minHeight: 70 }}>
+          <Text>Återkommer</Text>
+          <Text>Var {originalchore.frequency.toString()}:e Dag</Text>
+          <Portal>
+            <Modal
+              visible={frequencyVisible}
+              onDismiss={hideFrequencyModal}
+              contentContainerStyle={containerStyle}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>1</Text>
-                <RadioButton value='1' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>2</Text>
-                <RadioButton value='2' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>3</Text>
-                <RadioButton value='3' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>4</Text>
-                <RadioButton value='4' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>5</Text>
-                <RadioButton value='5' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>6</Text>
-                <RadioButton value='6' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>7</Text>
-                <RadioButton value='7' />
-              </View>
-            </RadioButton.Group>
-            <Button
-              onPress={() => (
-                handleChange('frequency', Number(frequencyValue)), setFrequencyVisible(false)
-              )}
+              <RadioButton.Group
+                onValueChange={(newValue) => setFrequencyValue(newValue)}
+                value={frequencyValue}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>1</Text>
+                  <RadioButton value='1' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>2</Text>
+                  <RadioButton value='2' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>3</Text>
+                  <RadioButton value='3' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>4</Text>
+                  <RadioButton value='4' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>5</Text>
+                  <RadioButton value='5' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>6</Text>
+                  <RadioButton value='6' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>7</Text>
+                  <RadioButton value='7' />
+                </View>
+              </RadioButton.Group>
+              <Button
+                onPress={() => (
+                  handleChange('frequency', Number(frequencyValue)), setFrequencyVisible(false)
+                )}
+              >
+                Ok
+              </Button>
+            </Modal>
+          </Portal>
+          <Button onPress={showFrequencyModal}>Välj</Button>
+        </ChoreCard>
+        <ChoreCard>
+          <Text>Energivärde:</Text>
+          <Text>{originalchore.demanding.toString()}</Text>
+          <Portal>
+            <Modal
+              visible={demandingVisible}
+              onDismiss={hideDemandingModal}
+              contentContainerStyle={containerStyle}
             >
-              Ok
-            </Button>
-          </Modal>
-        </Portal>
-        <Button onPress={showFrequencyModal}>Välj</Button>
-      </ChoreCard>
-      <ChoreCard>
-        <Text>Energivärde:</Text>
-        <Text>{originalchore.demanding.toString()}</Text>
-        <Portal>
-          <Modal
-            visible={demandingVisible}
-            onDismiss={hideDemandingModal}
-            contentContainerStyle={containerStyle}
-          >
-            <RadioButton.Group
-              onValueChange={(newValue) => setDemandingValue(newValue)}
-              value={demandingValue}
-            >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>1</Text>
-                <RadioButton value='1' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>2</Text>
-                <RadioButton value='2' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>3</Text>
-                <RadioButton value='3' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>4</Text>
-                <RadioButton value='4' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>5</Text>
-                <RadioButton value='5' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>6</Text>
-                <RadioButton value='6' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>7</Text>
-                <RadioButton value='7' />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>8</Text>
-                <RadioButton value='8' />
-              </View>
-            </RadioButton.Group>
-            <Button
-              onPress={() => (
-                handleChange('demanding', Number(demandingValue)), setDemandingVisible(false)
-              )}
-            >
-              Ok
-            </Button>
-          </Modal>
-        </Portal>
-        <Button onPress={showDemandingModal}>Välj</Button>
-      </ChoreCard>
-      <BigButton
-        theme={getTheme('dark')}
-        onPress={() => {
-          dispatch(editChore(originalchore));
-          navigation.navigate('HomeScreen');
-        }}
-        style={{ marginTop: 10 }}
-      >
-        Spara ändringar
-      </BigButton>
-    </View>
+              <RadioButton.Group
+                onValueChange={(newValue) => setDemandingValue(newValue)}
+                value={demandingValue}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>1</Text>
+                  <RadioButton value='1' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>2</Text>
+                  <RadioButton value='2' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>3</Text>
+                  <RadioButton value='3' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>4</Text>
+                  <RadioButton value='4' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>5</Text>
+                  <RadioButton value='5' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>6</Text>
+                  <RadioButton value='6' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>7</Text>
+                  <RadioButton value='7' />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text>8</Text>
+                  <RadioButton value='8' />
+                </View>
+              </RadioButton.Group>
+              <Button
+                onPress={() => (
+                  handleChange('demanding', Number(demandingValue)), setDemandingVisible(false)
+                )}
+              >
+                Ok
+              </Button>
+            </Modal>
+          </Portal>
+          <Button onPress={showDemandingModal}>Välj</Button>
+        </ChoreCard>
+        <BigButton
+          theme={getTheme('dark')}
+          onPress={() => {
+            dispatch(editChore(originalchore));
+            navigation.navigate('HomeScreen');
+          }}
+          style={{ marginTop: 10 }}
+        >
+          Spara ändringar
+        </BigButton>
+      </View>
+    </ScrollView>
   );
 }
 
