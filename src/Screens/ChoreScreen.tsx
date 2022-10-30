@@ -4,6 +4,7 @@ import { customAlphabet } from 'nanoid';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper';
+import WheelPickerExpo from 'react-native-wheel-picker-expo';
 import * as yup from 'yup';
 import SmallButton from '../Components/Buttons/SmallButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
@@ -51,6 +52,11 @@ export default function ChoreScreen({ navigation }: Props) {
   const handleChange = (key: string, value: string | number) => {
     newChore((prev) => ({ ...prev, [key]: value }));
   };
+
+  const frequency =
+    '1, 2, 3,4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30'.split(
+      ',',
+    );
 
   return (
     <ScrollView>
@@ -111,39 +117,14 @@ export default function ChoreScreen({ navigation }: Props) {
                       onDismiss={hideFrequencyModal}
                       contentContainerStyle={styles.modal}
                     >
-                      <RadioButton.Group
-                        onValueChange={(newValue) => setFrequencyValue(newValue)}
-                        value={frequencyValue}
-                      >
-                        <View style={styles.radioButtonStyle}>
-                          <Text>1</Text>
-                          <RadioButton value='1' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>2</Text>
-                          <RadioButton value='2' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>3</Text>
-                          <RadioButton value='3' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>4</Text>
-                          <RadioButton value='4' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>5</Text>
-                          <RadioButton value='5' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>6</Text>
-                          <RadioButton value='6' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>7</Text>
-                          <RadioButton value='7' />
-                        </View>
-                      </RadioButton.Group>
+                      <WheelPickerExpo
+                        height={200}
+                        width={150}
+                        initialSelectedIndex={5}
+                        // onValueChange={(newValue) => setFrequencyValue(newValue)}
+                        items={frequency.map((freq) => ({ label: freq, value: Number }))}
+                        onChange={({ item }) => setFrequencyValue(item.label)}
+                      />
                       <Button
                         onPress={() => (
                           handleChange('frequency', Number(frequencyValue)),
@@ -276,5 +257,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     alignSelf: 'center',
+    alignItems: 'center',
   },
 });
