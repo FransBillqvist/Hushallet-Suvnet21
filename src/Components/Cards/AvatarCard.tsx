@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { GestureResponderEvent, StyleSheet } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
+import { Profile } from '../../Data/profile';
 
 interface Props {
   children?: React.ReactNode;
   onTouchedEnd?: (event: GestureResponderEvent) => void;
   isActive: boolean;
+  profile?: Promise<string[] | Profile[] | undefined>
 }
 
 const AvatarCard = (props: Props) => {

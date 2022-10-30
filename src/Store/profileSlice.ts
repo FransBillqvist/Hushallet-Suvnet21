@@ -146,6 +146,27 @@ export const getCurrentProfile = createAsyncThunk<Profile, Profile[], { rejectVa
   },
 );
 
+export const getProfilesByProfileId = createAsyncThunk<Profile, string, { rejectValue: string }>(
+  'profile/getprofilesbyprofileid',
+  async (profileId, thunkApi) => {
+    try {
+      const q = query(collection(db, 'Profile'), where('id', '==', profileId));
+      const querySnapshot = await getDocs(q);
+      const profile = querySnapshot.docs.map((doc) => doc.data() as Profile);
+      console.log('Jag är på rad 156')
+      const currentProfile = profile[0];
+      console.log(currentProfile)
+      return currentProfile;
+    } catch (error) {
+      console.error(error);
+      if (error instanceof FirebaseError) {
+        return thunkApi.rejectWithValue(error.message);
+      }
+      return thunkApi.rejectWithValue('Något gick snett, kontakta supporten!');
+    }
+  },
+);
+
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
@@ -258,6 +279,20 @@ const profileSlice = createSlice({
     builder.addCase(getCurrentProfile.rejected, (state) => {
       state.isLoading = false;
       console.log('rejected getCurrentProfile');
+    });
+
+    //getProfilesByProfileId
+    builder.addCase(getProfilesByProfileId.pending, (state) => {
+      state.isLoading = true;
+      console.log('getProfilesByProfileId pending');
+    });
+    builder.addCase(getProfilesByProfileId.fulfilled, (state) => {
+      state.isLoading = false;
+      console.log('getProfilesByProfileId fulfilled');
+    });
+    builder.addCase(getProfilesByProfileId.rejected, (state) => {
+      state.isLoading = false;
+      console.log('getProfilesByProfileId rejected');
     });
   },
 });

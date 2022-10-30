@@ -1,15 +1,18 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Button, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { IconButton, Text, TextInput } from 'react-native-paper';
+import { Avatar, IconButton, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
+import AvatarCard from '../Components/Cards/AvatarCard';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
+import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getChoreHistoryFromDbByChoreId, getDateWhenLatestDoneChoreHistoryWithChoreId } from '../Store/choreHistorySlice';
 import { getASingleChore, getChores } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
+import { getProfilesByProfileId, profileAlreadyInHousehold } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
@@ -31,7 +34,7 @@ export default function HomeScreen({ navigation }: Props) {
     code: householdCodeAsString,
   });
 
-      async function DaysPast(choreId: string) {
+      async function DaysPast<Array>(choreId: string) {
         try{
         // const choreInList = await dispatch(getChores(householdIddAsString)).unwrap();
         // const choreHistory = await dispatch(getChoreHistoryFromDbByChoreId(choreInList[0].id)).unwrap();
@@ -47,12 +50,12 @@ export default function HomeScreen({ navigation }: Props) {
         console.log(diffrenceInDays);
         
       
-        let numberToString = diffrenceInDays.toString();
+        const numberToString = diffrenceInDays.toString();
         if(diffrenceInSec < 86400000 )
         {
-          numberToString = 'Done today';
+          DoneBy(choreId)
         } 
-        const result: string = numberToString;
+        const result: string[] = [numberToString];
         console.log(result);
         return result;
         // const result = diffrenceInDays.toString();
@@ -63,6 +66,29 @@ export default function HomeScreen({ navigation }: Props) {
         } catch (error) {
           console.log(error);
         }    
+    }
+
+    async function DoneBy<T>(choreId:string) {
+      try{
+        const choresDoneByProfile: Profile[] = [];
+        const DateAsString = new Date().toISOString().slice(0, 10);
+        const choreHistory = await dispatch(getChoreHistoryFromDbByChoreId(choreId)).unwrap();
+        choreHistory.forEach(async element => {
+          const forEachDate = new Date(element.date).toISOString().slice(0,10);
+          console.log(forEachDate);
+          if(forEachDate === DateAsString)
+          {
+            const profileFound = await dispatch(getProfilesByProfileId(element.profileId)).unwrap();
+            choresDoneByProfile.push(profileFound);
+          }
+        });
+        
+        return choresDoneByProfile;
+      }
+      catch(error)
+      {
+        console.log(error);
+      }
     }
     
   
@@ -86,15 +112,14 @@ export default function HomeScreen({ navigation }: Props) {
                         await dispatch(getASingleChore(chore.id));
                         navigation.navigate('DetailScreen');
                       });
-                  } }
+                  }}
                 >
                   <ChoreCard chore={chore}>
-                    <Text>{chore.name}</Text>
-                    {/* <>{DaysPast(chore.id)}</> */}
-                    <>{React.useMemo(() => {
-                    const thisDay = DaysPast(chore.id)
-                    return (<>{thisDay}</>);
-                  }, [chore.id])}</>
+                    <AvatarCard isActive={true} profile={(DaysPast(chore.id))}><>{DaysPast(chore.id)}</></AvatarCard>
+                    <ScrollView>
+                        <View>{}</View>
+                      <Text>
+                      </Text></ScrollView>
                     {activeProfile.role == 'owner' ? (
                       <IconButton
                         icon='pencil-outline'
