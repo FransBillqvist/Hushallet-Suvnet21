@@ -109,7 +109,7 @@ export default function ChoreScreen({ navigation }: Props) {
                     <Modal
                       visible={frequencyVisible}
                       onDismiss={hideFrequencyModal}
-                      contentContainerStyle={containerStyle}
+                      contentContainerStyle={styles.modal}
                     >
                       <RadioButton.Group
                         onValueChange={(newValue) => setFrequencyValue(newValue)}
@@ -163,7 +163,7 @@ export default function ChoreScreen({ navigation }: Props) {
                     <Modal
                       visible={demandingVisible}
                       onDismiss={hideDemandingModal}
-                      contentContainerStyle={containerStyle}
+                      contentContainerStyle={styles.modal}
                     >
                       <RadioButton.Group
                         onValueChange={(newValue) => setDemandingValue(newValue)}
@@ -239,8 +239,6 @@ export default function ChoreScreen({ navigation }: Props) {
   );
 }
 
-const containerStyle = { backgroundColor: 'white', padding: 10 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -273,5 +271,10 @@ const styles = StyleSheet.create({
     marginTop: 6,
     textAlign: 'center',
     flexDirection: 'row',
+  },
+  modal: {
+    backgroundColor: 'white',
+    padding: 10,
+    alignSelf: 'center',
   },
 });
