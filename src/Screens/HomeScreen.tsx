@@ -7,6 +7,10 @@ import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import {
+  emptyChoreHistoryState,
+  getChoreHistoryFromDbByProfileId,
+} from '../Store/choreHistorySlice';
 import { getASingleChore } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
@@ -20,6 +24,7 @@ export default function HomeScreen({ navigation }: Props) {
   const householdCode = useAppSelector((state) => state.household.singleHousehold?.code);
   const householdIddAsString = householdId as string;
   const householdCodeAsString = householdCode as string;
+  const profiles = useAppSelector((state) => state.profile.profiles);
   const activeProfile = useAppSelector((state) => state.profile.currentProfile);
   const [originalHouseHold, editedHousehold] = React.useState<Household>({
     id: householdIddAsString,
@@ -64,6 +69,18 @@ export default function HomeScreen({ navigation }: Props) {
           ))}
         </View>
         <Button title='Lägg till en ny syssla' onPress={() => navigation.navigate('ChoreScreen')} />
+        <Button
+          title='Gå till statistiken'
+          onPress={async () => {
+            await dispatch(emptyChoreHistoryState());
+            profiles
+              .filter((pro) => pro.householdId == householdId)
+              .forEach(async (pro) => {
+                dispatch(await getChoreHistoryFromDbByProfileId(pro.id));
+              });
+            navigation.navigate('StatisticsScreen');
+          }}
+        />
       </View>
 
       <TextInput

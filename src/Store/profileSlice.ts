@@ -238,6 +238,9 @@ const profileSlice = createSlice({
     builder.addCase(getProfilesByUserId.fulfilled, (state, action) => {
       state.isLoading = false;
       state.profiles.push(...action.payload);
+      state.profiles = state.profiles.filter(
+        (value, index, self) => index === self.findIndex((pro) => pro.id === value.id),
+      ); // Removes duplicates, es6 magic
       console.log('getProfilesByUserId fulfilled');
     });
     builder.addCase(getProfilesByUserId.rejected, (state) => {
