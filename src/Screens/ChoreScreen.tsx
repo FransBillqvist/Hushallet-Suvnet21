@@ -121,7 +121,6 @@ export default function ChoreScreen({ navigation }: Props) {
                         height={200}
                         width={150}
                         initialSelectedIndex={5}
-                        // onValueChange={(newValue) => setFrequencyValue(newValue)}
                         items={frequency.map((freq) => ({ label: freq, value: Number }))}
                         onChange={({ item }) => setFrequencyValue(item.label)}
                       />

@@ -10,6 +10,7 @@ import { ChoreCreate } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { editChore } from '../Store/choreSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
+import WheelPickerExpo from 'react-native-wheel-picker-expo';
 
 type EditChoreScreenProp = RouteProp<RootStackParamList, 'EditChoreScreen'>;
 type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreScreen'>;
@@ -42,6 +43,11 @@ export default function EditChoreScreen({ navigation }: Props) {
   const handleChange = (key: string, value: string | number) => {
     editedChore((prev) => ({ ...prev, [key]: value }));
   };
+
+  const frequency =
+    '1, 2, 3,4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30'.split(
+      ',',
+    );
 
   return (
     <ScrollView>
@@ -77,39 +83,13 @@ export default function EditChoreScreen({ navigation }: Props) {
               onDismiss={hideFrequencyModal}
               contentContainerStyle={styles.modal}
             >
-              <RadioButton.Group
-                onValueChange={(newValue) => setFrequencyValue(newValue)}
-                value={frequencyValue}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>1</Text>
-                  <RadioButton value='1' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>2</Text>
-                  <RadioButton value='2' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>3</Text>
-                  <RadioButton value='3' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>4</Text>
-                  <RadioButton value='4' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>5</Text>
-                  <RadioButton value='5' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>6</Text>
-                  <RadioButton value='6' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>7</Text>
-                  <RadioButton value='7' />
-                </View>
-              </RadioButton.Group>
+              <WheelPickerExpo
+                height={200}
+                width={150}
+                initialSelectedIndex={5}
+                items={frequency.map((freq) => ({ label: freq, value: Number }))}
+                onChange={({ item }) => setFrequencyValue(item.label)}
+              />
               <Button
                 onPress={() => (
                   handleChange('frequency', Number(frequencyValue)), setFrequencyVisible(false)
