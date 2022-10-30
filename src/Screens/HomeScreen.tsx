@@ -32,26 +32,37 @@ export default function HomeScreen({ navigation }: Props) {
   });
 
       async function DaysPast(choreId: string) {
+        try{
         // const choreInList = await dispatch(getChores(householdIddAsString)).unwrap();
         // const choreHistory = await dispatch(getChoreHistoryFromDbByChoreId(choreInList[0].id)).unwrap();
         const lastestChore = await dispatch(getDateWhenLatestDoneChoreHistoryWithChoreId(choreId)).unwrap();
         
-        const choreDoneDate= new Date(lastestChore[0].date);
+        const choreDoneDate= new Date(lastestChore.date);
         const diffrenceInSec = Math.abs(currentDate.getTime() - choreDoneDate.getTime());
-        const diffrenceInDays = Math.ceil(diffrenceInSec / (1000 * 3600 * 24)); 
-
+        const diffrenceInDays = Math.ceil(diffrenceInSec / (1000 * 3600 * 24));
+        
+        console.log(diffrenceInSec)
         console.log('ÄR RESULT');
+        console.log(choreId)
         console.log(diffrenceInDays);
         
-        const result: string[] = []; 
-        const numberToString = diffrenceInDays.toString();
-        result.push(numberToString);
+      
+        let numberToString = diffrenceInDays.toString();
+        if(diffrenceInSec < 86400000 )
+        {
+          numberToString = 'Done today';
+        } 
+        const result: string = numberToString;
+        console.log(result);
+        return result;
         // const result = diffrenceInDays.toString();
         // const numberOfDays: React.ElementType = () => {
         //   return <>{diffrenceInDays}</>;
         // };
 
-        return result;
+        } catch (error) {
+          console.log(error);
+        }    
     }
     
   
@@ -78,8 +89,12 @@ export default function HomeScreen({ navigation }: Props) {
                   } }
                 >
                   <ChoreCard chore={chore}>
-                  <>{DaysPast(chore.id)}</>
                     <Text>{chore.name}</Text>
+                    {/* <>{DaysPast(chore.id)}</> */}
+                    <>{React.useMemo(() => {
+                    const thisDay = DaysPast(chore.id)
+                    return (<>{thisDay}</>);
+                  }, [chore.id])}</>
                     {activeProfile.role == 'owner' ? (
                       <IconButton
                         icon='pencil-outline'

@@ -63,19 +63,17 @@ export const getChoreHistoryFromDbByChoreId = createAsyncThunk<ChoreHistory[], s
   },
 );
 
-export const getDateWhenLatestDoneChoreHistoryWithChoreId = createAsyncThunk<ChoreHistory[], string>(
+export const getDateWhenLatestDoneChoreHistoryWithChoreId = createAsyncThunk<ChoreHistory, string>(
   'household/getlastestdatefromchorehistory',
   async (choreId, thunkApi) => {
     try {
       let worstcase:ChoreHistory = {id: '', choreId: choreId, profileId: '', date: new Date(0).toISOString().slice(0, 10)};
-      const choreHistories: ChoreHistory[] = [];
       const historyRef = collection(db, 'ChoreHistory');
       const q = query(historyRef, where('choreId', '==', choreId));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        console.log('i QuerySnapshot');
         if (doc.exists()){
-          console.log('jag finns kanske...')
+          console.log('jag finns !')
 
         }else{
           console.log('jag finns inte')
@@ -86,7 +84,8 @@ export const getDateWhenLatestDoneChoreHistoryWithChoreId = createAsyncThunk<Cho
         if(loopdate > new Date(worstcase.date)) {
           worstcase = doc.data() as ChoreHistory;
         }});
-        choreHistories.push(worstcase);
+        const choreHistories: ChoreHistory = worstcase;
+        console.log(choreHistories);
         return choreHistories;
       }
       catch (error) {
@@ -155,9 +154,8 @@ const choreHistorySlice = createSlice({
       state.isLoading = true;
       console.log('pending : getDateWhenLatestDoneChoreHistoryWithChoreId');
     });
-    builder.addCase(getDateWhenLatestDoneChoreHistoryWithChoreId.fulfilled, (state, action) => {
+    builder.addCase(getDateWhenLatestDoneChoreHistoryWithChoreId.fulfilled, (state) => {
       state.isLoading = false;
-      state.choresHistory.push(...action.payload);
       console.log('fulfill : getDateWhenLatestDoneChoreHistoryWithChoreId');
     });
     builder.addCase(getDateWhenLatestDoneChoreHistoryWithChoreId.rejected, (state) => {
