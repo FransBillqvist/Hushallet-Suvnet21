@@ -75,7 +75,7 @@ export default function EditChoreScreen({ navigation }: Props) {
             <Modal
               visible={frequencyVisible}
               onDismiss={hideFrequencyModal}
-              contentContainerStyle={containerStyle}
+              contentContainerStyle={styles.modal}
             >
               <RadioButton.Group
                 onValueChange={(newValue) => setFrequencyValue(newValue)}
@@ -128,7 +128,7 @@ export default function EditChoreScreen({ navigation }: Props) {
             <Modal
               visible={demandingVisible}
               onDismiss={hideDemandingModal}
-              contentContainerStyle={containerStyle}
+              contentContainerStyle={styles.modal}
             >
               <RadioButton.Group
                 onValueChange={(newValue) => setDemandingValue(newValue)}
@@ -193,8 +193,6 @@ export default function EditChoreScreen({ navigation }: Props) {
   );
 }
 
-const containerStyle = { backgroundColor: 'white', padding: 10 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -204,5 +202,11 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     borderRadius: 10,
+  },
+  modal: {
+    backgroundColor: 'white',
+    padding: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
   },
 });
