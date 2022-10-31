@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { Dialog, IconButton, Portal, Text } from 'react-native-paper';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
@@ -78,28 +78,33 @@ export default function HomeScreen({ navigation }: Props) {
               <Dialog
                 visible={houseModalVisible}
                 onDismiss={hideHouseModal}
-                style={{ maxHeight: 200, alignSelf: 'center', justifyContent: 'center' }}
+                style={{
+                  maxHeight: 200,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                }}
               >
                 <Dialog.Title>Byt hushållsnamn</Dialog.Title>
-                <Dialog.Content>
+                <Dialog.Content style={{ maxHeight: 150, marginBottom: 10 }}>
                   <TextInput
                     placeholder={originalHouseHold.name}
                     value={originalHouseHold.name}
                     onChangeText={(text: string) => handleHouseholdChange('name', text)}
+                    style={styles.inputTextField}
                   />
+                  <Dialog.Actions style={{ marginTop: 10, padding: 0 }}>
+                    <BigButton
+                      theme={getTheme('dark')}
+                      onPress={async () => (
+                        setHouseModalVisible(false),
+                        await dispatch(editHouseholdName(originalHouseHold)),
+                        await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
+                      )}
+                    >
+                      Spara
+                    </BigButton>
+                  </Dialog.Actions>
                 </Dialog.Content>
-                <Dialog.Actions>
-                  <BigButton
-                    theme={getTheme('dark')}
-                    onPress={async () => (
-                      setHouseModalVisible(false),
-                      await dispatch(editHouseholdName(originalHouseHold)),
-                      await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
-                    )}
-                  >
-                    Spara
-                  </BigButton>
-                </Dialog.Actions>
               </Dialog>
             </Portal>
             <BigButton theme={getTheme('dark')} onPress={showHouseModal}>
@@ -132,5 +137,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 5,
+  },
+  inputTextField: {
+    marginTop: 20,
+    borderRadius: 7,
+    fontSize: 15,
+    borderWidth: 1,
   },
 });
