@@ -1,8 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import app from '../Config/firebase';
-import { saveUserStorage } from '../Data/AsyncStorage/userStorage';
+import { removeUserFromStorage } from '../Data/AsyncStorage/userStorage';
 import { User } from '../Data/user';
 
 interface UserState {
@@ -10,10 +11,6 @@ interface UserState {
   isLoading: boolean;
   errorMsg: string;
 }
-
-// const getFromAsync = async () => {
-//   const userInfo = await AsyncStorage.getItem('user');
-// };
 
 const initialState: UserState = {
   user: {
@@ -67,14 +64,24 @@ export const login = createAsyncThunk<
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setUserState: (state, action) => {
+      state.user = action.payload;
+    },
+
+    logout: (state) => {
+      state.user = { uid: '', email: '' };
+      removeUserFromStorage();
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.user = action.payload;
-      saveUserStorage(state.user);
+      const jsonUser = JSON.stringify(state.user);
+      AsyncStorage.setItem('user', jsonUser);
 
       state.isLoading = false;
     });
@@ -96,5 +103,7 @@ const userSlice = createSlice({
     });
   },
 });
+
+export const { setUserState, logout } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

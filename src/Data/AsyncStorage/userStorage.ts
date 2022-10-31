@@ -3,15 +3,10 @@ import { User } from '../user';
 
 export const saveUserStorage = async (user: User) => {
   try {
-    const jsonValue = JSON.stringify(user);
+    const jsonValue = JSON.stringify(user.uid);
     await AsyncStorage.setItem('user', jsonValue);
-    const keys = await AsyncStorage.getAllKeys();
-    console.log('TUT TUUUUT HÄR KOMMER ASYNC STORAGEEEEE');
-    console.log(keys);
-    console.log('TUT TUUUUT HÄR KOMMER DET VI SMACKAR IN I ASYNC STORAGEEEEE');
-    console.log(jsonValue);
   } catch (e) {
-    console.log('Något gick fel, försök igen');
+    console.log('Något gick fel, försök igen ', e);
   }
   console.log('Done.');
 };
@@ -19,11 +14,20 @@ export const saveUserStorage = async (user: User) => {
 export const getUserFromStorage = async () => {
   try {
     const getUser = await AsyncStorage.getItem('user');
-    console.log('TUUUUTUUUUUUT HÄR KOMMER VAD SOM LAGRAS');
-    console.log(getUser);
-    return getUser != null ? JSON.parse(getUser) : null;
+    if (getUser) {
+      const jsonValue = JSON.parse(getUser || '');
+      return jsonValue;
+    }
   } catch (e) {
-    console.log('Kunde ej hämta denna användare');
+    console.log('Kunde ej hämta denna användare ', e);
   }
   console.log('Done.');
+};
+
+export const removeUserFromStorage = async () => {
+  try {
+    await AsyncStorage.removeItem('user');
+  } catch (e) {
+    console.log('Kunde ej logga ut ', e);
+  }
 };

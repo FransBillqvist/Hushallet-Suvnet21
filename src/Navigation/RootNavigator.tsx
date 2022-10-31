@@ -40,64 +40,73 @@ export type RootStackParamList = {
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchemeName }) {
-  // const user = useAppSelector((state) => state.user.user)
+  const user = useAppSelector((state) => state.user.user);
   const activeHouse = useAppSelector((state) => state.household.singleHousehold);
   const homeName: string = activeHouse?.name || 'Household';
+  console.log(user);
   return (
     <NavigationContainer theme={getTheme(colorScheme)}>
       <RootStack.Navigator>
         {/* DELETE DEVSTARTSCREEN BEFORE GOING LIVE!!*/}
 
-        {/* {!user ? ( */}
-        {/* <> */}
-        <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
-        <RootStack.Screen
-          name='StartScreen'
-          component={StartScreen}
-          options={{ title: 'Inloggning' }}
-        />
-        <RootStack.Screen
-          name='RegisterScreen'
-          component={RegisterScreen}
-          options={{ title: 'Registrera ny användare' }}
-        />
-        {/* </> */}
-        {/* ) : ( */}
-        {/* <> */}
-        <RootStack.Screen name='HomeScreen' component={HomeScreen} options={{ title: homeName }} />
-        <RootStack.Screen
-          name='ManagerScreen'
-          component={ManagerScreen}
-          options={{ title: 'Välj hushåll' }}
-        />
-        <RootStack.Screen
-          name='ChoreScreen'
-          component={ChoreScreen}
-          options={{ title: 'Skapa en ny syssla' }}
-        />
-        <RootStack.Screen name='CreateScreen' component={CreateScreen} options={{ title: '' }} />
-        <RootStack.Screen
-          name='EditChoreScreen'
-          component={EditChoreScreen}
-          options={{ title: 'Redigera en syssla' }}
-        />
-        <RootStack.Screen
-          name='StatisticsScreen'
-          component={StatisticsScreen}
-          options={{ title: 'Statistik' }}
-        />
-        <RootStack.Screen
-          name='ProfileScreen'
-          component={ProfileScreen}
-          options={{ title: 'Skapa en ny profil' }}
-        />
-        <RootStack.Screen
-          name='DetailScreen'
-          component={DetailScreen}
-          options={{ title: 'Hushållet' }}
-        />
-        {/* </> */}
-        {/* )} */}
+        {user.uid === '' ? (
+          <>
+            <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
+            <RootStack.Screen
+              name='StartScreen'
+              component={StartScreen}
+              options={{ title: 'Inloggning' }}
+            />
+            <RootStack.Screen
+              name='RegisterScreen'
+              component={RegisterScreen}
+              options={{ title: 'Registrera ny användare' }}
+            />
+          </>
+        ) : (
+          <>
+            <RootStack.Screen
+              name='ManagerScreen'
+              component={ManagerScreen}
+              options={{ title: 'Välj hushåll' }}
+            />
+            <RootStack.Screen
+              name='HomeScreen'
+              component={HomeScreen}
+              options={{ title: homeName }}
+            />
+            <RootStack.Screen
+              name='ChoreScreen'
+              component={ChoreScreen}
+              options={{ title: 'Skapa en ny syssla' }}
+            />
+            <RootStack.Screen
+              name='CreateScreen'
+              component={CreateScreen}
+              options={{ title: '' }}
+            />
+            <RootStack.Screen
+              name='EditChoreScreen'
+              component={EditChoreScreen}
+              options={{ title: 'Redigera en syssla' }}
+            />
+            <RootStack.Screen
+              name='StatisticsScreen'
+              component={StatisticsScreen}
+              options={{ title: 'Statistik' }}
+            />
+            <RootStack.Screen
+              name='ProfileScreen'
+              component={ProfileScreen}
+              options={{ title: 'Skapa en ny profil' }}
+            />
+            <RootStack.Screen
+              name='DetailScreen'
+              component={DetailScreen}
+              options={{ title: 'Hushållet' }}
+            />
+          </>
+        )}
       </RootStack.Navigator>
     </NavigationContainer>
   );

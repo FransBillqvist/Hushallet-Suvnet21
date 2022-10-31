@@ -18,6 +18,7 @@ import {
   profileAlreadyInHousehold,
 } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
+import { logout } from '../Store/userSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
 
@@ -116,6 +117,15 @@ export default function ManagerScreen({ navigation }: Props) {
           </BigButton>
         </>
       )}
+      <HugeButton
+        theme={getTheme('light')}
+        style={{ marginTop: 40 }}
+        onPress={() => {
+          dispatch(logout());
+        }}
+      >
+        LOGGA UT
+      </HugeButton>
     </View>
   );
 }

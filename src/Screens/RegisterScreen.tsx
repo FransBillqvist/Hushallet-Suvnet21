@@ -6,6 +6,7 @@ import { Text, TextInput } from 'react-native-paper';
 import * as yup from 'yup';
 import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
+import { saveUserStorage } from '../Data/AsyncStorage/userStorage';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { useAppDispatch } from '../Store/store';
 import { registerUser } from '../Store/userSlice';
@@ -31,6 +32,7 @@ export default function RegisterScreen({ navigation }: Props) {
             .unwrap()
             .then(async (value) => {
               if (value.uid !== undefined) {
+                saveUserStorage(value);
                 navigation.navigate('ManagerScreen');
               }
             });
