@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { Surface } from 'react-native-paper';
+import { string } from 'yup';
 import { Chore } from '../../Data/chore';
+import { Profile } from '../../Data/profile';
 
 const windowWidth = Dimensions.get('window').width;
 
 interface Props {
-  children?: React.ReactNode;
+  children?: React.ReactNode | React.ReactNode[];
   chore?: Chore;
   style?: React.ComponentProps<typeof Surface>['style'];
 }
