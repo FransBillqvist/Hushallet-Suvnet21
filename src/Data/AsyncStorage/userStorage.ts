@@ -6,9 +6,9 @@ export const saveUserStorage = async (user: User) => {
     const jsonValue = JSON.stringify(user.uid);
     await AsyncStorage.setItem('user', jsonValue);
   } catch (e) {
-    console.log('Något gick fel, försök igen ', e);
+    console.log('saveUserStorage - Något gick fel, försök igen ', e);
   }
-  console.log('Done.');
+  console.log('saveUserStorage - Done.');
 };
 
 export const getUserFromStorage = async () => {
@@ -19,15 +19,15 @@ export const getUserFromStorage = async () => {
       return jsonValue;
     }
   } catch (e) {
-    console.log('Kunde ej hämta denna användare ', e);
+    console.log('getUserFromStorage - Kunde ej hämta denna användare ', e);
   }
-  console.log('Done.');
+  console.log('getUserFromStorage - Done.');
 };
 
 export const removeUserFromStorage = async () => {
   try {
     await AsyncStorage.removeItem('user');
   } catch (e) {
-    console.log('Kunde ej logga ut ', e);
+    console.log('removeUserFromStorage - Kunde ej logga ut användaren ', e);
   }
 };

@@ -1,28 +1,21 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { unwrapResult } from '@reduxjs/toolkit';
 import * as React from 'react';
-import { Button, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Avatar, Dialog, IconButton, Portal, Text, TextInput, Surface } from 'react-native-paper';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import BigButton from '../Components/Buttons/BigButton';
-import AvatarCard from '../Components/Cards/AvatarCard';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
-import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import {
   emptyChoreHistoryState,
   getChoreHistoryFromDbByProfileIds,
-  getChoreHistoryFromDbByChoreId,
-  getDateWhenLatestDoneChoreHistoryWithChoreId,
 } from '../Store/choreHistorySlice';
-import { getASingleChore, getChores } from '../Store/choreSlice';
-
-import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
-import { getProfilesByProfileId, profileAlreadyInHousehold } from '../Store/profileSlice';
-import { useAppDispatch, useAppSelector } from '../Store/store';
+import { getASingleChore } from '../Store/choreSlice';
 import { DaysPast } from '../Components/DaysCounter';
+import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
+import { useAppDispatch, useAppSelector } from '../Store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
@@ -75,10 +68,8 @@ export default function HomeScreen({ navigation }: Props) {
               >
                 <ChoreCard chore={chore}>
                   <Text>{chore.name}</Text>
-                  <DaysPast choreId={chore.id}></DaysPast>
                   <View style={{ alignItems: 'center' }}>
-                    <Text>{chore.frequency}</Text>
-
+                    <DaysPast choreId={chore.id} />
                     {activeProfile.role == 'owner' ? (
                       <IconButton
                         icon='pencil-outline'

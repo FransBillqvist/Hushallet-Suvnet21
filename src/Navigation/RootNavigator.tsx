@@ -6,7 +6,6 @@ import { getTheme } from '../Components/theme';
 import ChoreScreen from '../Screens/ChoreScreen';
 import CreateScreen from '../Screens/CreateScreen';
 import DetailScreen from '../Screens/DetailScreen';
-import DevStartScreen from '../Screens/DevStartScreen';
 import EditChoreScreen from '../Screens/EditChoreScreen';
 import HomeScreen from '../Screens/HomeScreen';
 import ManagerScreen from '../Screens/ManagerScreen';
@@ -15,7 +14,6 @@ import RegisterScreen from '../Screens/RegisterScreen';
 import StartScreen from '../Screens/StartScreen';
 import StatisticsScreen from '../Screens/StatisticsScreen';
 import { useAppSelector } from '../Store/store';
-// import { useAppSelector } from "../Store/store";
 
 declare global {
   namespace ReactNavigation {
@@ -34,7 +32,6 @@ export type RootStackParamList = {
   StatisticsScreen: undefined;
   ProfileScreen: undefined;
   DetailScreen: undefined;
-  DevStartScreen: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -43,15 +40,13 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
   const user = useAppSelector((state) => state.user.user);
   const activeHouse = useAppSelector((state) => state.household.singleHousehold);
   const homeName: string = activeHouse?.name || 'Household';
+  console.log('RootStackNavigator loggar ut user nedanför');
   console.log(user);
   return (
     <NavigationContainer theme={getTheme(colorScheme)}>
       <RootStack.Navigator>
-        {/* DELETE DEVSTARTSCREEN BEFORE GOING LIVE!!*/}
-
         {user.uid === '' ? (
           <>
-            <RootStack.Screen name='DevStartScreen' component={DevStartScreen} />
             <RootStack.Screen
               name='StartScreen'
               component={StartScreen}

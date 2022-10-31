@@ -80,14 +80,8 @@ export default function ProfileScreen({ navigation }: Props) {
               await dispatch(getChores(household.id));
               navigation.navigate('HomeScreen');
             }
-            // if (newProfile.fulfilled(navigation.navigate('HomeScreen')))
-            // else {
-            //   alert("Fel!");
-            //   navigation.navigate('HomeScreen');
-            // }}}
           }}
         >
-          {/* {// dispatch(setProfileName(name));\} */}
           Skapa
         </SmallButton>
       </View>

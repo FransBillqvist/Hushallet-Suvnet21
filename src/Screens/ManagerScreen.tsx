@@ -36,6 +36,15 @@ export default function ManagerScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Text style={{ fontSize: 24, marginBottom: 10 }}>Hushållsmöjligheter</Text>
 
+      <HugeButton
+        icon='plus-circle-outline'
+        theme={getTheme('light')} //Ändra till Setting för att få rätt färg
+        onPress={() => navigation.navigate('CreateScreen')}
+        style={styles.marginBot}
+      >
+        Skapa nytt hushåll
+      </HugeButton>
+
       {listOfHouses.map((house) => (
         <HugeButton
           icon='home'
@@ -61,14 +70,6 @@ export default function ManagerScreen({ navigation }: Props) {
           <Text>{house.name}</Text>
         </HugeButton>
       ))}
-      <HugeButton
-        icon='plus-circle-outline'
-        theme={getTheme('light')} //Ändra till Setting för att få rätt färg
-        onPress={() => navigation.navigate('CreateScreen')}
-        style={styles.marginBot}
-      >
-        Skapa nytt hushåll
-      </HugeButton>
 
       <HugeButton
         icon='plus-circle-outline'
