@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Button, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { IconButton, Text, TextInput } from 'react-native-paper';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
@@ -9,7 +10,7 @@ import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import {
   emptyChoreHistoryState,
-  getChoreHistoryFromDbByProfileId,
+  getChoreHistoryFromDbByProfileIds,
 } from '../Store/choreHistorySlice';
 import { getASingleChore } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
@@ -38,71 +39,75 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <View>
-          {chores.chores.map((chore) => (
-            <View key={chore.id}>
-              <Pressable
-                onPress={async () => {
-                  await dispatch(selectActiveHousehold(householdIddAsString))
-                    .unwrap()
-                    .then(async () => {
-                      await dispatch(getASingleChore(chore.id));
-                      navigation.navigate('DetailScreen');
-                    });
-                }}
-              >
-                <ChoreCard chore={chore}>
-                  <Text>{chore.name}</Text>
-                  <Text>{chore.frequency}</Text>
-                  {activeProfile.role == 'owner' ? (
-                    <IconButton
-                      icon='pencil-outline'
-                      onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
-                    ></IconButton>
-                  ) : (
-                    <></>
-                  )}
-                </ChoreCard>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-        <Button title='Lägg till en ny syssla' onPress={() => navigation.navigate('ChoreScreen')} />
-        <Button
-          title='Gå till statistiken'
-          onPress={async () => {
-            await dispatch(emptyChoreHistoryState());
-            profiles
-              .filter((pro) => pro.householdId == householdId)
-              .forEach(async (pro) => {
-                dispatch(await getChoreHistoryFromDbByProfileId(pro.id));
-              });
-            navigation.navigate('StatisticsScreen');
-          }}
-        />
-      </View>
-
-      <TextInput
-        style={styles.input}
-        outlineColor='transparent'
-        mode='outlined'
-        label='Titel'
-        placeholder={originalHouseHold.name}
-        value={originalHouseHold.name}
-        onChangeText={(text: string) => handleHouseholdChange('name', text)}
-      />
-
-      <BigButton
-        theme={getTheme('dark')}
-        onPress={() => {
-          dispatch(editHouseholdName(originalHouseHold));
-          navigation.navigate('HomeScreen');
+      <GestureRecognizer
+        style={styles.container}
+        onSwipeLeft={async () => {
+          await dispatch(emptyChoreHistoryState());
+          dispatch(
+            await getChoreHistoryFromDbByProfileIds(
+              profiles.filter((pro) => pro.householdId == householdId),
+            ),
+          );
+          navigation.navigate('StatisticsScreen');
         }}
-        style={{ marginTop: 10 }}
       >
-        Spara ändringar
-      </BigButton>
+        <View>
+          <View>
+            {chores.chores.map((chore) => (
+              <View key={chore.id}>
+                <Pressable
+                  onPress={async () => {
+                    await dispatch(selectActiveHousehold(householdIddAsString))
+                      .unwrap()
+                      .then(async () => {
+                        await dispatch(getASingleChore(chore.id));
+                        navigation.navigate('DetailScreen');
+                      });
+                  }}
+                >
+                  <ChoreCard chore={chore}>
+                    <Text>{chore.name}</Text>
+                    <Text>{chore.frequency}</Text>
+                    {activeProfile.role == 'owner' ? (
+                      <IconButton
+                        icon='pencil-outline'
+                        onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
+                      ></IconButton>
+                    ) : (
+                      <></>
+                    )}
+                  </ChoreCard>
+                </Pressable>
+              </View>
+            ))}
+          </View>
+          <Button
+            title='Lägg till en ny syssla'
+            onPress={() => navigation.navigate('ChoreScreen')}
+          />
+        </View>
+
+        <TextInput
+          style={styles.input}
+          outlineColor='transparent'
+          mode='outlined'
+          label='Titel'
+          placeholder={originalHouseHold.name}
+          value={originalHouseHold.name}
+          onChangeText={(text: string) => handleHouseholdChange('name', text)}
+        />
+
+        <BigButton
+          theme={getTheme('dark')}
+          onPress={() => {
+            dispatch(editHouseholdName(originalHouseHold));
+            navigation.navigate('HomeScreen');
+          }}
+          style={{ marginTop: 10 }}
+        >
+          Spara ändringar
+        </BigButton>
+      </GestureRecognizer>
     </ScrollView>
   );
 }
