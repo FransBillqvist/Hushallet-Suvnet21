@@ -10,16 +10,17 @@ import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { getChoreHistoryFromDbByChoreId, getDateWhenLatestDoneChoreHistoryWithChoreId } from '../Store/choreHistorySlice';
+import {
+  getChoreHistoryFromDbByChoreId,
+  getDateWhenLatestDoneChoreHistoryWithChoreId,
+} from '../Store/choreHistorySlice';
 import { getASingleChore, getChores } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
 import { getProfilesByProfileId, profileAlreadyInHousehold } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
-import  {DaysPast} from '../Components/DaysCounter';
+import { DaysPast } from '../Components/DaysCounter';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
-
-
 
 export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
@@ -57,10 +58,8 @@ export default function HomeScreen({ navigation }: Props) {
                   }}
                 >
                   <ChoreCard chore={chore}>
-                        <Text>{chore.name}
-                          <DaysPast choreId={chore.id}></DaysPast>
-                          </Text>
-                     
+                    <Text>{chore.name}</Text>
+                    <DaysPast choreId={chore.id}></DaysPast>
                     {activeProfile.role == 'owner' ? (
                       <IconButton
                         icon='pencil-outline'

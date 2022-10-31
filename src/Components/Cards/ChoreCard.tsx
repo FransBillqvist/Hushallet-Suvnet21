@@ -9,8 +9,7 @@ const windowWidth = Dimensions.get('window').width;
 
 interface Props {
   children?: React.ReactNode | React.ReactNode[];
-  chore?: Chore
-  
+  chore?: Chore;
 }
 
 const ChoreCard = (props: Props) => {

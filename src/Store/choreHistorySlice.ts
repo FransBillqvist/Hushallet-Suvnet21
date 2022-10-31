@@ -67,26 +67,31 @@ export const getDateWhenLatestDoneChoreHistoryWithChoreId = createAsyncThunk<Cho
   'household/getlastestdatefromchorehistory',
   async (choreId, thunkApi) => {
     try {
-      let worstcase:ChoreHistory = {id: '', choreId: choreId, profileId: '', date: new Date(0).toISOString().slice(0, 10)};
+      let worstcase: ChoreHistory = {
+        id: '',
+        choreId: choreId,
+        profileId: '',
+        date: new Date(0).toISOString().slice(0, 10),
+      };
       const historyRef = collection(db, 'ChoreHistory');
       const q = query(historyRef, where('choreId', '==', choreId));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const loopdate = new Date(doc.data().date);
-        if(loopdate > new Date(worstcase.date)) {
+        if (loopdate > new Date(worstcase.date)) {
           worstcase = doc.data() as ChoreHistory;
-        }});
-         const choreHistories: ChoreHistory = worstcase;
-        return choreHistories;
-      }
-      catch (error) {
-        return thunkApi.rejectWithValue(error);
-      }
-    },
-    );
-    
-    // const findProfileId = querySnapshot.docs.map((doc) => doc.data().profileId);
-    // const findChoreHistoryId = querySnapshot.docs.map((doc) => doc.data().id);
+        }
+      });
+      const choreHistories: ChoreHistory = worstcase;
+      return choreHistories;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+// const findProfileId = querySnapshot.docs.map((doc) => doc.data().profileId);
+// const findChoreHistoryId = querySnapshot.docs.map((doc) => doc.data().id);
 
 const choreHistorySlice = createSlice({
   name: 'choreHistory',
@@ -138,7 +143,6 @@ const choreHistorySlice = createSlice({
       state.isLoading = false;
       console.log('rejected');
     });
-
 
     //getDateWhenLatestDoneChoreHistoryWithChoreId
     builder.addCase(getDateWhenLatestDoneChoreHistoryWithChoreId.pending, (state) => {

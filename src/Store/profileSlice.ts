@@ -153,9 +153,9 @@ export const getProfilesByProfileId = createAsyncThunk<Profile, string, { reject
       const q = query(collection(db, 'Profile'), where('id', '==', profileId));
       const querySnapshot = await getDocs(q);
       const profile = querySnapshot.docs.map((doc) => doc.data() as Profile);
-      console.log('Jag är på rad 156')
+      console.log('Jag är på rad 156');
       const currentProfile = profile[0];
-      console.log(currentProfile)
+      console.log(currentProfile);
       return currentProfile;
     } catch (error) {
       console.error(error);
