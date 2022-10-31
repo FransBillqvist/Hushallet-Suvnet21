@@ -6,7 +6,7 @@ export const saveUserStorage = async (user: User) => {
     const jsonValue = JSON.stringify(user.uid);
     await AsyncStorage.setItem('user', jsonValue);
   } catch (e) {
-    console.log('Något gick fel, försök igen ', e);
+    console.log('saveUserStorage - Något gick fel, försök igen ', e);
   }
   console.log('saveUserStorage - Done.');
 };
@@ -19,7 +19,7 @@ export const getUserFromStorage = async () => {
       return jsonValue;
     }
   } catch (e) {
-    console.log('Kunde ej hämta denna användare ', e);
+    console.log('getUserFromStorage - Kunde ej hämta denna användare ', e);
   }
   console.log('getUserFromStorage - Done.');
 };
