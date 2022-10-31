@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Button, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { IconButton, Text, TextInput } from 'react-native-paper';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
@@ -21,17 +21,18 @@ type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const chores = useAppSelector((state) => state.chore);
-  const householdId = useAppSelector((state) => state.household.singleHousehold?.id);
-  const householdCode = useAppSelector((state) => state.household.singleHousehold?.code);
-  const householdIddAsString = householdId as string;
-  const householdCodeAsString = householdCode as string;
-  const profiles = useAppSelector((state) => state.profile.profiles);
+  const activeHouseHold = useAppSelector((state) => state.household.singleHousehold);
   const activeProfile = useAppSelector((state) => state.profile.currentProfile);
+  const profiles = useAppSelector((state) => state.profile.profiles);
+
   const [originalHouseHold, editedHousehold] = React.useState<Household>({
-    id: householdIddAsString,
-    name: '',
-    code: householdCodeAsString,
+    id: activeHouseHold?.id || '',
+    name: activeHouseHold?.name || '',
+    code: activeHouseHold?.code || '',
   });
+  const [houseModalVisible, setHouseModalVisible] = React.useState(false);
+  const showHouseModal = () => setHouseModalVisible(true);
+  const hideHouseModal = () => setHouseModalVisible(false);
 
   const handleHouseholdChange = (key: string, value: string | number) => {
     editedHousehold((prev) => ({ ...prev, [key]: value }));
@@ -45,28 +46,28 @@ export default function HomeScreen({ navigation }: Props) {
           await dispatch(emptyChoreHistoryState());
           dispatch(
             await getChoreHistoryFromDbByProfileIds(
-              profiles.filter((pro) => pro.householdId == householdId),
+              profiles.filter((pro) => pro.householdId == activeHouseHold?.id),
             ),
           );
           navigation.navigate('StatisticsScreen');
         }}
       >
         <View>
-          <View>
-            {chores.chores.map((chore) => (
-              <View key={chore.id}>
-                <Pressable
-                  onPress={async () => {
-                    await dispatch(selectActiveHousehold(householdIddAsString))
-                      .unwrap()
-                      .then(async () => {
-                        await dispatch(getASingleChore(chore.id));
-                        navigation.navigate('DetailScreen');
-                      });
-                  }}
-                >
-                  <ChoreCard chore={chore}>
-                    <Text>{chore.name}</Text>
+          {chores.chores.map((chore) => (
+            <View key={chore.id}>
+              <Pressable
+                onPress={async () => {
+                  await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
+                    .unwrap()
+                    .then(async () => {
+                      await dispatch(getASingleChore(chore.id));
+                      navigation.navigate('DetailScreen');
+                    });
+                }}
+              >
+                <ChoreCard chore={chore}>
+                  <Text>{chore.name}</Text>
+                  <View style={{ alignItems: 'center' }}>
                     <Text>{chore.frequency}</Text>
                     {activeProfile.role == 'owner' ? (
                       <IconButton
@@ -76,37 +77,63 @@ export default function HomeScreen({ navigation }: Props) {
                     ) : (
                       <></>
                     )}
-                  </ChoreCard>
-                </Pressable>
-              </View>
-            ))}
-          </View>
-          <Button
-            title='Lägg till en ny syssla'
-            onPress={() => navigation.navigate('ChoreScreen')}
-          />
+                  </View>
+                </ChoreCard>
+              </Pressable>
+            </View>
+          ))}
         </View>
 
-        <TextInput
-          style={styles.input}
-          outlineColor='transparent'
-          mode='outlined'
-          label='Titel'
-          placeholder={originalHouseHold.name}
-          value={originalHouseHold.name}
-          onChangeText={(text: string) => handleHouseholdChange('name', text)}
-        />
-
-        <BigButton
-          theme={getTheme('dark')}
-          onPress={() => {
-            dispatch(editHouseholdName(originalHouseHold));
-            navigation.navigate('HomeScreen');
-          }}
-          style={{ marginTop: 10 }}
-        >
-          Spara ändringar
-        </BigButton>
+        {activeProfile.role == 'owner' ? (
+          <View style={styles.smallButtonContainer}>
+            <View style={styles.smallButtonPosition}>
+              <BigButton
+                theme={getTheme('dark')}
+                onPress={() => navigation.navigate('ChoreScreen')}
+              >
+                Lägg till
+              </BigButton>
+              <Portal>
+                <Dialog
+                  visible={houseModalVisible}
+                  onDismiss={hideHouseModal}
+                  style={{
+                    maxHeight: 200,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Dialog.Title>Byt hushållsnamn</Dialog.Title>
+                  <Dialog.Content style={{ maxHeight: 150, marginBottom: 10 }}>
+                    <TextInput
+                      placeholder={originalHouseHold.name}
+                      value={originalHouseHold.name}
+                      onChangeText={(text: string) => handleHouseholdChange('name', text)}
+                      style={styles.inputTextField}
+                    />
+                    <Dialog.Actions style={{ marginTop: 10, padding: 0 }}>
+                      <BigButton
+                        theme={getTheme('dark')}
+                        onPress={async () => (
+                          setHouseModalVisible(false),
+                          await dispatch(editHouseholdName(originalHouseHold)),
+                          await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
+                        )}
+                      >
+                        Spara
+                      </BigButton>
+                    </Dialog.Actions>
+                  </Dialog.Content>
+                </Dialog>
+              </Portal>
+              <BigButton theme={getTheme('dark')} onPress={showHouseModal}>
+                Ändra namn
+              </BigButton>
+            </View>
+          </View>
+        ) : (
+          <></>
+        )}
       </GestureRecognizer>
     </ScrollView>
   );
@@ -121,5 +148,20 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     borderRadius: 10,
+  },
+  smallButtonContainer: {
+    flex: 1,
+    paddingHorizontal: 12,
+  },
+  smallButtonPosition: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 5,
+  },
+  inputTextField: {
+    marginTop: 20,
+    borderRadius: 7,
+    fontSize: 15,
+    borderWidth: 1,
   },
 });

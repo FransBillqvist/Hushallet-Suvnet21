@@ -19,13 +19,6 @@ const initialState: HouseholdsState<Household> = {
   singleHousehold: { id: '', name: '', code: '' },
 };
 
-export const setHouseholdName = createAsyncThunk<string, string>(
-  'user/sethouseholdname',
-  async (name, thunkApi) => {
-    return name;
-  },
-);
-
 export const createNewHousehold = createAsyncThunk<Household, Household>(
   'household/createnewhousehold',
   async (household, thunkApi) => {
@@ -140,7 +133,14 @@ export const selectActiveHousehold = createAsyncThunk<Household, string, { rejec
 export const addHouseholdToHouseholdList = createAsyncThunk<Household, Household>(
   'household/addHouseholdtohouseholdlist',
   (household, thunkApi) => {
-    return household;
+    try {
+      return household;
+    } catch (error) {
+      console.error(error);
+    }
+    return thunkApi.rejectWithValue(
+      'Något dåligt hände och hushållet kunde inte läggas till. Kontakta support!',
+    );
   },
 );
 
@@ -153,21 +153,6 @@ const householdSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(setHouseholdName.pending, (state) => {
-      state.isLoading = true;
-      console.log('pending');
-    });
-    builder.addCase(setHouseholdName.fulfilled, (state, action) => {
-      state.isLoading = false;
-      // state.name = action.payload;
-      console.log('fulfilled');
-    });
-    builder.addCase(setHouseholdName.rejected, (state, action) => {
-      state.isLoading = false;
-      // state.error = action.payload || 'Unknown error';
-      console.log('rejected');
-    });
-
     builder.addCase(createNewHousehold.pending, (state) => {
       state.isLoading = true;
       console.log('pending');
@@ -179,7 +164,7 @@ const householdSlice = createSlice({
     });
     builder.addCase(createNewHousehold.rejected, (state) => {
       state.isLoading = false;
-      console.log('rejected');
+      console.log('create new household rejected');
     });
 
     builder.addCase(getHouseHoldByCode.pending, (state) => {
@@ -193,7 +178,7 @@ const householdSlice = createSlice({
     });
     builder.addCase(getHouseHoldByCode.rejected, (state) => {
       state.isLoading = false;
-      console.log('rejected');
+      console.log('get householdbycode rejected');
     });
 
     builder.addCase(getHouseholdByProfileId.pending, (state) => {
@@ -207,7 +192,7 @@ const householdSlice = createSlice({
     });
     builder.addCase(getHouseholdByProfileId.rejected, (state) => {
       state.isLoading = false;
-      console.log('rejected');
+      console.log('gethouseholdbyprofile rejected');
     });
 
     builder.addCase(editHouseholdName.pending, (state) => {
@@ -226,7 +211,7 @@ const householdSlice = createSlice({
     });
     builder.addCase(editHouseholdName.rejected, (state) => {
       state.isLoading = false;
-      console.log('rejected');
+      console.log('edithouseholdname rejected');
     });
 
     //addAllHouseholdsFromProfile
