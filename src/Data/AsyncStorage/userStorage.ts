@@ -8,7 +8,7 @@ export const saveUserStorage = async (user: User) => {
   } catch (e) {
     console.log('Något gick fel, försök igen ', e);
   }
-  console.log('Done.');
+  console.log('saveUserStorage - Done.');
 };
 
 export const getUserFromStorage = async () => {
@@ -21,13 +21,13 @@ export const getUserFromStorage = async () => {
   } catch (e) {
     console.log('Kunde ej hämta denna användare ', e);
   }
-  console.log('Done.');
+  console.log('getUserFromStorage - Done.');
 };
 
 export const removeUserFromStorage = async () => {
   try {
     await AsyncStorage.removeItem('user');
   } catch (e) {
-    console.log('Kunde ej logga ut ', e);
+    console.log('removeUserFromStorage - Kunde ej logga ut användaren ', e);
   }
 };
