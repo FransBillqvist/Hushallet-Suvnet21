@@ -153,6 +153,9 @@ const profileSlice = createSlice({
     flushCurrentProfile: (state) => {
       state.currentProfile = initialState.currentProfile;
     },
+    flushProfileList: (state) => {
+      state.profiles = [];
+    },
   },
   extraReducers: (builder) => {
     //setProfileName
@@ -265,6 +268,6 @@ const profileSlice = createSlice({
   },
 });
 
-export const { flushCurrentProfile } = profileSlice.actions;
+export const { flushCurrentProfile, flushProfileList } = profileSlice.actions;
 
 export const profileReducer = profileSlice.reducer;

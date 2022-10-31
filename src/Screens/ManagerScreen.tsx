@@ -7,10 +7,11 @@ import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { emptyChoreHistoryState } from '../Store/choreHistorySlice';
-import { getChores } from '../Store/choreSlice';
-import { getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
+import { flushChores, getChores } from '../Store/choreSlice';
+import { flushHousehold, getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
 import {
   flushCurrentProfile,
+  flushProfileList,
   getCurrentAmountOfProfiles,
   getCurrentProfile,
   getProfilesByUserId,
@@ -122,6 +123,11 @@ export default function ManagerScreen({ navigation }: Props) {
         style={{ marginTop: 40 }}
         onPress={() => {
           dispatch(logout());
+          dispatch(flushHousehold());
+          dispatch(flushCurrentProfile());
+          dispatch(flushProfileList());
+          dispatch(flushChores());
+          dispatch(emptyChoreHistoryState());
         }}
       >
         LOGGA UT
