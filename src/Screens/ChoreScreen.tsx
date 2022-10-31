@@ -74,8 +74,13 @@ export default function ChoreScreen({ navigation }: Props) {
             dispatch(setChoreFrequency(chore.frequency));
             dispatch(setChoreDemanding(chore.demanding));
             dispatch(addChoreToDb(chore));
-            const historyDummy = { id: '-' + nanoId(10), choreId: chore.id, date: new Date().toISOString(), profileId: 'null' };
-            dispatch(addChoreHistoryToDb(historyDummy))
+            const historyDummy = {
+              id: '-' + nanoId(10),
+              choreId: chore.id,
+              date: new Date().toISOString(),
+              profileId: 'null',
+            };
+            dispatch(addChoreHistoryToDb(historyDummy));
             navigation.navigate('HomeScreen');
           }}
           initialValues={{ name: '', description: '' }}
