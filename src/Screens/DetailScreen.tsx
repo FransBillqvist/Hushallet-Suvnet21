@@ -24,7 +24,7 @@ export default function DetailScreen(navigator: Props) {
       <View style={styles.container}>
         <ChoreCard style={{ marginTop: 14 }}>
           <Text>{chores.name}</Text>
-          <Text>{chores.frequency}</Text>
+          <Text>Skall göras var {chores.frequency}:e dag</Text>
         </ChoreCard>
         <ChoreCard style={{ minHeight: 129 }}>
           <Text>{chores.description}</Text>

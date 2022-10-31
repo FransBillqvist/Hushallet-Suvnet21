@@ -73,8 +73,6 @@ export const addAllHouseholdsFromProfile = createAsyncThunk<Household[], Profile
         const householdids = profiles.map((pro) => pro.householdId);
         const q = query(collection(db, 'Household'), where('id', 'in', householdids));
         const querySnapshot = await getDocs(q);
-        console.log('getDocs() ');
-        console.log(querySnapshot.docs);
         const result = querySnapshot.docs.map((doc) => doc.data() as Household);
         console.log('result FROM addAllHouseholdsFromProfile');
         console.log(result);
@@ -95,7 +93,6 @@ export const editHouseholdName = createAsyncThunk<Household, Household, { reject
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
         const id = querySnapshot.docs[0].id;
-
         const edit = doc(db, 'Household', id);
         await updateDoc(edit, {
           name: Household.name,
@@ -208,10 +205,6 @@ const householdSlice = createSlice({
       const index = state.households.findIndex((h) => h.id == action.payload.id);
       state.households.splice(index, 1, action.payload);
       console.log('fulfilled');
-      console.log('Here comes the payload');
-      console.log(action.payload);
-      console.log('Here comes the household array');
-      console.log(state.households);
     });
     builder.addCase(editHouseholdName.rejected, (state) => {
       state.isLoading = false;
