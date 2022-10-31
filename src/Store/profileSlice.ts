@@ -174,6 +174,9 @@ const profileSlice = createSlice({
     flushCurrentProfile: (state) => {
       state.currentProfile = initialState.currentProfile;
     },
+    flushProfileList: (state) => {
+      state.profiles = [];
+    },
   },
   extraReducers: (builder) => {
     //setProfileName
@@ -259,6 +262,9 @@ const profileSlice = createSlice({
     builder.addCase(getProfilesByUserId.fulfilled, (state, action) => {
       state.isLoading = false;
       state.profiles.push(...action.payload);
+      state.profiles = state.profiles.filter(
+        (value, index, self) => index === self.findIndex((pro) => pro.id === value.id),
+      ); // Removes duplicates, es6 magic
       console.log('getProfilesByUserId fulfilled');
     });
     builder.addCase(getProfilesByUserId.rejected, (state) => {
@@ -297,6 +303,6 @@ const profileSlice = createSlice({
   },
 });
 
-export const { flushCurrentProfile } = profileSlice.actions;
+export const { flushCurrentProfile, flushProfileList } = profileSlice.actions;
 
 export const profileReducer = profileSlice.reducer;

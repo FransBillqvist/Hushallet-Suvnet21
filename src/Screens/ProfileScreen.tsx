@@ -10,6 +10,7 @@ import { filterAvatarList } from '../Components/filterAvatarList';
 import { getTheme } from '../Components/theme';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { getChores } from '../Store/choreSlice';
 import { addHouseholdToHouseholdList, createNewHousehold } from '../Store/householdSlice';
 import { addNewProfile } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
@@ -75,7 +76,8 @@ export default function ProfileScreen({ navigation }: Props) {
               if (householdMember == 'owner') dispatch(createNewHousehold(household));
 
               await dispatch(addNewProfile(newProfile)).unwrap();
-              dispatch(addHouseholdToHouseholdList(household));
+              await dispatch(addHouseholdToHouseholdList(household));
+              await dispatch(getChores(household.id));
               navigation.navigate('HomeScreen');
             }
             // if (newProfile.fulfilled(navigation.navigate('HomeScreen')))

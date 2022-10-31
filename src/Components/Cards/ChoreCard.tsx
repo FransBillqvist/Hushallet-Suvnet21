@@ -10,10 +10,11 @@ const windowWidth = Dimensions.get('window').width;
 interface Props {
   children?: React.ReactNode | React.ReactNode[];
   chore?: Chore;
+  style?: React.ComponentProps<typeof Surface>['style'];
 }
 
 const ChoreCard = (props: Props) => {
-  return <Surface style={styles.surface}>{props.children}</Surface>;
+  return <Surface style={[styles.surface, props.style]}>{props.children}</Surface>;
 };
 
 const styles = StyleSheet.create({
