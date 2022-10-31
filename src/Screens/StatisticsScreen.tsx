@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import ChorePieChart from '../Components/ChorePieChart';
 import { filterCurrentWeek } from '../Components/filterChoreHistory';
 import { PieChart } from '../Components/PieChart';
@@ -92,11 +93,16 @@ export default function StatisticsScreen({ navigation }: Props) {
   });
 
   return (
-    <View style={styles.container}>
-      <Text variant='headlineMedium'>Nuvarande vecka</Text>
-      <ChorePieChart width={500} height={300} hasLegend data={totalData} />
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>{everyPieData}</View>
-    </View>
+    <GestureRecognizer
+      style={styles.container}
+      onSwipeRight={() => navigation.navigate('HomeScreen')}
+    >
+      <View style={styles.container}>
+        <Text variant='headlineMedium'>Nuvarande vecka</Text>
+        <ChorePieChart width={500} height={300} hasLegend data={totalData} />
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>{everyPieData}</View>
+      </View>
+    </GestureRecognizer>
   );
 }
 
