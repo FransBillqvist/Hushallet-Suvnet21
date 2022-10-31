@@ -36,16 +36,20 @@ export default function StartScreen({ navigation }: Props) {
       <Formik
         validationSchema={logInValidationSchema}
         onSubmit={async (values, actions) => {
-          actions.resetForm();
-          await dispatch(login(values))
-            .unwrap()
-            .then(async (value) => {
-              if (value.uid !== undefined) {
-                await dispatch(getProfilesByUserId(value.uid));
-                saveUserStorage(value);
-                navigation.navigate('ManagerScreen');
-              }
-            });
+          try {
+            actions.resetForm();
+            await dispatch(login(values))
+              .unwrap()
+              .then(async (value) => {
+                if (value.uid !== undefined) {
+                  await dispatch(getProfilesByUserId(value.uid));
+                  saveUserStorage(value);
+                  navigation.navigate('ManagerScreen');
+                }
+              });
+          } catch {
+            console.error(Error);
+          }
           console.log(values);
         }}
         initialValues={{ email: '', password: '' }}
