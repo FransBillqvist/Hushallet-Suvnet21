@@ -9,7 +9,7 @@ import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import {
   emptyChoreHistoryState,
-  getChoreHistoryFromDbByProfileId,
+  getChoreHistoryFromDbByProfileIds,
 } from '../Store/choreHistorySlice';
 import { getASingleChore } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
@@ -73,11 +73,11 @@ export default function HomeScreen({ navigation }: Props) {
           title='Gå till statistiken'
           onPress={async () => {
             await dispatch(emptyChoreHistoryState());
-            profiles
-              .filter((pro) => pro.householdId == householdId)
-              .forEach(async (pro) => {
-                dispatch(await getChoreHistoryFromDbByProfileId(pro.id));
-              });
+            dispatch(
+              await getChoreHistoryFromDbByProfileIds(
+                profiles.filter((pro) => pro.householdId == householdId),
+              ),
+            );
             navigation.navigate('StatisticsScreen');
           }}
         />
