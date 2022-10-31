@@ -6,7 +6,6 @@ import { ChoreHistory } from '../Data/choreHistory';
 import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
 
-
 interface ChoreHistoryState {
   isLoading: boolean;
   error?: string;

@@ -11,7 +11,12 @@ import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { emptyChoreHistoryState, getChoreHistoryFromDbByProfileIds, getChoreHistoryFromDbByChoreId, getDateWhenLatestDoneChoreHistoryWithChoreId } from '../Store/choreHistorySlice';
+import {
+  emptyChoreHistoryState,
+  getChoreHistoryFromDbByProfileIds,
+  getChoreHistoryFromDbByChoreId,
+  getDateWhenLatestDoneChoreHistoryWithChoreId,
+} from '../Store/choreHistorySlice';
 import { getASingleChore, getChores } from '../Store/choreSlice';
 
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
@@ -82,7 +87,6 @@ export default function HomeScreen({ navigation }: Props) {
                     ) : (
                       <></>
                     )}
-
                   </View>
                 </ChoreCard>
               </Pressable>
