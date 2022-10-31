@@ -72,20 +72,11 @@ export const getDateWhenLatestDoneChoreHistoryWithChoreId = createAsyncThunk<Cho
       const q = query(historyRef, where('choreId', '==', choreId));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        if (doc.exists()){
-          console.log('jag finns !')
-
-        }else{
-          console.log('jag finns inte')
-        }
         const loopdate = new Date(doc.data().date);
-        console.log(loopdate);
-        console.log(new Date(worstcase.date));
         if(loopdate > new Date(worstcase.date)) {
           worstcase = doc.data() as ChoreHistory;
         }});
-        const choreHistories: ChoreHistory = worstcase;
-        console.log(choreHistories);
+         const choreHistories: ChoreHistory = worstcase;
         return choreHistories;
       }
       catch (error) {

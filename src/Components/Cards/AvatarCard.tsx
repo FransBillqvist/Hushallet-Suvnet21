@@ -7,7 +7,6 @@ interface Props {
   children?: React.ReactNode;
   onTouchedEnd?: (event: GestureResponderEvent) => void;
   isActive: boolean;
-  profile?: Promise<string[] | Profile[] | undefined>
 }
 
 const AvatarCard = (props: Props) => {

@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { unwrapResult } from '@reduxjs/toolkit';
 import * as React from 'react';
 import { Button, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Avatar, IconButton, Text, TextInput } from 'react-native-paper';
+import { Avatar, IconButton, Text, TextInput, Surface } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import AvatarCard from '../Components/Cards/AvatarCard';
 import ChoreCard from '../Components/Cards/ChoreCard';
@@ -14,6 +15,7 @@ import { getASingleChore, getChores } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
 import { getProfilesByProfileId, profileAlreadyInHousehold } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
+import  DaysPast from '../Components/DaysCounter';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
@@ -27,71 +29,11 @@ export default function HomeScreen({ navigation }: Props) {
   const householdIddAsString = householdId as string;
   const householdCodeAsString = householdCode as string;
   const activeProfile = useAppSelector((state) => state.profile.currentProfile);
-  const currentDate = new Date();
   const [originalHouseHold, editedHousehold] = React.useState<Household>({
     id: householdIddAsString,
     name: '',
     code: householdCodeAsString,
   });
-
-      async function DaysPast<Array>(choreId: string) {
-        try{
-        // const choreInList = await dispatch(getChores(householdIddAsString)).unwrap();
-        // const choreHistory = await dispatch(getChoreHistoryFromDbByChoreId(choreInList[0].id)).unwrap();
-        const lastestChore = await dispatch(getDateWhenLatestDoneChoreHistoryWithChoreId(choreId)).unwrap();
-        
-        const choreDoneDate= new Date(lastestChore.date);
-        const diffrenceInSec = Math.abs(currentDate.getTime() - choreDoneDate.getTime());
-        const diffrenceInDays = Math.ceil(diffrenceInSec / (1000 * 3600 * 24));
-        
-        console.log(diffrenceInSec)
-        console.log('ÄR RESULT');
-        console.log(choreId)
-        console.log(diffrenceInDays);
-        
-      
-        const numberToString = diffrenceInDays.toString();
-        if(diffrenceInSec < 86400000 )
-        {
-          DoneBy(choreId)
-        } 
-        const result: string[] = [numberToString];
-        console.log(result);
-        return result;
-        // const result = diffrenceInDays.toString();
-        // const numberOfDays: React.ElementType = () => {
-        //   return <>{diffrenceInDays}</>;
-        // };
-
-        } catch (error) {
-          console.log(error);
-        }    
-    }
-
-    async function DoneBy<T>(choreId:string) {
-      try{
-        const choresDoneByProfile: Profile[] = [];
-        const DateAsString = new Date().toISOString().slice(0, 10);
-        const choreHistory = await dispatch(getChoreHistoryFromDbByChoreId(choreId)).unwrap();
-        choreHistory.forEach(async element => {
-          const forEachDate = new Date(element.date).toISOString().slice(0,10);
-          console.log(forEachDate);
-          if(forEachDate === DateAsString)
-          {
-            const profileFound = await dispatch(getProfilesByProfileId(element.profileId)).unwrap();
-            choresDoneByProfile.push(profileFound);
-          }
-        });
-        
-        return choresDoneByProfile;
-      }
-      catch(error)
-      {
-        console.log(error);
-      }
-    }
-    
-  
 
   const handleHouseholdChange = (key: string, value: string | number) => {
     editedHousehold((prev) => ({ ...prev, [key]: value }));
@@ -115,11 +57,9 @@ export default function HomeScreen({ navigation }: Props) {
                   }}
                 >
                   <ChoreCard chore={chore}>
-                    <AvatarCard isActive={true} profile={(DaysPast(chore.id))}><>{DaysPast(chore.id)}</></AvatarCard>
-                    <ScrollView>
-                        <View>{}</View>
-                      <Text>
-                      </Text></ScrollView>
+                    <Text>a</Text>
+                        <View><Text><DaysPast choreId={chore.id}/></Text></View>
+                     
                     {activeProfile.role == 'owner' ? (
                       <IconButton
                         icon='pencil-outline'
