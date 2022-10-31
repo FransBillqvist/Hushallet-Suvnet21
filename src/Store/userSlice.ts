@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import app from '../Config/firebase';
+import { saveUserStorage } from '../Data/AsyncStorage/userStorage';
 import { User } from '../Data/user';
 
 interface UserState {
@@ -10,8 +11,15 @@ interface UserState {
   errorMsg: string;
 }
 
+// const getFromAsync = async () => {
+//   const userInfo = await AsyncStorage.getItem('user');
+// };
+
 const initialState: UserState = {
-  user: { uid: '', email: '' },
+  user: {
+    uid: '',
+    email: '',
+  },
   isLoading: false,
   errorMsg: '',
 };
@@ -66,6 +74,8 @@ const userSlice = createSlice({
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.user = action.payload;
+      saveUserStorage(state.user);
+
       state.isLoading = false;
     });
     builder.addCase(registerUser.rejected, (state) => {

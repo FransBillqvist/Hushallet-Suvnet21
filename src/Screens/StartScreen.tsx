@@ -6,6 +6,7 @@ import { Button, Text, TextInput } from 'react-native-paper';
 import * as yup from 'yup';
 import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
+import { getUserFromStorage } from '../Data/AsyncStorage/userStorage';
 import { useTogglePasswordVisibility } from '../Hooks/useTogglePasswordVisibility';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getProfilesByUserId } from '../Store/profileSlice';
@@ -22,6 +23,11 @@ const logInValidationSchema = yup.object().shape({
 export default function StartScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+
+  const lsUser = getUserFromStorage().then((value) => value);
+
+  // if(lsUser.then((value) => value.)) {
+  getUserFromStorage();
 
   return (
     <View style={styles.container}>
