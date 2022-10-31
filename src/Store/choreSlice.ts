@@ -166,7 +166,19 @@ export const setChoreFrequency = createAsyncThunk<number, number, { rejectValue:
 const choreSlice = createSlice({
   name: 'chores',
   initialState,
-  reducers: {},
+  reducers: {
+    flushChores: (state) => {
+      state.chores = [];
+      state.singleChore = {
+        id: '',
+        name: '',
+        description: '',
+        demanding: 0,
+        frequency: 0,
+        householdId: '',
+      };
+    },
+  },
   extraReducers: (builder) => {
     //addChore
     builder.addCase(addChoreToDb.pending, (state) => {
@@ -276,5 +288,7 @@ const choreSlice = createSlice({
     });
   },
 });
+
+export const { flushChores } = choreSlice.actions;
 
 export const choreReducer = choreSlice.reducer;

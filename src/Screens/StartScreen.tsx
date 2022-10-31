@@ -6,11 +6,12 @@ import { Button, Text, TextInput } from 'react-native-paper';
 import * as yup from 'yup';
 import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
+import { getUserFromStorage, saveUserStorage } from '../Data/AsyncStorage/userStorage';
 import { useTogglePasswordVisibility } from '../Hooks/useTogglePasswordVisibility';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { getProfilesByUserId } from '../Store/profileSlice';
 import { useAppDispatch } from '../Store/store';
-import { login } from '../Store/userSlice';
+import { login, setUserState } from '../Store/userSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StartScreen'>;
 
@@ -23,6 +24,13 @@ export default function StartScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 
+  getUserFromStorage().then(async (value) => {
+    if (value) {
+      await dispatch(getProfilesByUserId(value));
+      dispatch(setUserState(value));
+    }
+  });
+
   return (
     <View style={styles.container}>
       <Formik
@@ -34,6 +42,7 @@ export default function StartScreen({ navigation }: Props) {
             .then(async (value) => {
               if (value.uid !== undefined) {
                 await dispatch(getProfilesByUserId(value.uid));
+                saveUserStorage(value);
                 navigation.navigate('ManagerScreen');
               }
             });
