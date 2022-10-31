@@ -11,6 +11,7 @@ import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { ChoreCreate } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { addChoreHistoryToDb } from '../Store/choreHistorySlice';
 import {
   addChoreToDb,
   setChoreDemanding,
@@ -73,6 +74,13 @@ export default function ChoreScreen({ navigation }: Props) {
             dispatch(setChoreFrequency(chore.frequency));
             dispatch(setChoreDemanding(chore.demanding));
             dispatch(addChoreToDb(chore));
+            const historyDummy = {
+              id: '-' + nanoId(10),
+              choreId: chore.id,
+              date: new Date().toISOString(),
+              profileId: 'null',
+            };
+            dispatch(addChoreHistoryToDb(historyDummy));
             navigation.navigate('HomeScreen');
           }}
           initialValues={{ name: '', description: '' }}
