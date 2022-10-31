@@ -2,7 +2,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import ChorePieChart from '../Components/ChorePieChart';
+import { filterCurrentWeek } from '../Components/filterChoreHistory';
 import { PieChart } from '../Components/PieChart';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { useAppSelector } from '../Store/store';
@@ -49,9 +51,11 @@ export default function StatisticsScreen({ navigation }: Props) {
   const choresInHousehold = useAppSelector((state) => state.chore.chores);
   const choreHistories = useAppSelector((state) => state.choreHistory.choresHistory);
 
+  const choreHistoryForCurrentWeek = filterCurrentWeek(choreHistories);
+
   profilesInHousehold.forEach((pro) => {
     let contribution = 0;
-    const choresDoneByProfile = choreHistories.filter((cH) => cH.profileId == pro.id);
+    const choresDoneByProfile = choreHistoryForCurrentWeek.filter((cH) => cH.profileId == pro.id);
     if (choresDoneByProfile.length > 0) {
       choresDoneByProfile.forEach((cH) => {
         contribution += choresInHousehold.find((chore) => chore.id == cH.choreId)?.demanding || 0;
@@ -68,7 +72,9 @@ export default function StatisticsScreen({ navigation }: Props) {
   });
 
   choresInHousehold.forEach((choreHousehold) => {
-    const choreHasBeenDone = choreHistories.filter((cH) => cH.choreId == choreHousehold.id);
+    const choreHasBeenDone = choreHistoryForCurrentWeek.filter(
+      (cH) => cH.choreId == choreHousehold.id,
+    );
     if (choreHasBeenDone.length > 0) {
       const choreData: PieData[] = [];
       choreHasBeenDone.forEach((choreDone) => {
@@ -87,11 +93,16 @@ export default function StatisticsScreen({ navigation }: Props) {
   });
 
   return (
-    <View style={styles.container}>
-      <Text variant='headlineMedium'>Nuvarande vecka</Text>
-      <ChorePieChart width={500} height={300} hasLegend data={totalData} />
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>{everyPieData}</View>
-    </View>
+    <GestureRecognizer
+      style={styles.container}
+      onSwipeRight={() => navigation.navigate('HomeScreen')}
+    >
+      <View style={styles.container}>
+        <Text variant='headlineMedium'>Nuvarande vecka</Text>
+        <ChorePieChart width={500} height={300} hasLegend data={totalData} />
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>{everyPieData}</View>
+      </View>
+    </GestureRecognizer>
   );
 }
 
