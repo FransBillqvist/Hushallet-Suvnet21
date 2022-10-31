@@ -23,6 +23,7 @@ export default function HomeScreen({ navigation }: Props) {
   const chores = useAppSelector((state) => state.chore);
   const activeHouseHold = useAppSelector((state) => state.household.singleHousehold);
   const activeProfile = useAppSelector((state) => state.profile.currentProfile);
+  const profiles = useAppSelector((state) => state.profile.profiles);
 
   const [originalHouseHold, editedHousehold] = React.useState<Household>({
     id: activeHouseHold?.id || '',
@@ -45,7 +46,7 @@ export default function HomeScreen({ navigation }: Props) {
           await dispatch(emptyChoreHistoryState());
           dispatch(
             await getChoreHistoryFromDbByProfileIds(
-              profiles.filter((pro) => pro.householdId == householdId),
+              profiles.filter((pro) => pro.householdId == activeHouseHold?.id),
             ),
           );
           navigation.navigate('StatisticsScreen');
@@ -82,55 +83,57 @@ export default function HomeScreen({ navigation }: Props) {
             </View>
           ))}
         </View>
-      </View>
 
-      {activeProfile.role == 'owner' ? (
-        <View style={styles.smallButtonContainer}>
-          <View style={styles.smallButtonPosition}>
-            <BigButton theme={getTheme('dark')} onPress={() => navigation.navigate('ChoreScreen')}>
-              Lägg till
-            </BigButton>
-            <Portal>
-              <Dialog
-                visible={houseModalVisible}
-                onDismiss={hideHouseModal}
-                style={{
-                  maxHeight: 200,
-                  alignSelf: 'center',
-                  justifyContent: 'center',
-                }}
+        {activeProfile.role == 'owner' ? (
+          <View style={styles.smallButtonContainer}>
+            <View style={styles.smallButtonPosition}>
+              <BigButton
+                theme={getTheme('dark')}
+                onPress={() => navigation.navigate('ChoreScreen')}
               >
-                <Dialog.Title>Byt hushållsnamn</Dialog.Title>
-                <Dialog.Content style={{ maxHeight: 150, marginBottom: 10 }}>
-                  <TextInput
-                    placeholder={originalHouseHold.name}
-                    value={originalHouseHold.name}
-                    onChangeText={(text: string) => handleHouseholdChange('name', text)}
-                    style={styles.inputTextField}
-                  />
-                  <Dialog.Actions style={{ marginTop: 10, padding: 0 }}>
-                    <BigButton
-                      theme={getTheme('dark')}
-                      onPress={async () => (
-                        setHouseModalVisible(false),
-                        await dispatch(editHouseholdName(originalHouseHold)),
-                        await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
-                      )}
-                    >
-                      Spara
-                    </BigButton>
-                  </Dialog.Actions>
-                </Dialog.Content>
-              </Dialog>
-            </Portal>
-            <BigButton theme={getTheme('dark')} onPress={showHouseModal}>
-              Ändra namn
-            </BigButton>
+                Lägg till
+              </BigButton>
+              <Portal>
+                <Dialog
+                  visible={houseModalVisible}
+                  onDismiss={hideHouseModal}
+                  style={{
+                    maxHeight: 200,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Dialog.Title>Byt hushållsnamn</Dialog.Title>
+                  <Dialog.Content style={{ maxHeight: 150, marginBottom: 10 }}>
+                    <TextInput
+                      placeholder={originalHouseHold.name}
+                      value={originalHouseHold.name}
+                      onChangeText={(text: string) => handleHouseholdChange('name', text)}
+                      style={styles.inputTextField}
+                    />
+                    <Dialog.Actions style={{ marginTop: 10, padding: 0 }}>
+                      <BigButton
+                        theme={getTheme('dark')}
+                        onPress={async () => (
+                          setHouseModalVisible(false),
+                          await dispatch(editHouseholdName(originalHouseHold)),
+                          await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
+                        )}
+                      >
+                        Spara
+                      </BigButton>
+                    </Dialog.Actions>
+                  </Dialog.Content>
+                </Dialog>
+              </Portal>
+              <BigButton theme={getTheme('dark')} onPress={showHouseModal}>
+                Ändra namn
+              </BigButton>
+            </View>
           </View>
-        </View>
-      ) : (
-        <></>
-      )}
+        ) : (
+          <></>
+        )}
       </GestureRecognizer>
     </ScrollView>
   );
