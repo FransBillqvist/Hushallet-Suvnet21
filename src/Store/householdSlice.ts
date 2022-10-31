@@ -151,6 +151,10 @@ const householdSlice = createSlice({
     setHousehold: (state, action) => {
       state.singleHousehold = action.payload;
     },
+    flushHousehold: (state) => {
+      state.singleHousehold = { id: '', name: '', code: '' };
+      state.households = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createNewHousehold.pending, (state) => {
@@ -261,6 +265,6 @@ const householdSlice = createSlice({
   },
 });
 
-export const { setHousehold } = householdSlice.actions;
+export const { setHousehold, flushHousehold } = householdSlice.actions;
 
 export const householdReducer = householdSlice.reducer;

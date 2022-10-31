@@ -7,10 +7,11 @@ import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { emptyChoreHistoryState } from '../Store/choreHistorySlice';
-import { getChores } from '../Store/choreSlice';
-import { getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
+import { flushChores, getChores } from '../Store/choreSlice';
+import { flushHousehold, getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
 import {
   flushCurrentProfile,
+  flushProfileList,
   getCurrentAmountOfProfiles,
   getCurrentProfile,
   getProfilesByUserId,
@@ -18,6 +19,7 @@ import {
   profileAlreadyInHousehold,
 } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
+import { logout } from '../Store/userSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ManagerScreen'>;
 
@@ -116,6 +118,20 @@ export default function ManagerScreen({ navigation }: Props) {
           </BigButton>
         </>
       )}
+      <HugeButton
+        theme={getTheme('light')}
+        style={{ marginTop: 40 }}
+        onPress={() => {
+          dispatch(logout());
+          dispatch(flushHousehold());
+          dispatch(flushCurrentProfile());
+          dispatch(flushProfileList());
+          dispatch(flushChores());
+          dispatch(emptyChoreHistoryState());
+        }}
+      >
+        LOGGA UT
+      </HugeButton>
     </View>
   );
 }
