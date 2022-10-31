@@ -86,7 +86,6 @@ export default function HomeScreen({ navigation }: Props) {
         value={originalHouseHold.name}
         onChangeText={(text: string) => handleHouseholdChange('name', text)}
       />
-
       <BigButton
         theme={getTheme('dark')}
         onPress={() => {
