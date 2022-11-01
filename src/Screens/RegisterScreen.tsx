@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     marginTop: 10,
+    justifyContent: 'center',
   },
   buttonContainer: {
     padding: 10,
