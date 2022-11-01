@@ -5,7 +5,7 @@ Hushållet- en app för att hålla koll på vilka sysslor som behöver göras i 
 
 ## Skapad av:
 
-- [Tom](https://github.com/Zaai90)
+- [Tom](https://github.com/LuminTompa)
 - [Frans](https://https://github.com/FransBillqvist)
 - [Daniel T](https://https://github.com/DTSD21)
 - [Lucas](https://github.com/LucBen93)
@@ -34,7 +34,7 @@ Hushållet körs på `localhost:19000` som standard.
 
 ## Kravlista
 
-- [/] En logga, splashscreen och appikon ska designas och användas. *
+- [x] En logga, splashscreen och appikon ska designas och användas. *
 - [x] Applikationen ska byggas med RN, Expo & TS. *
 - [/] Designen av appen ska utgå ifrån befintliga skisser, undantag kan ges men ska diskuteras
 med produktägare, godkännas och dokumenteras. *
