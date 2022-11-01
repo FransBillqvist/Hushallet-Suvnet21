@@ -1,10 +1,11 @@
-import { addDoc, collection, getDocs, limit, orderBy, query, where } from '@firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { date } from 'yup';
+import { filterCurrentWeek } from '../Components/filterChoreHistory';
 import { db } from '../Config/firebase';
 import { ChoreHistory } from '../Data/choreHistory';
-import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
+import { ChorePieData, PieData } from '../Screens/StatisticsScreen';
+import { AppState } from './store';
 
 interface ChoreHistoryState {
   isLoading: boolean;
@@ -164,3 +165,81 @@ const choreHistorySlice = createSlice({
 export const { emptyChoreHistoryState } = choreHistorySlice.actions;
 
 export const choreHistoryReducer = choreHistorySlice.reducer;
+
+export const selectHistoryByPeriod =
+  (period: 'currentWeek' | 'previousWeek') => (state: AppState) => {
+    const totalData: PieData[] = [];
+    const everyPieData: ChorePieData[] = [];
+
+    const household = state.household.singleHousehold;
+    const profilesInHousehold = state.profile.profiles.filter(
+      (pro) => pro.householdId == household?.id,
+    );
+    const choresInHousehold = state.chore.chores;
+    const choreHistories = state.choreHistory.choresHistory;
+
+    const choreHistoryForCurrentWeek = filterCurrentWeek(choreHistories);
+
+    profilesInHousehold.forEach((pro) => {
+      let contribution = 0;
+      const choresDoneByProfile = choreHistoryForCurrentWeek.filter((cH) => cH.profileId == pro.id);
+      if (choresDoneByProfile.length > 0) {
+        choresDoneByProfile.forEach((cH) => {
+          contribution += choresInHousehold.find((chore) => chore.id == cH.choreId)?.demanding || 0;
+        });
+      }
+
+      totalData.push({
+        name: pro.avatar,
+        contribution: contribution,
+        color: setColor(pro.avatar) || '',
+        legendFontColor: 'transparent',
+        legendFontSize: 30,
+      });
+    });
+
+    choresInHousehold.forEach((choreHousehold) => {
+      const choreHasBeenDone = choreHistoryForCurrentWeek.filter(
+        (cH) => cH.choreId == choreHousehold.id,
+      );
+      if (choreHasBeenDone.length > 0) {
+        let chorePieData = everyPieData.find((data) => data.choreTitle === choreHousehold.name);
+        if (!chorePieData) {
+          chorePieData = { choreTitle: choreHousehold.name, pieData: [] };
+          everyPieData.push(chorePieData);
+        }
+        choreHasBeenDone.forEach((choreDone) => {
+          const avatar = profilesInHousehold.find((pro) => pro.id == choreDone.profileId)?.avatar;
+          chorePieData?.pieData.push({
+            name: avatar || '',
+            contribution: 1,
+            color: setColor(avatar || '') || '',
+            legendFontColor: 'transparent',
+            legendFontSize: 30,
+          });
+        });
+      }
+    });
+
+    return { totalData, everyPieData };
+  };
+
+function setColor(name: string) {
+  if (name === '🦊') {
+    return 'red';
+  } else if (name === '🐳') {
+    return 'lightblue';
+  } else if (name === '🐷') {
+    return 'pink';
+  } else if (name === '🐥') {
+    return 'yellow';
+  } else if (name === '🐸') {
+    return '#00cc00';
+  } else if (name === '🐬') {
+    return '#4D4F4F';
+  } else if (name === '🐙') {
+    return '#FF1493';
+  } else if (name === '🦄') {
+    return '#F1DEE6';
+  }
+}
