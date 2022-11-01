@@ -1,8 +1,11 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Formik } from 'formik';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper';
+import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
+import WheelPickerExpo from 'react-native-wheel-picker-expo';
+import * as yup from 'yup';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
@@ -10,7 +13,21 @@ import { ChoreCreate } from '../Data/chore';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { editChore } from '../Store/choreSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
-import WheelPickerExpo from 'react-native-wheel-picker-expo';
+
+const formValidationSchema = yup.object().shape({
+  name: yup
+    .string()
+    .matches(/^[a-ö A-Ö]+$/, 'Accepterar bara bokstäver')
+    .min(3, 'Minst 3 bokstäver')
+    .max(20, 'Max 20 bokstäver')
+    .required('Namn är obligatoriskt'),
+  description: yup
+    .string()
+    .matches(/^[a-ö A-Ö]+$/, 'Accepterar bara bokstäver')
+    .min(5, 'Minst 5 bokstäver')
+    .max(50, 'Max 50 bokstäver')
+    .required('Beskrivning är obligatoriskt'),
+});
 
 type EditChoreScreenProp = RouteProp<RootStackParamList, 'EditChoreScreen'>;
 type Props = NativeStackScreenProps<RootStackParamList, 'EditChoreScreen'>;
@@ -53,94 +70,118 @@ export default function EditChoreScreen({ navigation }: Props) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <ChoreCard style={{ marginTop: 14 }}>
-          <TextInput
-            style={styles.input}
-            outlineColor='transparent'
-            mode='outlined'
-            label='Titel'
-            placeholder={originalchore.name}
-            value={originalchore.name}
-            onChangeText={(text: string) => handleChange('name', text)}
-          />
-        </ChoreCard>
-        <ChoreCard style={{ minHeight: 129 }}>
-          <TextInput
-            style={styles.input}
-            outlineColor='transparent'
-            mode='outlined'
-            label='Beskrivning'
-            placeholder={originalchore.description}
-            value={originalchore.description}
-            onChangeText={(text: string) => handleChange('description', text)}
-          />
-        </ChoreCard>
-        <ChoreCard style={{ minHeight: 70 }}>
-          <Text>Återkommer</Text>
-          <Text>Var {originalchore.frequency.toString()}:e Dag</Text>
-          <Portal>
-            <Modal
-              visible={frequencyVisible}
-              onDismiss={hideFrequencyModal}
-              contentContainerStyle={styles.modal}
-            >
-              <WheelPickerExpo
-                height={200}
-                width={150}
-                selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
-                initialSelectedIndex={5}
-                items={frequency.map((freq) => ({ label: freq, value: Number }))}
-                onChange={({ item }) => setFrequencyValue(item.label)}
-              />
-              <Button
-                onPress={() => (
-                  handleChange('frequency', Number(frequencyValue)), setFrequencyVisible(false)
-                )}
-              >
-                Ok
-              </Button>
-            </Modal>
-          </Portal>
-          <Button onPress={showFrequencyModal}>Välj</Button>
-        </ChoreCard>
-        <ChoreCard>
-          <Text>Energivärde:</Text>
-          <Text>{originalchore.demanding.toString()}</Text>
-          <Portal>
-            <Modal
-              visible={demandingVisible}
-              onDismiss={hideDemandingModal}
-              contentContainerStyle={styles.modal}
-            >
-              <WheelPickerExpo
-                height={200}
-                width={150}
-                selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
-                initialSelectedIndex={5}
-                items={demanding.map((dem) => ({ label: dem, value: Number }))}
-                onChange={({ item }) => setDemandingValue(item.label)}
-              />
-              <Button
-                onPress={() => (
-                  handleChange('demanding', Number(demandingValue)), setDemandingVisible(false)
-                )}
-              >
-                Ok
-              </Button>
-            </Modal>
-          </Portal>
-          <Button onPress={showDemandingModal}>Välj</Button>
-        </ChoreCard>
-        <BigButton
-          theme={getTheme('dark')}
-          onPress={() => {
+        <Formik
+          validationSchema={formValidationSchema}
+          onSubmit={(values) => {
+            originalchore.name = values.name;
+            originalchore.description = values.description;
+            handleChange('name', values.name);
+            handleChange('description', values.description);
             dispatch(editChore(originalchore));
             navigation.navigate('HomeScreen');
           }}
-          style={{ marginTop: 10 }}
+          initialValues={{ name: '', description: '' }}
         >
-          Spara ändringar
-        </BigButton>
+          {(props) => (
+            <View style={styles.container}>
+              <ChoreCard style={{ marginTop: 14 }}>
+                <TextInput
+                  style={styles.input}
+                  outlineColor='transparent'
+                  mode='outlined'
+                  label='Titel'
+                  // placeholder={originalchore.name}
+                  value={props.values.name}
+                  onChangeText={props.handleChange('name')}
+                  onBlur={props.handleBlur('name')}
+                />
+              </ChoreCard>
+              <Text style={styles.errorMessage}>{props.touched.name && props.errors.name}</Text>
+              <ChoreCard style={{ minHeight: 129 }}>
+                <TextInput
+                  style={styles.input}
+                  outlineColor='transparent'
+                  numberOfLines={4}
+                  multiline={true}
+                  mode='outlined'
+                  label='Beskrivning'
+                  placeholder={originalchore.description}
+                  value={props.values.description}
+                  onChangeText={props.handleChange('description')}
+                  onBlur={props.handleBlur('description')}
+                />
+              </ChoreCard>
+              <Text style={styles.errorMessage}>
+                {props.touched.description && props.errors.description}
+              </Text>
+              <ChoreCard style={{ minHeight: 70 }}>
+                <Text>Återkommer</Text>
+                <Text>Var {originalchore.frequency.toString()}:e Dag</Text>
+                <Portal>
+                  <Modal
+                    visible={frequencyVisible}
+                    onDismiss={hideFrequencyModal}
+                    contentContainerStyle={styles.modal}
+                  >
+                    <WheelPickerExpo
+                      height={200}
+                      width={150}
+                      selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
+                      initialSelectedIndex={5}
+                      items={frequency.map((freq) => ({ label: freq, value: Number }))}
+                      onChange={({ item }) => setFrequencyValue(item.label)}
+                    />
+                    <Button
+                      onPress={() => (
+                        handleChange('frequency', Number(frequencyValue)),
+                        setFrequencyVisible(false)
+                      )}
+                    >
+                      Ok
+                    </Button>
+                  </Modal>
+                </Portal>
+                <Button onPress={showFrequencyModal}>Välj</Button>
+              </ChoreCard>
+              <ChoreCard>
+                <Text>Energivärde:</Text>
+                <Text>{originalchore.demanding.toString()}</Text>
+                <Portal>
+                  <Modal
+                    visible={demandingVisible}
+                    onDismiss={hideDemandingModal}
+                    contentContainerStyle={styles.modal}
+                  >
+                    <WheelPickerExpo
+                      height={200}
+                      width={150}
+                      selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
+                      initialSelectedIndex={5}
+                      items={demanding.map((dem) => ({ label: dem, value: Number }))}
+                      onChange={({ item }) => setDemandingValue(item.label)}
+                    />
+                    <Button
+                      onPress={() => (
+                        handleChange('demanding', Number(demandingValue)),
+                        setDemandingVisible(false)
+                      )}
+                    >
+                      Ok
+                    </Button>
+                  </Modal>
+                </Portal>
+                <Button onPress={showDemandingModal}>Välj</Button>
+              </ChoreCard>
+              <BigButton
+                theme={getTheme('dark')}
+                onPress={props.handleSubmit}
+                style={{ marginTop: 10 }}
+              >
+                Spara ändringar
+              </BigButton>
+            </View>
+          )}
+        </Formik>
       </View>
     </ScrollView>
   );
@@ -161,5 +202,12 @@ const styles = StyleSheet.create({
     padding: 10,
     alignSelf: 'center',
     alignItems: 'center',
+  },
+  errorMessage: {
+    color: 'red',
+    fontWeight: 'bold',
+    marginTop: 6,
+    textAlign: 'center',
+    flexDirection: 'row',
   },
 });
