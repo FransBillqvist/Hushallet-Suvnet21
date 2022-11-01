@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
 import { customAlphabet } from 'nanoid';
 import * as React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
 import WheelPickerExpo from 'react-native-wheel-picker-expo';
 import * as yup from 'yup';
@@ -118,64 +118,66 @@ export default function ChoreScreen({ navigation }: Props) {
                 {props.touched.description && props.errors.description}
               </Text>
               <View>
-                <ChoreCard>
-                  <Text>Återkommer</Text>
-                  <Text>Var {chore.frequency.toString()}:e Dag</Text>
-                  <Portal>
-                    <Modal
-                      visible={frequencyVisible}
-                      onDismiss={hideFrequencyModal}
-                      contentContainerStyle={styles.modal}
-                    >
-                      <WheelPickerExpo
-                        height={200}
-                        width={150}
-                        selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
-                        initialSelectedIndex={5}
-                        items={frequency.map((freq) => ({ label: freq, value: Number }))}
-                        onChange={({ item }) => setFrequencyValue(item.label)}
-                      />
-                      <Button
-                        onPress={() => (
-                          handleChange('frequency', Number(frequencyValue)),
-                          setFrequencyVisible(false)
-                        )}
+                <Pressable onPress={showFrequencyModal}>
+                  <ChoreCard style={{ minHeight: 70 }}>
+                    <Text>Återkommer</Text>
+                    <Text>Var {chore.frequency.toString()}:e Dag</Text>
+                    <Portal>
+                      <Modal
+                        visible={frequencyVisible}
+                        onDismiss={hideFrequencyModal}
+                        contentContainerStyle={styles.modal}
                       >
-                        Ok
-                      </Button>
-                    </Modal>
-                  </Portal>
-                  <Button onPress={showFrequencyModal}>Välj</Button>
-                </ChoreCard>
-                <ChoreCard style={{ minHeight: 70 }}>
-                  <Text>Energivärde:</Text>
-                  <Text>{chore.demanding.toString()}</Text>
-                  <Portal>
-                    <Modal
-                      visible={demandingVisible}
-                      onDismiss={hideDemandingModal}
-                      contentContainerStyle={styles.modal}
-                    >
-                      <WheelPickerExpo
-                        height={200}
-                        width={150}
-                        selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
-                        initialSelectedIndex={5}
-                        items={demanding.map((dem) => ({ label: dem, value: Number }))}
-                        onChange={({ item }) => setDemandingValue(item.label)}
-                      />
-                      <Button
-                        onPress={() => (
-                          handleChange('demanding', Number(demandingValue)),
-                          setDemandingVisible(false)
-                        )}
+                        <WheelPickerExpo
+                          height={200}
+                          width={150}
+                          selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
+                          initialSelectedIndex={5}
+                          items={frequency.map((freq) => ({ label: freq, value: Number }))}
+                          onChange={({ item }) => setFrequencyValue(item.label)}
+                        />
+                        <Button
+                          onPress={() => (
+                            handleChange('frequency', Number(frequencyValue)),
+                            setFrequencyVisible(false)
+                          )}
+                        >
+                          Ok
+                        </Button>
+                      </Modal>
+                    </Portal>
+                  </ChoreCard>
+                </Pressable>
+                <Pressable onPress={showDemandingModal}>
+                  <ChoreCard style={{ minHeight: 70 }}>
+                    <Text>Energivärde:</Text>
+                    <Text>{chore.demanding.toString()}</Text>
+                    <Portal>
+                      <Modal
+                        visible={demandingVisible}
+                        onDismiss={hideDemandingModal}
+                        contentContainerStyle={styles.modal}
                       >
-                        Ok
-                      </Button>
-                    </Modal>
-                  </Portal>
-                  <Button onPress={showDemandingModal}>Välj</Button>
-                </ChoreCard>
+                        <WheelPickerExpo
+                          height={200}
+                          width={150}
+                          selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
+                          initialSelectedIndex={5}
+                          items={demanding.map((dem) => ({ label: dem, value: Number }))}
+                          onChange={({ item }) => setDemandingValue(item.label)}
+                        />
+                        <Button
+                          onPress={() => (
+                            handleChange('demanding', Number(demandingValue)),
+                            setDemandingVisible(false)
+                          )}
+                        >
+                          Ok
+                        </Button>
+                      </Modal>
+                    </Portal>
+                  </ChoreCard>
+                </Pressable>
               </View>
 
               <View style={styles.smallButtonContainer}>
