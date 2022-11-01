@@ -120,43 +120,6 @@ export default function EditChoreScreen({ navigation }: Props) {
                 items={demanding.map((dem) => ({ label: dem, value: Number }))}
                 onChange={({ item }) => setDemandingValue(item.label)}
               />
-              {/* <RadioButton.Group
-                onValueChange={(newValue) => setDemandingValue(newValue)}
-                value={demandingValue}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>1</Text>
-                  <RadioButton value='1' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>2</Text>
-                  <RadioButton value='2' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>3</Text>
-                  <RadioButton value='3' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>4</Text>
-                  <RadioButton value='4' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>5</Text>
-                  <RadioButton value='5' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>6</Text>
-                  <RadioButton value='6' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>7</Text>
-                  <RadioButton value='7' />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text>8</Text>
-                  <RadioButton value='8' />
-                </View>
-              </RadioButton.Group> */}
               <Button
                 onPress={() => (
                   handleChange('demanding', Number(demandingValue)), setDemandingVisible(false)
