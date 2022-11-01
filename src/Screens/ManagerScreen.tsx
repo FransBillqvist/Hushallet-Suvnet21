@@ -16,10 +16,10 @@ import {
   flushCurrentProfile,
   flushProfileList,
   getCurrentAmountOfProfiles,
-  getCurrentProfile,
   getProfilesByUserId,
   getProfilesForHousehold,
   profileAlreadyInHousehold,
+  setCurrentProfile,
 } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 import { logout } from '../Store/userSlice';
@@ -61,9 +61,7 @@ export default function ManagerScreen({ navigation }: Props) {
                 await dispatch(getProfilesByUserId(userId));
                 await dispatch(getChores(house.id));
                 await dispatch(emptyChoreHistoryState());
-                await dispatch(
-                  getCurrentProfile(profiles.filter((profile) => profile.householdId == house.id)),
-                );
+                await dispatch(setCurrentProfile(profiles.find((pro) => pro.userId === userId)));
                 dispatch(
                   await getChoreHistoryFromDbByProfileIds(
                     profiles.filter((pro) => pro.householdId == house.id),

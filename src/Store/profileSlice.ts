@@ -130,22 +130,6 @@ export const getProfilesByUserId = createAsyncThunk<Profile[], string, { rejectV
   },
 );
 
-export const getCurrentProfile = createAsyncThunk<Profile, Profile[], { rejectValue: string }>(
-  'profile/getcurrentprofile',
-  async (profiles, thunkApi) => {
-    try {
-      const profile = profiles.find((profile) => profile.userId === profiles[0].userId) as Profile;
-      return profile;
-    } catch (error) {
-      console.error(error);
-      if (error instanceof FirebaseError) {
-        return thunkApi.rejectWithValue(error.message);
-      }
-      return thunkApi.rejectWithValue('Något gick snett, kontakta supporten!');
-    }
-  },
-);
-
 export const getProfilesByProfileId = createAsyncThunk<Profile, string, { rejectValue: string }>(
   'profile/getprofilesbyprofileid',
   async (profileId, thunkApi) => {
@@ -176,6 +160,9 @@ const profileSlice = createSlice({
     },
     flushProfileList: (state) => {
       state.profiles = [];
+    },
+    setCurrentProfile: (state, action) => {
+      state.currentProfile = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -272,21 +259,6 @@ const profileSlice = createSlice({
       console.log('Rejected getProfilesByUserId');
     });
 
-    //getCurrentProfile
-    builder.addCase(getCurrentProfile.pending, (state) => {
-      state.isLoading = true;
-      console.log('getCurrentProfile pending');
-    });
-    builder.addCase(getCurrentProfile.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.currentProfile = action.payload;
-      console.log('getCurrentProfile fulfilled');
-    });
-    builder.addCase(getCurrentProfile.rejected, (state) => {
-      state.isLoading = false;
-      console.log('rejected getCurrentProfile');
-    });
-
     //getProfilesByProfileId
     builder.addCase(getProfilesByProfileId.pending, (state) => {
       state.isLoading = true;
@@ -303,6 +275,6 @@ const profileSlice = createSlice({
   },
 });
 
-export const { flushCurrentProfile, flushProfileList } = profileSlice.actions;
+export const { flushCurrentProfile, flushProfileList, setCurrentProfile } = profileSlice.actions;
 
 export const profileReducer = profileSlice.reducer;
