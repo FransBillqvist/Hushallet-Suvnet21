@@ -66,9 +66,7 @@ export default function RegisterScreen({ navigation }: Props) {
                 style={styles.buttonClass}
                 icon={rightIcon}
                 onPress={handlePasswordVisibility}
-              >
-                {}
-              </Button>
+              ></Button>
             </View>
             <Text style={styles.errorMessage}>
               {props.touched.password && props.errors.password}
@@ -115,6 +113,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     marginTop: 10,
+    justifyContent: 'center',
   },
   buttonContainer: {
     padding: 10,
