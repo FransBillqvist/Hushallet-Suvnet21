@@ -46,8 +46,8 @@ export default function ChoreScreen({ navigation }: Props) {
     id: '+' + nanoId(10),
     name: '',
     description: '',
-    demanding: 0,
-    frequency: 0,
+    demanding: 1,
+    frequency: 1,
     householdId: householdIdAsString,
   });
   const handleChange = (key: string, value: string | number) => {
