@@ -2,11 +2,12 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { Button, Text, TextInput } from 'react-native-paper';
 import * as yup from 'yup';
 import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
 import { saveUserStorage } from '../Data/AsyncStorage/userStorage';
+import { useTogglePasswordVisibility } from '../Hooks/useTogglePasswordVisibility';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { useAppDispatch } from '../Store/store';
 import { registerUser } from '../Store/userSlice';
@@ -20,6 +21,7 @@ const logInValidationSchema = yup.object().shape({
 
 export default function RegisterScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 
   return (
     <View style={styles.container}>
@@ -57,8 +59,16 @@ export default function RegisterScreen({ navigation }: Props) {
                 onChangeText={props.handleChange('password')}
                 value={props.values.password}
                 onBlur={props.handleBlur('password')}
+                secureTextEntry={passwordVisibility}
                 label='Ange ditt lösenord'
               />
+              <Button
+                style={styles.buttonClass}
+                icon={rightIcon}
+                onPress={handlePasswordVisibility}
+              >
+                {}
+              </Button>
             </View>
             <Text style={styles.errorMessage}>
               {props.touched.password && props.errors.password}
@@ -117,5 +127,10 @@ const styles = StyleSheet.create({
     padding: 10,
     fontWeight: '700',
     fontSize: 18,
+  },
+  buttonClass: {
+    flex: 1,
+    position: 'absolute',
+    right: 0,
   },
 });
