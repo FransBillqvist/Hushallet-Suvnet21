@@ -4,6 +4,7 @@ import { FirebaseError } from 'firebase/app';
 import { Alert } from 'react-native';
 import { db } from '../Config/firebase';
 import { Chore, ChoreCreate } from '../Data/chore';
+import { Profile } from '../Data/profile';
 import { AppState } from '../Store/store';
 
 interface ChoreState {
@@ -293,3 +294,38 @@ const choreSlice = createSlice({
 export const { flushChores } = choreSlice.actions;
 
 export const choreReducer = choreSlice.reducer;
+
+interface ChoreData extends Chore {
+  key: string;
+  avatarOrDays: string[] | number[];
+}
+
+export const selectChoresObject = () => (state: AppState) => {
+  const result: ChoreData[] = [];
+  const cDate = new Date().toISOString().slice(0, 10);
+  const chores = state.chore.chores;
+  const choreHistory = state.choreHistory.choresHistory;
+  chores.forEach((c) => {
+    choreHistory
+      .filter((h) => h.choreId === c.id)
+      .map((h) => {
+        if (h.date.slice(0, 10) === cDate) {
+          result.push({
+            ...c,
+            key: h.id,
+            avatarOrDays: [state.profile.profiles.find((p) => p.id === h.profileId)?.avatar || ''],
+          });
+        } else {
+          const diffrenceInSec = Math.abs(new Date().getTime() - new Date(h.date).getTime());
+          const diffrenceInDays = Math.round(diffrenceInSec / (1000 * 3600 * 24));
+
+          result.push({
+            ...c,
+            key: h.id,
+            avatarOrDays: [diffrenceInDays],
+          });
+        }
+      });
+  });
+  return result;
+};

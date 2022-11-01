@@ -73,6 +73,7 @@ export default function ChoreScreen({ navigation }: Props) {
 
   return (
     <ScrollView>
+      <View>{}</View>
       <View style={styles.container}>
         <Formik
           validationSchema={formValidationSchema}
