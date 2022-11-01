@@ -12,8 +12,7 @@ import {
   emptyChoreHistoryState,
   getChoreHistoryFromDbByProfileIds,
 } from '../Store/choreHistorySlice';
-import { getASingleChore } from '../Store/choreSlice';
-import { DaysPast } from '../Components/DaysCounter';
+import { getASingleChore, selectChoresObject } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
@@ -25,6 +24,7 @@ export default function HomeScreen({ navigation }: Props) {
   const activeHouseHold = useAppSelector((state) => state.household.singleHousehold);
   const activeProfile = useAppSelector((state) => state.profile.currentProfile);
   const profiles = useAppSelector((state) => state.profile.profiles);
+  const choreData = useAppSelector(selectChoresObject());
 
   const [originalHouseHold, editedHousehold] = React.useState<Household>({
     id: activeHouseHold?.id || '',
@@ -69,7 +69,7 @@ export default function HomeScreen({ navigation }: Props) {
                 <ChoreCard chore={chore}>
                   <Text>{chore.name}</Text>
                   <View style={{ alignItems: 'center' }}>
-                    <DaysPast choreId={chore.id} />
+                    {choreData.filter((cD) => cD.id === chore.id).map((cD) => (<Text key={cD.id}>{cD.avatarOrDays}</Text>))}
                     {activeProfile.role == 'owner' ? (
                       <IconButton
                         icon='pencil-outline'

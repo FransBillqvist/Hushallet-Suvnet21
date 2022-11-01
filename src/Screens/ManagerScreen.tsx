@@ -6,7 +6,7 @@ import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { emptyChoreHistoryState } from '../Store/choreHistorySlice';
+import { emptyChoreHistoryState, getChoreHistoryFromDbByProfileIds } from '../Store/choreHistorySlice';
 import { flushChores, getChores } from '../Store/choreSlice';
 import { flushHousehold, getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
 import {
@@ -61,6 +61,7 @@ export default function ManagerScreen({ navigation }: Props) {
                 await dispatch(
                   getCurrentProfile(profiles.filter((profile) => profile.householdId == house.id)),
                 );
+                dispatch(await getChoreHistoryFromDbByProfileIds(profiles.filter((pro) => pro.householdId == house.id),),);
                 navigation.navigate('HomeScreen');
               });
           }}
@@ -109,6 +110,8 @@ export default function ManagerScreen({ navigation }: Props) {
                       navigation.navigate('HomeScreen');
                     } else {
                       await dispatch(getProfilesForHousehold(result.id));
+                      await dispatch(emptyChoreHistoryState());
+                      dispatch(await getChoreHistoryFromDbByProfileIds(profiles.filter((pro) => pro.householdId == result.id),),);
                       navigation.navigate('ProfileScreen');
                     }
                   }
