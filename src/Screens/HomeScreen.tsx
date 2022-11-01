@@ -5,7 +5,6 @@ import { Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper'
 import GestureRecognizer from 'react-native-swipe-gestures';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
-import { DaysPast } from '../Components/DaysCounter';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
