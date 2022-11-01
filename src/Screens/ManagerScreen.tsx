@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Snackbar, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
 import { getTheme } from '../Components/theme';
@@ -34,6 +34,9 @@ export default function ManagerScreen({ navigation }: Props) {
   const userId = useAppSelector((state) => state.user.user?.uid);
   const listOfHouses = useAppSelector((state) => state.household.households);
   const profiles = useAppSelector((state) => state.profile.profiles);
+  const [visible, setVisible] = React.useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
 
   return (
     <View style={styles.container}>
@@ -103,11 +106,9 @@ export default function ManagerScreen({ navigation }: Props) {
                 const result = await dispatch(getHouseHoldByCode(inviteCode)).unwrap();
                 const isHouseholdFull = await dispatch(getCurrentAmountOfProfiles(result.id));
                 if (isHouseholdFull.payload) {
-                  //någon kanske har tid att fixa en design åt detta meddelande?
-                  Alert.alert(
-                    'Fullt hus',
-                    'Hushållet är fullt, prata med hushållets ägare för att få plats.',
-                  );
+                  {
+                    onToggleSnackBar();
+                  }
                 } else {
                   if (result) {
                     const profileExists = await dispatch(
@@ -128,12 +129,28 @@ export default function ManagerScreen({ navigation }: Props) {
                   }
                 }
               } catch {
-                Alert.alert('Felmeddelande', 'Inget hushåll existerar med denna kod.');
+                {
+                  onToggleSnackBar();
+                }
               }
             }}
           >
             Skicka förfrågan
           </BigButton>
+          <Snackbar
+            visible={visible}
+            onDismiss={onDismissSnackBar}
+            action={{
+              label: 'Stäng',
+              onPress: () => {
+                {
+                  setVisible(true);
+                }
+              },
+            }}
+          >
+            Något gick snett.
+          </Snackbar>
         </>
       )}
       <BigButton
@@ -148,7 +165,7 @@ export default function ManagerScreen({ navigation }: Props) {
           dispatch(emptyChoreHistoryState());
         }}
       >
-        LOGGA UT
+        Logga ut
       </BigButton>
     </View>
   );
