@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
@@ -34,7 +34,7 @@ export default function ManagerScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 24, marginBottom: 10 }}>Hushållsmöjligheter</Text>
+      <Text style={{ fontSize: 24, marginBottom: 10 }}>Dina hushåll</Text>
 
       <HugeButton
         icon='plus-circle-outline'
@@ -96,7 +96,10 @@ export default function ManagerScreen({ navigation }: Props) {
                 const isHouseholdFull = await dispatch(getCurrentAmountOfProfiles(result.id));
                 if (isHouseholdFull.payload) {
                   //någon kanske har tid att fixa en design åt detta meddelande?
-                  alert('Huset är fullt, prata med hushållets ägare för att få plats.');
+                  Alert.alert(
+                    'Fullt hus',
+                    'Hushållet är fullt, prata med hushållets ägare för att få plats.',
+                  );
                 } else {
                   if (result) {
                     const profileExists = await dispatch(
@@ -111,7 +114,7 @@ export default function ManagerScreen({ navigation }: Props) {
                   }
                 }
               } catch {
-                alert('Inget hushåll existerar med denna kod.');
+                Alert.alert('Felmeddelande', 'Inget hushåll existerar med denna kod.');
               }
             }}
           >
@@ -119,7 +122,7 @@ export default function ManagerScreen({ navigation }: Props) {
           </BigButton>
         </>
       )}
-      <HugeButton
+      <BigButton
         theme={getTheme('light')}
         style={{ marginTop: 40 }}
         onPress={() => {
@@ -132,7 +135,7 @@ export default function ManagerScreen({ navigation }: Props) {
         }}
       >
         LOGGA UT
-      </HugeButton>
+      </BigButton>
     </View>
   );
 }
@@ -141,7 +144,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   input: {
     width: 200,

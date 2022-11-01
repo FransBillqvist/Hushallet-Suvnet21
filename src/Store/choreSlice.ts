@@ -1,6 +1,7 @@
 import { addDoc, collection, doc, getDocs, query, updateDoc, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
+import { Alert } from 'react-native';
 import { db } from '../Config/firebase';
 import { Chore, ChoreCreate } from '../Data/chore';
 import { AppState } from '../Store/store';
@@ -109,7 +110,7 @@ export const getASingleChore = createAsyncThunk<Chore, string, { rejectValue: st
     } catch (error) {
       console.error(error);
       if (error instanceof FirebaseError) {
-        alert('Kunde inte hämta sysslan, vänligen kontakta support!');
+        Alert.alert('Databasfel', 'Kunde inte hämta sysslan, vänligen kontakta support!');
       }
       return thunkApi.rejectWithValue('Kunde inte hämta sysslan, vänligen kontakta support!');
     }

@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { Alert } from 'react-native';
 import app from '../Config/firebase';
 import { removeUserFromStorage } from '../Data/AsyncStorage/userStorage';
 import { User } from '../Data/user';
@@ -34,7 +35,7 @@ export const registerUser = createAsyncThunk<
   } catch (error) {
     console.error(error);
     if (error instanceof FirebaseError) {
-      alert('Fel i databasen, möjligtvis så används den angivna e-posten redan.');
+      Alert.alert('Felmeddelande', 'E-posten används redan.');
       return thunkApi.rejectWithValue(error.message);
     }
     return thunkApi.rejectWithValue('Det gick tyvärr inte att registrera denna användaren');
@@ -54,7 +55,7 @@ export const login = createAsyncThunk<
   } catch (error) {
     console.error(error);
     if (error instanceof FirebaseError) {
-      alert('Fel användarnamn/lösenord');
+      Alert.alert('Felmeddelande', 'Inkorrekt användarnamn eller lösenord. Var god försök igen.');
       return thunkApi.rejectWithValue('Fel användarnamn eller lösenord');
     }
     return thunkApi.rejectWithValue('Det gick tyvärr inte att logga in');

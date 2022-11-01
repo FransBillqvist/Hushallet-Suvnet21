@@ -1,6 +1,7 @@
 import { addDoc, collection, doc, getDocs, query, updateDoc, where } from '@firebase/firestore';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
+import { Alert } from 'react-native';
 import { db } from '../Config/firebase';
 import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
@@ -102,7 +103,7 @@ export const editHouseholdName = createAsyncThunk<Household, Household, { reject
     } catch (error) {
       console.error(error);
       if (error instanceof FirebaseError) {
-        alert('Det finnns inget hushåll med detta id');
+        Alert.alert('Databasfel', 'Det finnns inget hushåll med detta id');
       }
       return thunkApi.rejectWithValue('Det gick inte');
     }
@@ -120,7 +121,7 @@ export const selectActiveHousehold = createAsyncThunk<Household, string, { rejec
     } catch (error) {
       console.error(error);
       if (error instanceof FirebaseError) {
-        alert('Det finns inget hushåll med detta id');
+        Alert.alert('Databasfel', 'Det finns inget hushåll med detta id');
       }
       return thunkApi.rejectWithValue('Det gick inte');
     }
