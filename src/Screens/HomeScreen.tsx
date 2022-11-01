@@ -5,6 +5,7 @@ import { Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper'
 import GestureRecognizer from 'react-native-swipe-gestures';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
+import { DaysPast } from '../Components/DaysCounter';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
@@ -95,8 +96,10 @@ export default function HomeScreen({ navigation }: Props) {
               <BigButton
                 theme={getTheme('dark')}
                 onPress={() => navigation.navigate('ChoreScreen')}
+                icon='plus-circle-outline'
+                style={{ maxWidth: 150 }}
               >
-                Lägg till
+                Ny syssla
               </BigButton>
               <Portal>
                 <Dialog
@@ -131,8 +134,13 @@ export default function HomeScreen({ navigation }: Props) {
                   </Dialog.Content>
                 </Dialog>
               </Portal>
-              <BigButton theme={getTheme('dark')} onPress={showHouseModal}>
-                Ändra namn
+              <BigButton
+                style={{ maxWidth: 150, marginLeft: 10 }}
+                theme={getTheme('dark')}
+                onPress={showHouseModal}
+                icon='pencil-outline'
+              >
+                Hushållsnamn
               </BigButton>
             </View>
           </View>

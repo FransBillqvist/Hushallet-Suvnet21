@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { ColorSchemeName } from 'react-native';
+import { ColorSchemeName, Text } from 'react-native';
 import { getTheme } from '../Components/theme';
 import ChoreScreen from '../Screens/ChoreScreen';
 import CreateScreen from '../Screens/CreateScreen';
@@ -40,6 +40,7 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
   const user = useAppSelector((state) => state.user.user);
   const activeHouse = useAppSelector((state) => state.household.singleHousehold);
   const homeName: string = activeHouse?.name || 'Household';
+  const currentAvatar = useAppSelector((state) => state.profile.currentProfile.avatar);
   console.log('RootStackNavigator loggar ut user nedanför');
   console.log(user);
   return (
@@ -68,7 +69,7 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
             <RootStack.Screen
               name='HomeScreen'
               component={HomeScreen}
-              options={{ title: homeName }}
+              options={{ title: homeName, headerRight: () => <Text>{currentAvatar}</Text> }}
             />
             <RootStack.Screen
               name='ChoreScreen'
