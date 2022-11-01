@@ -145,7 +145,7 @@ export default function EditChoreScreen({ navigation }: Props) {
                 </ChoreCard>
               </Pressable>
               <Pressable onPress={showDemandingModal}>
-                <ChoreCard>
+                <ChoreCard style={{ minHeight: 70 }}>
                   <Text>Energivärde:</Text>
                   <Text>{originalchore.demanding.toString()}</Text>
                   <Portal>
