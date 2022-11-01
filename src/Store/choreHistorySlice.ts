@@ -228,7 +228,7 @@ function setColor(name: string) {
   if (name === '🦊') {
     return 'red';
   } else if (name === '🐳') {
-    return 'lightblue';
+    return '#1AFFFF';
   } else if (name === '🐷') {
     return 'pink';
   } else if (name === '🐥') {
@@ -236,10 +236,10 @@ function setColor(name: string) {
   } else if (name === '🐸') {
     return '#00cc00';
   } else if (name === '🐬') {
-    return '#4D4F4F';
+    return '#0000E6';
   } else if (name === '🐙') {
-    return '#FF1493';
+    return '#CC00CC';
   } else if (name === '🦄') {
-    return '#F1DEE6';
+    return '#333333';
   }
 }
