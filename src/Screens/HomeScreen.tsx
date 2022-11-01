@@ -69,7 +69,7 @@ export default function HomeScreen({ navigation }: Props) {
                 <ChoreCard chore={chore}>
                   <Text>{chore.name}</Text>
                   <View style={{ alignItems: 'center' }}>
-                    {choreData.filter((cD) => cD.id === chore.id).map((cD) => (<Text key={cD.id}>{cD.avatarOrDays}</Text>))}
+                    {choreData.filter((cD) => cD.id === chore.id).map((cD) => (<Text key={cD.key}>{cD.avatarOrDays}</Text>))}
                     {activeProfile.role == 'owner' ? (
                       <IconButton
                         icon='pencil-outline'
