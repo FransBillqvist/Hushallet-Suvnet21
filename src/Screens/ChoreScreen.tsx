@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { customAlphabet } from 'nanoid';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper';
+import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
 import WheelPickerExpo from 'react-native-wheel-picker-expo';
 import * as yup from 'yup';
 import SmallButton from '../Components/Buttons/SmallButton';
@@ -58,6 +58,8 @@ export default function ChoreScreen({ navigation }: Props) {
     '1, 2, 3,4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30'.split(
       ',',
     );
+
+  const demanding = '1, 2, 3,4, 5,6,7,8'.split(',');
 
   return (
     <ScrollView>
@@ -128,6 +130,7 @@ export default function ChoreScreen({ navigation }: Props) {
                       <WheelPickerExpo
                         height={200}
                         width={150}
+                        selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
                         initialSelectedIndex={5}
                         items={frequency.map((freq) => ({ label: freq, value: Number }))}
                         onChange={({ item }) => setFrequencyValue(item.label)}
@@ -153,43 +156,14 @@ export default function ChoreScreen({ navigation }: Props) {
                       onDismiss={hideDemandingModal}
                       contentContainerStyle={styles.modal}
                     >
-                      <RadioButton.Group
-                        onValueChange={(newValue) => setDemandingValue(newValue)}
-                        value={demandingValue}
-                      >
-                        <View style={styles.radioButtonStyle}>
-                          <Text>1</Text>
-                          <RadioButton value='1' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>2</Text>
-                          <RadioButton value='2' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>3</Text>
-                          <RadioButton value='3' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>4</Text>
-                          <RadioButton value='4' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>5</Text>
-                          <RadioButton value='5' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>6</Text>
-                          <RadioButton value='6' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>7</Text>
-                          <RadioButton value='7' />
-                        </View>
-                        <View style={styles.radioButtonStyle}>
-                          <Text>8</Text>
-                          <RadioButton value='8' />
-                        </View>
-                      </RadioButton.Group>
+                      <WheelPickerExpo
+                        height={200}
+                        width={150}
+                        selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
+                        initialSelectedIndex={5}
+                        items={demanding.map((dem) => ({ label: dem, value: Number }))}
+                        onChange={({ item }) => setDemandingValue(item.label)}
+                      />
                       <Button
                         onPress={() => (
                           handleChange('demanding', Number(demandingValue)),
