@@ -2,7 +2,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
 import * as React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
 import WheelPickerExpo from 'react-native-wheel-picker-expo';
 import * as yup from 'yup';
@@ -90,7 +90,7 @@ export default function EditChoreScreen({ navigation }: Props) {
                   outlineColor='transparent'
                   mode='outlined'
                   label='Titel'
-                  // placeholder={originalchore.name}
+                  placeholder={originalchore.name}
                   value={props.values.name}
                   onChangeText={props.handleChange('name')}
                   onBlur={props.handleBlur('name')}
@@ -114,64 +114,66 @@ export default function EditChoreScreen({ navigation }: Props) {
               <Text style={styles.errorMessage}>
                 {props.touched.description && props.errors.description}
               </Text>
-              <ChoreCard style={{ minHeight: 70 }}>
-                <Text>Återkommer</Text>
-                <Text>Var {originalchore.frequency.toString()}:e Dag</Text>
-                <Portal>
-                  <Modal
-                    visible={frequencyVisible}
-                    onDismiss={hideFrequencyModal}
-                    contentContainerStyle={styles.modal}
-                  >
-                    <WheelPickerExpo
-                      height={200}
-                      width={150}
-                      selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
-                      initialSelectedIndex={5}
-                      items={frequency.map((freq) => ({ label: freq, value: Number }))}
-                      onChange={({ item }) => setFrequencyValue(item.label)}
-                    />
-                    <Button
-                      onPress={() => (
-                        handleChange('frequency', Number(frequencyValue)),
-                        setFrequencyVisible(false)
-                      )}
+              <Pressable onPress={showFrequencyModal}>
+                <ChoreCard style={{ minHeight: 70 }}>
+                  <Text>Återkommer</Text>
+                  <Text>Var {originalchore.frequency.toString()}:e Dag</Text>
+                  <Portal>
+                    <Modal
+                      visible={frequencyVisible}
+                      onDismiss={hideFrequencyModal}
+                      contentContainerStyle={styles.modal}
                     >
-                      Ok
-                    </Button>
-                  </Modal>
-                </Portal>
-                <Button onPress={showFrequencyModal}>Välj</Button>
-              </ChoreCard>
-              <ChoreCard>
-                <Text>Energivärde:</Text>
-                <Text>{originalchore.demanding.toString()}</Text>
-                <Portal>
-                  <Modal
-                    visible={demandingVisible}
-                    onDismiss={hideDemandingModal}
-                    contentContainerStyle={styles.modal}
-                  >
-                    <WheelPickerExpo
-                      height={200}
-                      width={150}
-                      selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
-                      initialSelectedIndex={5}
-                      items={demanding.map((dem) => ({ label: dem, value: Number }))}
-                      onChange={({ item }) => setDemandingValue(item.label)}
-                    />
-                    <Button
-                      onPress={() => (
-                        handleChange('demanding', Number(demandingValue)),
-                        setDemandingVisible(false)
-                      )}
+                      <WheelPickerExpo
+                        height={200}
+                        width={150}
+                        selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
+                        initialSelectedIndex={5}
+                        items={frequency.map((freq) => ({ label: freq, value: Number }))}
+                        onChange={({ item }) => setFrequencyValue(item.label)}
+                      />
+                      <Button
+                        onPress={() => (
+                          handleChange('frequency', Number(frequencyValue)),
+                          setFrequencyVisible(false)
+                        )}
+                      >
+                        Ok
+                      </Button>
+                    </Modal>
+                  </Portal>
+                </ChoreCard>
+              </Pressable>
+              <Pressable onPress={showDemandingModal}>
+                <ChoreCard style={{ minHeight: 70 }}>
+                  <Text>Energivärde:</Text>
+                  <Text>{originalchore.demanding.toString()}</Text>
+                  <Portal>
+                    <Modal
+                      visible={demandingVisible}
+                      onDismiss={hideDemandingModal}
+                      contentContainerStyle={styles.modal}
                     >
-                      Ok
-                    </Button>
-                  </Modal>
-                </Portal>
-                <Button onPress={showDemandingModal}>Välj</Button>
-              </ChoreCard>
+                      <WheelPickerExpo
+                        height={200}
+                        width={150}
+                        selectedStyle={{ borderColor: 'red', borderWidth: 2 }}
+                        initialSelectedIndex={5}
+                        items={demanding.map((dem) => ({ label: dem, value: Number }))}
+                        onChange={({ item }) => setDemandingValue(item.label)}
+                      />
+                      <Button
+                        onPress={() => (
+                          handleChange('demanding', Number(demandingValue)),
+                          setDemandingVisible(false)
+                        )}
+                      >
+                        Ok
+                      </Button>
+                    </Modal>
+                  </Portal>
+                </ChoreCard>
+              </Pressable>
               <BigButton
                 theme={getTheme('dark')}
                 onPress={props.handleSubmit}
