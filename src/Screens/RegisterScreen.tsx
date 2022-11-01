@@ -75,11 +75,12 @@ export default function RegisterScreen({ navigation }: Props) {
             </Text>
             <View style={styles.buttonContainer}>
               <BigButton
-                style={{ alignSelf: 'center' }}
+                icon='plus-circle-outline'
+                style={{ alignSelf: 'flex-end' }}
                 onPress={props.handleSubmit}
-                theme={getTheme('dark')}
+                theme={getTheme('light')}
               >
-                Registrera
+                Skapa konto
               </BigButton>
             </View>
           </View>
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     paddingHorizontal: 15,
     width: '100%',
+    flex: 1,
   },
   inputLabel: {
     marginBottom: 10,
@@ -112,25 +114,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     fontSize: 15,
     borderWidth: 1,
+    backgroundColor: 'white',
+    borderColor: 'lightgrey',
   },
   inputStyle: {
     marginTop: 10,
     justifyContent: 'center',
   },
   buttonContainer: {
-    padding: 10,
-    alignItems: 'center',
     justifyContent: 'center',
-
-    marginTop: 45,
-  },
-  ellerText: {
-    padding: 10,
-    fontWeight: '700',
-    fontSize: 18,
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'flex-end',
+    marginBottom: 25,
   },
   buttonClass: {
-    flex: 1,
     position: 'absolute',
     right: 0,
   },
