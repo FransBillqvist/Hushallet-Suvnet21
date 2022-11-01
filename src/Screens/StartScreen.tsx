@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Button, Snackbar, Text, TextInput } from 'react-native-paper';
 import * as yup from 'yup';
 import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
@@ -23,6 +23,9 @@ const logInValidationSchema = yup.object().shape({
 export default function StartScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+  const [visible, setVisible] = React.useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
 
   getUserFromStorage().then(async (value) => {
     if (value) {
@@ -49,6 +52,9 @@ export default function StartScreen({ navigation }: Props) {
               });
           } catch {
             console.error(Error);
+            {
+              onToggleSnackBar();
+            }
           }
           console.log(values);
         }}
@@ -109,6 +115,20 @@ export default function StartScreen({ navigation }: Props) {
               >
                 Skapa konto
               </BigButton>
+              <Snackbar
+                visible={visible}
+                onDismiss={onDismissSnackBar}
+                action={{
+                  label: 'Stäng',
+                  onPress: () => {
+                    {
+                      setVisible(true);
+                    }
+                  },
+                }}
+              >
+                Inkorrekt användarnamn eller lösenord. Försök igen eller registrera en ny användare.
+              </Snackbar>
             </View>
           </View>
         )}

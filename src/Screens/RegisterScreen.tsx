@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Button, Snackbar, Text, TextInput } from 'react-native-paper';
 import * as yup from 'yup';
 import BigButton from '../Components/Buttons/BigButton';
 import { getTheme } from '../Components/theme';
@@ -22,22 +22,31 @@ const logInValidationSchema = yup.object().shape({
 export default function RegisterScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+  const [visible, setVisible] = React.useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
 
   return (
     <View style={styles.container}>
       <Formik
         validationSchema={logInValidationSchema}
         onSubmit={async (values, actions) => {
-          console.log(values);
-          actions.resetForm();
-          await dispatch(registerUser(values))
-            .unwrap()
-            .then(async (value) => {
-              if (value.uid !== undefined) {
-                saveUserStorage(value);
-                navigation.navigate('ManagerScreen');
-              }
-            });
+          try {
+            actions.resetForm();
+            await dispatch(registerUser(values))
+              .unwrap()
+              .then(async (value) => {
+                if (value.uid !== undefined) {
+                  saveUserStorage(value);
+                  navigation.navigate('ManagerScreen');
+                }
+              });
+          } catch {
+            console.error(Error);
+            {
+              onToggleSnackBar();
+            }
+          }
         }}
         initialValues={{ email: '', password: '' }}
       >
@@ -81,6 +90,20 @@ export default function RegisterScreen({ navigation }: Props) {
               >
                 Registrera
               </BigButton>
+              <Snackbar
+                visible={visible}
+                onDismiss={onDismissSnackBar}
+                action={{
+                  label: 'Stäng',
+                  onPress: () => {
+                    {
+                      setVisible(true);
+                    }
+                  },
+                }}
+              >
+                E-posten används redan.
+              </Snackbar>
             </View>
           </View>
         )}
