@@ -1,13 +1,15 @@
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper';
-import GestureRecognizer from 'react-native-swipe-gestures';
+import { Dialog, Portal, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
+import { TopTabsParamList } from '../Navigation/TopTabsNavigator';
 import {
   emptyChoreHistoryState,
   getChoreHistoryFromDbByProfileIds,
@@ -16,7 +18,10 @@ import { getASingleChore, selectChoresObject } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
+type Props = CompositeScreenProps<
+  MaterialTopTabScreenProps<TopTabsParamList, 'TodayScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
@@ -41,18 +46,6 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <ScrollView>
-      <GestureRecognizer
-        style={styles.container}
-        onSwipeLeft={async () => {
-          await dispatch(emptyChoreHistoryState());
-          dispatch(
-            await getChoreHistoryFromDbByProfileIds(
-              profiles.filter((pro) => pro.householdId == activeHouseHold?.id),
-            ),
-          );
-          navigation.navigate('StatisticsScreen');
-        }}
-      >
         <View>
           {chores.chores.map((chore) => (
             <View key={chore.id}>
@@ -138,7 +131,6 @@ export default function HomeScreen({ navigation }: Props) {
         ) : (
           <></>
         )}
-      </GestureRecognizer>
     </ScrollView>
   );
 }
