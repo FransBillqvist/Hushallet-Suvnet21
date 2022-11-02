@@ -311,7 +311,7 @@ export const selectNewChoresObject = () => (state: AppState) => {
     let isDoneToday = false;
 
     choreHistoryPerChore.forEach((h) => {
-      if (h.date.slice(0, 10) === cDate) isDoneToday = true;
+      if (h.date.slice(0, 10) === cDate && h.profileId != 'null') isDoneToday = true;
     });
 
     if (isDoneToday) {
@@ -338,15 +338,13 @@ export const selectNewChoresObject = () => (state: AppState) => {
           latestDateDone = choreHistoryDoneDate.toISOString().slice(0, 10);
       });
 
-      const diffrenceInSec = Math.abs(new Date().getTime() - new Date(latestDateDone).getTime());
-      let diffrenceInDays = Math.round(diffrenceInSec / (1000 * 3600 * 24));
-      //varning för elegant lösning
-      diffrenceInDays = diffrenceInDays - 1;
-      console.log(diffrenceInDays);
-      if (c.frequency - diffrenceInDays < 0) {
-        result.push({ ...c, isOverdue: true, daysPast: diffrenceInDays });
+      const differenceInSec = Math.abs(new Date().getTime() - new Date(latestDateDone).getTime());
+      const differenceInDays = Math.floor(differenceInSec / (1000 * 3600 * 24));
+
+      if (c.frequency - differenceInDays < 0) {
+        result.push({ ...c, isOverdue: true, daysPast: differenceInDays });
       } else {
-        result.push({ ...c, isOverdue: false, daysPast: diffrenceInDays });
+        result.push({ ...c, isOverdue: false, daysPast: differenceInDays });
       }
     }
   });
