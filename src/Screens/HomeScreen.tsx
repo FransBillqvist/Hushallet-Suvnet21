@@ -3,17 +3,13 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper';
+import { Dialog, Portal, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { TopTabsParamList } from '../Navigation/TopTabsNavigator';
-import {
-  emptyChoreHistoryState,
-  getChoreHistoryFromDbByProfileIds,
-} from '../Store/choreHistorySlice';
 import { getASingleChore, selectNewChoresObject } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
@@ -27,7 +23,6 @@ export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
   const activeHouseHold = useAppSelector((state) => state.household.singleHousehold);
   const activeProfile = useAppSelector((state) => state.profile.currentProfile);
-  const profiles = useAppSelector((state) => state.profile.profiles);
   const choreData = useAppSelector(selectNewChoresObject());
 
   const [originalHouseHold, editedHousehold] = React.useState<Household>({
