@@ -62,12 +62,16 @@ export default function ManagerScreen({ navigation }: Props) {
               .then(async () => {
                 await dispatch(getProfilesForHousehold(house.id));
                 await dispatch(getProfilesByUserId(userId));
-                await dispatch(getChores(house.id));
                 await dispatch(emptyChoreHistoryState());
-                await dispatch(setCurrentProfile(profiles.find((pro) => pro.userId === userId)));
-                dispatch(
-                  await getChoreHistoryFromDbByProfileIds(
+                await dispatch(
+                  getChoreHistoryFromDbByProfileIds(
                     profiles.filter((pro) => pro.householdId == house.id),
+                  ),
+                );
+                await dispatch(getChores(house.id));
+                await dispatch(
+                  setCurrentProfile(
+                    profiles.find((pro) => pro.userId === userId && pro.householdId == house.id),
                   ),
                 );
                 navigation.navigate('HomeScreen');
