@@ -23,8 +23,6 @@ export function filterCurrentWeek(choreHistory: ChoreHistory[]) {
     )
       choreHistoryOfCurrentWeek.push(choreHistory);
   });
-  console.log(choreHistory);
-  console.log(choreHistoryOfCurrentWeek);
 
   return choreHistoryOfCurrentWeek;
 }

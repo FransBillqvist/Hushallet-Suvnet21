@@ -22,9 +22,9 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ProfileScreen'>;
 const profileValidationSchema = yup.object().shape({
   profilename: yup
     .string()
-    .min(2, 'Ditt profilnamn måste vara minst än 2 tecken')
-    .max(10, 'Inte mer än 10 tecken!')
-    .required('Ditt namn är för kort!'),
+    .min(2, 'Ditt profilnamn måste vara minst 2 tecken')
+    .max(12, 'Inte mer än 12 tecken!')
+    .required('Ett profilnamn är obligatoriskt!'),
 });
 
 export default function ProfileScreen({ navigation }: Props) {
@@ -69,7 +69,6 @@ export default function ProfileScreen({ navigation }: Props) {
           } catch {
             console.error(Error);
           }
-          console.log(values);
         }}
         initialValues={{ profilename: '' }}
       >
@@ -122,10 +121,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-  },
-  inputLabel: {
-    marginBottom: 10,
-    fontSize: 15,
   },
   inputTextField: {
     borderWidth: 1,
