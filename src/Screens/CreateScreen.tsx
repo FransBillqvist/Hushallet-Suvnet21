@@ -73,7 +73,7 @@ export default function CreateScreen({ navigation }: Props) {
             disabled={code !== '' ? false : true}
             onPress={function (): void {
               AddHouse();
-              navigation.navigate('ProfileScreen');
+              navigation.replace('ProfileScreen');
             }}
             icon='home-plus-outline'
           >
