@@ -104,13 +104,13 @@ export default function StartScreen({ navigation }: Props) {
               <BigButton
                 style={styles.bigButtonAlign}
                 onPress={props.handleSubmit}
-                theme={getTheme('dark')}
+                theme={getTheme('light')}
               >
                 Logga In
               </BigButton>
               <Text style={styles.ellerText}>eller</Text>
               <BigButton
-                theme={getTheme('dark')}
+                theme={getTheme('light')}
                 onPress={() => navigation.navigate('RegisterScreen')}
               >
                 Skapa konto
