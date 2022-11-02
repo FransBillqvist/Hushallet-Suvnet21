@@ -123,7 +123,7 @@ export default function ManagerScreen({ navigation }: Props) {
                       await dispatch(emptyChoreHistoryState());
                       dispatch(
                         await getChoreHistoryFromDbByProfileIds(
-                          profiles.filter((pro) => pro.householdId == result.id),
+                          profiles.filter((pro) => pro.householdId == result.id), // TODO: SE ÖVER
                         ),
                       );
                       navigation.navigate('ProfileScreen');

@@ -18,6 +18,7 @@
     "@firebase/auth": "^0.20.10",
     "@firebase/firestore": "^3.7.1",
     "@react-native-async-storage/async-storage": "^1.17.10",
+    "@react-navigation/material-top-tabs": "^6.3.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
     "@reduxjs/toolkit": "^1.8.6",
@@ -40,12 +41,14 @@
     "react-native-screens": "~3.15.0",
     "react-native-svg": "12.3.0",
     "react-native-swipe-gestures": "^1.0.5",
+    "react-native-tab-view": "^3.3.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.7",
     "react-native-wheel-picker-expo": "^0.5.2",
     "react-redux": "^8.0.4",
     "redux": "^4.2.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "react-native-pager-view": "5.4.24"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
