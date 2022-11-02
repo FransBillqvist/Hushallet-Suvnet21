@@ -139,7 +139,7 @@ const choreHistorySlice = createSlice({
     });
     builder.addCase(getChoreHistoryFromDbByChores.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.choresHistory.push(...action.payload);
+      state.choresHistory = action.payload;
       console.log('fulfill');
     });
     builder.addCase(getChoreHistoryFromDbByChores.rejected, (state) => {
