@@ -21,24 +21,22 @@ export interface ChorePieData {
   pieData: PieData[];
 }
 
-
-
 export default function StatisticsScreen() {
   // const { totalData, everyPieData } = useAppSelector(selectHistoryByPeriod(route.params.period));
   const { totalData, everyPieData } = useAppSelector(selectHistoryByPeriod('currentWeek'));
   return (
-      <View style={styles.container}>
-        <Text variant='headlineMedium'>Nuvarande vecka</Text>
-        <ChorePieChart width={500} height={300} hasLegend data={totalData} />
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {everyPieData.map((data) => (
-            <View key={data.choreTitle} style={styles.container}>
-              <Text>{data.choreTitle}</Text>
-              <ChorePieChart width={200} height={150} hasLegend={false} data={data.pieData} />
-            </View>
-          ))}
-        </View>
+    <View style={styles.container}>
+      <Text variant='headlineMedium'>Nuvarande vecka</Text>
+      <ChorePieChart width={500} height={300} hasLegend data={totalData} />
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        {everyPieData.map((data) => (
+          <View key={data.choreTitle} style={styles.container}>
+            <Text>{data.choreTitle}</Text>
+            <ChorePieChart width={200} height={150} hasLegend={false} data={data.pieData} />
+          </View>
+        ))}
       </View>
+    </View>
   );
 }
 
