@@ -12,7 +12,6 @@ import ManagerScreen from '../Screens/ManagerScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
 import StartScreen from '../Screens/StartScreen';
-import StatisticsScreen from '../Screens/StatisticsScreen';
 import { useAppSelector } from '../Store/store';
 import { TopTabsNavigator } from './TopTabsNavigator';
 
