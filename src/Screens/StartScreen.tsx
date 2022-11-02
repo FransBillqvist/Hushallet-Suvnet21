@@ -56,7 +56,6 @@ export default function StartScreen({ navigation }: Props) {
               onToggleSnackBar();
             }
           }
-          console.log(values);
         }}
         initialValues={{ email: '', password: '' }}
       >
@@ -145,10 +144,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     paddingHorizontal: 15,
     width: '100%',
-  },
-  inputLabel: {
-    marginBottom: 10,
-    fontSize: 15,
   },
   inputTextField: {
     borderRadius: 7,

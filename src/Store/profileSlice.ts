@@ -19,13 +19,6 @@ const initialState: ProfileState = {
   currentProfile: { id: '', userId: '', name: '', avatar: '', role: 'member', householdId: '' },
 };
 
-export const setProfileName = createAsyncThunk<string, string>(
-  'profile/setprofilename',
-  async (name, thunkApi) => {
-    return name;
-  },
-);
-
 export const profileAlreadyInHousehold = createAsyncThunk<
   boolean,
   string[],
@@ -43,7 +36,11 @@ export const profileAlreadyInHousehold = createAsyncThunk<
     }
   } catch (error) {
     console.error(error);
-    return thunkApi.rejectWithValue('Ett fel inträffade!');
+    if (error instanceof FirebaseError) {
+      console.log(error.message);
+      return thunkApi.rejectWithValue('Databasfel, kunde inte lägga till sysslan.');
+    }
+    return thunkApi.rejectWithValue('Kunde inte lägga till sysslan, vänligen kontakta support!');
   }
 });
 
@@ -64,7 +61,11 @@ export const getCurrentAmountOfProfiles = createAsyncThunk<
     }
   } catch (error) {
     console.error(error);
-    return thunkApi.rejectWithValue('Ett fel inträffade!');
+    if (error instanceof FirebaseError) {
+      console.log(error.message);
+      return thunkApi.rejectWithValue('Databasfel, kunde inte hämta profiler.');
+    }
+    return thunkApi.rejectWithValue('Databasfel, kunde inte hämta profiler!');
   }
 });
 
@@ -81,7 +82,11 @@ export const getProfilesForHousehold = createAsyncThunk<Profile[], string, { rej
       return profilesInDB;
     } catch (error) {
       console.error(error);
-      return thunkApi.rejectWithValue('Ett fel inträffade!');
+      if (error instanceof FirebaseError) {
+        console.log(error.message);
+        return thunkApi.rejectWithValue('Problem med databasen, kunde inte hämta profiler.');
+      }
+      return thunkApi.rejectWithValue('Databasfel, kunde inte hämta profiler!');
     }
   },
 );
@@ -102,7 +107,8 @@ export const addNewProfile = createAsyncThunk<Profile, Profile, { rejectValue: s
     } catch (error) {
       console.error(error);
       if (error instanceof FirebaseError) {
-        return thunkApi.rejectWithValue(error.message);
+        console.log(error.message);
+        return thunkApi.rejectWithValue('Databasfel, kunde inte skapa en ny profil just nu.');
       }
       return thunkApi.rejectWithValue('Något gick snett, vänligen kontakta support!');
     }
@@ -117,36 +123,15 @@ export const getProfilesByUserId = createAsyncThunk<Profile[], string, { rejectV
       const q = query(collection(db, 'Profile'), where('userId', '==', userId));
       const querySnapshot = await getDocs(q);
       profilesInAccount.push(...querySnapshot.docs.map((doc) => doc.data() as Profile));
-      console.log(profilesInAccount);
       thunkApi.dispatch(addAllHouseholdsFromProfile(profilesInAccount));
       return profilesInAccount;
     } catch (error) {
       console.error(error);
       if (error instanceof FirebaseError) {
+        console.log(error.message);
         return thunkApi.rejectWithValue(error.message);
       }
       return thunkApi.rejectWithValue('Databasfel, du har inget konto!');
-    }
-  },
-);
-
-export const getProfilesByProfileId = createAsyncThunk<Profile, string, { rejectValue: string }>(
-  'profile/getprofilesbyprofileid',
-  async (profileId, thunkApi) => {
-    try {
-      const q = query(collection(db, 'Profile'), where('id', '==', profileId));
-      const querySnapshot = await getDocs(q);
-      const profile = querySnapshot.docs.map((doc) => doc.data() as Profile);
-      console.log('Jag är på rad 156');
-      const currentProfile = profile[0];
-      console.log(currentProfile);
-      return currentProfile;
-    } catch (error) {
-      console.error(error);
-      if (error instanceof FirebaseError) {
-        return thunkApi.rejectWithValue(error.message);
-      }
-      return thunkApi.rejectWithValue('Något gick snett, kontakta supporten!');
     }
   },
 );
@@ -166,34 +151,18 @@ const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    //setProfileName
-    builder.addCase(setProfileName.pending, (state) => {
-      state.isLoading = true;
-      console.log('pending');
-    });
-    builder.addCase(setProfileName.fulfilled, (state) => {
-      state.isLoading = false;
-      // state.profiles[index].name = action.payload;
-      console.log('fulfilled');
-    });
-    builder.addCase(setProfileName.rejected, (state) => {
-      state.isLoading = false;
-      console.log('rejected');
-    });
     //profileAlreadyInHousehold
     builder.addCase(profileAlreadyInHousehold.pending, (state) => {
       state.isLoading = true;
-      console.log('pending');
+      console.log('profileAlreadyInHousehold pending');
     });
-    builder.addCase(profileAlreadyInHousehold.fulfilled, (state, action) => {
+    builder.addCase(profileAlreadyInHousehold.fulfilled, (state) => {
       state.isLoading = false;
-      // state.profiles[index].name = action.payload;
-      console.log('fulfilled');
+      console.log('profileAlreadyInHousehold fulfilled');
     });
-    builder.addCase(profileAlreadyInHousehold.rejected, (state, action) => {
+    builder.addCase(profileAlreadyInHousehold.rejected, (state) => {
       state.isLoading = false;
-      //   state.error = action.payload || 'Unknown error';
-      console.log('rejected');
+      console.log('profileAlreadyInHousehold rejected');
     });
 
     //getCurrentAmountOfProfiles
@@ -238,7 +207,7 @@ const profileSlice = createSlice({
     });
     builder.addCase(addNewProfile.rejected, (state) => {
       state.isLoading = false;
-      console.log('rejected! add new profile ');
+      console.log('AddNewProfile rejected');
     });
 
     //getProfilesByUserId
@@ -256,21 +225,7 @@ const profileSlice = createSlice({
     });
     builder.addCase(getProfilesByUserId.rejected, (state) => {
       state.isLoading = false;
-      console.log('Rejected getProfilesByUserId');
-    });
-
-    //getProfilesByProfileId
-    builder.addCase(getProfilesByProfileId.pending, (state) => {
-      state.isLoading = true;
-      console.log('getProfilesByProfileId pending');
-    });
-    builder.addCase(getProfilesByProfileId.fulfilled, (state) => {
-      state.isLoading = false;
-      console.log('getProfilesByProfileId fulfilled');
-    });
-    builder.addCase(getProfilesByProfileId.rejected, (state) => {
-      state.isLoading = false;
-      console.log('getProfilesByProfileId rejected');
+      console.log('getProfilesByUserId rejected');
     });
   },
 });

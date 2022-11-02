@@ -32,8 +32,7 @@ const formValidationSchema = yup.object().shape({
     .string()
     .matches(/^[a-ö A-Ö]+$/, 'Accepterar bara bokstäver')
     .min(5, 'Minst 5 bokstäver')
-    .max(50, 'Max 50 bokstäver')
-    .required('Beskrivning är obligatoriskt'),
+    .max(50, 'Max 50 bokstäver'),
 });
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChoreScreen'>;

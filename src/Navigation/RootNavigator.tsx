@@ -7,7 +7,6 @@ import ChoreScreen from '../Screens/ChoreScreen';
 import CreateScreen from '../Screens/CreateScreen';
 import DetailScreen from '../Screens/DetailScreen';
 import EditChoreScreen from '../Screens/EditChoreScreen';
-import HomeScreen from '../Screens/HomeScreen';
 import ManagerScreen from '../Screens/ManagerScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
@@ -40,8 +39,6 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
   const activeHouse = useAppSelector((state) => state.household.singleHousehold);
   const homeName: string = activeHouse?.name || 'Household';
   const currentAvatar = useAppSelector((state) => state.profile.currentProfile.avatar);
-  console.log('RootStackNavigator loggar ut user nedanför');
-  console.log(user);
   return (
     <NavigationContainer theme={getTheme(colorScheme)}>
       <RootStack.Navigator>

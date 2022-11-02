@@ -23,7 +23,7 @@ const initialState: HouseholdsState<Household> = {
   singleHousehold: { id: '', name: '', code: '' },
 };
 
-export const createNewHousehold = createAsyncThunk<Household, Household>(
+export const createNewHousehold = createAsyncThunk<Household, Household, { rejectValue: string }>(
   'household/createnewhousehold',
   async (household, thunkApi) => {
     try {
@@ -31,12 +31,15 @@ export const createNewHousehold = createAsyncThunk<Household, Household>(
       return household;
     } catch (error) {
       console.error(error);
-      return thunkApi.rejectWithValue(error);
+      if (error instanceof FirebaseError) {
+        return thunkApi.rejectWithValue(error.message);
+      }
+      return thunkApi.rejectWithValue('Kunde skapa nytt hushåll, vänligen kontakta support!');
     }
   },
 );
 
-export const getHouseHoldByCode = createAsyncThunk<Household, string>(
+export const getHouseHoldByCode = createAsyncThunk<Household, string, { rejectValue: string }>(
   'household/gethousehold',
   async (code, thunkApi) => {
     try {
@@ -46,48 +49,59 @@ export const getHouseHoldByCode = createAsyncThunk<Household, string>(
       thunkApi.dispatch(setHousehold(household));
       return household;
     } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  },
-);
-
-export const getHouseholdByProfileId = createAsyncThunk<Household, Profile>(
-  'household/gethouseholdbyprofileid',
-  async (profile, thunkApi) => {
-    try {
-      for (let i = 0; profile.name != ''; i++) {
-        const q = query(collection(db, 'Household'), where('id', '==', profile.householdId));
-        const querySnapshot = await getDocs(q);
-        const household = querySnapshot.docs[i].data() as Household;
-
-        return household;
-      }
-      return thunkApi.rejectWithValue('No household found');
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  },
-);
-
-export const addAllHouseholdsFromProfile = createAsyncThunk<Household[], Profile[]>(
-  'household/addallhouseholdsfromprofile',
-  async (profiles, thunkApi) => {
-    try {
-      if (profiles.length > 0) {
-        const householdids = profiles.map((pro) => pro.householdId);
-        const q = query(collection(db, 'Household'), where('id', 'in', householdids));
-        const querySnapshot = await getDocs(q);
-        const result = querySnapshot.docs.map((doc) => doc.data() as Household);
-        console.log('result FROM addAllHouseholdsFromProfile');
-        console.log(result);
-        return result;
-      } else return [];
-    } catch (error) {
       console.error(error);
-      return thunkApi.rejectWithValue(error);
+      if (error instanceof FirebaseError) {
+        return thunkApi.rejectWithValue(error.message);
+      }
+      return thunkApi.rejectWithValue('Kunde hämta hushållet, vänligen kontakta support!');
     }
   },
 );
+
+export const getHouseholdByProfileId = createAsyncThunk<
+  Household,
+  Profile,
+  { rejectValue: string }
+>('household/gethouseholdbyprofileid', async (profile, thunkApi) => {
+  try {
+    for (let i = 0; profile.name != ''; i++) {
+      const q = query(collection(db, 'Household'), where('id', '==', profile.householdId));
+      const querySnapshot = await getDocs(q);
+      const household = querySnapshot.docs[i].data() as Household;
+
+      return household;
+    }
+    return thunkApi.rejectWithValue('Inget hushåll hittades.');
+  } catch (error) {
+    console.error(error);
+    if (error instanceof FirebaseError) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+    return thunkApi.rejectWithValue('Kunde hämta hushållet, vänligen kontakta support!');
+  }
+});
+
+export const addAllHouseholdsFromProfile = createAsyncThunk<
+  Household[],
+  Profile[],
+  { rejectValue: string }
+>('household/addallhouseholdsfromprofile', async (profiles, thunkApi) => {
+  try {
+    if (profiles.length > 0) {
+      const householdids = profiles.map((pro) => pro.householdId);
+      const q = query(collection(db, 'Household'), where('id', 'in', householdids));
+      const querySnapshot = await getDocs(q);
+      const result = querySnapshot.docs.map((doc) => doc.data() as Household);
+      return result;
+    } else return [];
+  } catch (error) {
+    console.error(error);
+    if (error instanceof FirebaseError) {
+      return thunkApi.rejectWithValue('Databasfel, kontakta systemadministratören.');
+    }
+    return thunkApi.rejectWithValue('Det gick inte att hämta några profiler.');
+  }
+});
 
 export const editHouseholdName = createAsyncThunk<Household, Household, { rejectValue: string }>(
   'household/editchore',
@@ -108,7 +122,7 @@ export const editHouseholdName = createAsyncThunk<Household, Household, { reject
       if (error instanceof FirebaseError) {
         return thunkApi.rejectWithValue('Databasfel, kontakta systemadministratören.');
       }
-      return thunkApi.rejectWithValue('Det gick inte');
+      return thunkApi.rejectWithValue('Det gick inte att ändra sysslan.');
     }
   },
 );
@@ -142,23 +156,24 @@ export const selectActiveHousehold = createAsyncThunk<
     if (error instanceof FirebaseError) {
       return thunkApi.rejectWithValue('Databasfel. Hittar inget hushåll med detta id.');
     }
-    return thunkApi.rejectWithValue('Det gick inte');
+    return thunkApi.rejectWithValue('Det gick inte att välja hushåll.');
   }
 });
 
-export const addHouseholdToHouseholdList = createAsyncThunk<Household, Household>(
-  'household/addHouseholdtohouseholdlist',
-  (household, thunkApi) => {
-    try {
-      return household;
-    } catch (error) {
-      console.error(error);
-    }
-    return thunkApi.rejectWithValue(
-      'Något dåligt hände och hushållet kunde inte läggas till. Kontakta support!',
-    );
-  },
-);
+export const addHouseholdToHouseholdList = createAsyncThunk<
+  Household,
+  Household,
+  { rejectValue: string }
+>('household/addHouseholdtohouseholdlist', (household, thunkApi) => {
+  try {
+    return household;
+  } catch (error) {
+    console.error(error);
+  }
+  return thunkApi.rejectWithValue(
+    'Något dåligt hände och hushållet kunde inte läggas till. Kontakta support!',
+  );
+});
 
 const householdSlice = createSlice({
   name: 'household',

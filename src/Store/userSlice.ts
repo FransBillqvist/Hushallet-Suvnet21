@@ -29,7 +29,6 @@ export const registerUser = createAsyncThunk<
   try {
     const auth = getAuth(app);
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    console.log(userCredential);
     return userCredential.user.toJSON() as User;
   } catch (error) {
     console.error(error);
@@ -49,7 +48,6 @@ export const login = createAsyncThunk<
   try {
     const auth = getAuth(app);
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log(userCredential);
     return userCredential.user.toJSON() as User;
   } catch (error) {
     console.error(error);
@@ -98,7 +96,7 @@ const userSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(login.rejected, (state) => {
-      state.errorMsg = 'Mail och eller lösenordet är fel';
+      state.errorMsg = 'Email eller lösenord är fel';
       state.isLoading = false;
     });
   },
