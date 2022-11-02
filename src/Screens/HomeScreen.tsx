@@ -10,11 +10,7 @@ import { getTheme } from '../Components/theme';
 import { Household } from '../Data/household';
 import { RootStackParamList } from '../Navigation/RootNavigator';
 import { TopTabsParamList } from '../Navigation/TopTabsNavigator';
-import {
-  emptyChoreHistoryState,
-  getChoreHistoryFromDbByProfileIds,
-} from '../Store/choreHistorySlice';
-import { getASingleChore, selectChoresObject } from '../Store/choreSlice';
+import { getASingleChore, selectNewChoresObject } from '../Store/choreSlice';
 import { editHouseholdName, selectActiveHousehold } from '../Store/householdSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
@@ -25,11 +21,9 @@ type Props = CompositeScreenProps<
 
 export default function HomeScreen({ navigation }: Props) {
   const dispatch = useAppDispatch();
-  const chores = useAppSelector((state) => state.chore);
   const activeHouseHold = useAppSelector((state) => state.household.singleHousehold);
   const activeProfile = useAppSelector((state) => state.profile.currentProfile);
-  const profiles = useAppSelector((state) => state.profile.profiles);
-  const choreData = useAppSelector(selectChoresObject());
+  const choreData = useAppSelector(selectNewChoresObject());
 
   const [originalHouseHold, editedHousehold] = React.useState<Household>({
     id: activeHouseHold?.id || '',
@@ -47,7 +41,7 @@ export default function HomeScreen({ navigation }: Props) {
   return (
     <ScrollView>
       <View>
-        {chores.chores.map((chore) => (
+        {choreData.map((chore) => (
           <View key={chore.id}>
             <Pressable
               onPress={async () => {
@@ -62,11 +56,25 @@ export default function HomeScreen({ navigation }: Props) {
               <ChoreCard chore={chore}>
                 <Text>{chore.name}</Text>
                 <View style={{ alignItems: 'center' }}>
-                  {choreData
-                    .filter((cD) => cD.id === chore.id)
-                    .map((cD) => (
-                      <Text key={cD.key}>{cD.avatarOrDays}</Text>
-                    ))}
+                  {chore.avatar ? (
+                    <Text key={chore.id}>{chore.avatar}</Text>
+                  ) : (
+                    <View
+                      style={
+                        chore.isOverdue
+                          ? {
+                              backgroundColor: '#FF0000',
+                              borderRadius: 100,
+                              width: 25,
+                              height: 25,
+                              justifyContent: 'center',
+                            }
+                          : {}
+                      }
+                    >
+                      <Text>{chore.daysPast}</Text>
+                    </View>
+                  )}
                 </View>
               </ChoreCard>
             </Pressable>

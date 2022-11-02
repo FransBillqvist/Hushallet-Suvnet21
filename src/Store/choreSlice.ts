@@ -3,7 +3,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import { db } from '../Config/firebase';
 import { Chore, ChoreCreate } from '../Data/chore';
-import { Profile } from '../Data/profile';
 import { AppState } from '../Store/store';
 
 interface ChoreState {
@@ -295,36 +294,90 @@ export const { flushChores } = choreSlice.actions;
 export const choreReducer = choreSlice.reducer;
 
 interface ChoreData extends Chore {
-  key: string;
-  avatarOrDays: string[] | number[];
+  key?: string;
+  avatar?: string[];
+  daysPast?: number;
+  isOverdue?: boolean;
 }
 
-export const selectChoresObject = () => (state: AppState) => {
+// export const selectChoresObject = () => (state: AppState) => {
+//   const result: ChoreData[] = [];
+//   const cDate = new Date().toISOString().slice(0, 10);
+//   const chores = state.chore.chores;
+//   const choreHistory = state.choreHistory.choresHistory;
+//   chores.forEach((c) => {
+//     choreHistory
+//       .filter((h) => h.choreId === c.id)
+//       .map((h) => {
+//         if (h.date.slice(0, 10) === cDate) {
+//           result.push({
+//             ...c,
+//             key: h.id,
+//             avatar: [state.profile.profiles.find((p) => p.id === h.profileId)?.avatar || ''],
+//           });
+//         } else {
+//           const diffrenceInSec = Math.abs(new Date().getTime() - new Date(h.date).getTime());
+//           const diffrenceInDays = Math.round(diffrenceInSec / (1000 * 3600 * 24));
+
+//           result.push({
+//             ...c,
+//             key: h.id,
+//             daysPast: diffrenceInDays,
+//           });
+//         }
+//       });
+//   });
+//   return result;
+// };
+
+export const selectNewChoresObject = () => (state: AppState) => {
   const result: ChoreData[] = [];
   const cDate = new Date().toISOString().slice(0, 10);
   const chores = state.chore.chores;
   const choreHistory = state.choreHistory.choresHistory;
-  chores.forEach((c) => {
-    choreHistory
-      .filter((h) => h.choreId === c.id)
-      .map((h) => {
-        if (h.date.slice(0, 10) === cDate) {
-          result.push({
-            ...c,
-            key: h.id,
-            avatarOrDays: [state.profile.profiles.find((p) => p.id === h.profileId)?.avatar || ''],
-          });
-        } else {
-          const diffrenceInSec = Math.abs(new Date().getTime() - new Date(h.date).getTime());
-          const diffrenceInDays = Math.round(diffrenceInSec / (1000 * 3600 * 24));
 
-          result.push({
-            ...c,
-            key: h.id,
-            avatarOrDays: [diffrenceInDays],
-          });
-        }
+  chores.forEach((c) => {
+    const choreHistoryPerChore = choreHistory.filter((h) => h.choreId === c.id);
+    let isDoneToday = false;
+
+    choreHistoryPerChore.forEach((h) => {
+      if (h.date.slice(0, 10) === cDate) isDoneToday = true;
+    });
+
+    if (isDoneToday) {
+      choreHistoryPerChore
+        .filter((h) => h.date.slice(0, 10) === cDate)
+        .map((h) => {
+          const avatar = state.profile.profiles.find((p) => p.id === h.profileId)?.avatar || '';
+          let choreData = result.find((data) => data.name === c.name);
+          if (!choreData) {
+            choreData = {
+              ...c,
+              avatar: [],
+            };
+            result.push(choreData);
+          }
+          choreData.avatar?.push(avatar);
+        });
+    } else {
+      let latestDateDone = new Date(0).toISOString().slice(0, 10);
+
+      choreHistoryPerChore.forEach((h) => {
+        const choreHistoryDoneDate = new Date(h.date);
+        if (choreHistoryDoneDate > new Date(latestDateDone))
+          latestDateDone = choreHistoryDoneDate.toISOString().slice(0, 10);
       });
+
+      const diffrenceInSec = Math.abs(new Date().getTime() - new Date(latestDateDone).getTime());
+      const diffrenceInDays = Math.round(diffrenceInSec / (1000 * 3600 * 24));
+
+      if (c.frequency - diffrenceInDays < 0) {
+        result.push({ ...c, isOverdue: true, daysPast: diffrenceInDays });
+      } else {
+        result.push({ ...c, isOverdue: false, daysPast: diffrenceInDays });
+      }
+    }
   });
+
   return result;
 };
