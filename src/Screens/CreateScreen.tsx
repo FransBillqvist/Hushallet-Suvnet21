@@ -69,7 +69,7 @@ export default function CreateScreen({ navigation }: Props) {
       <View style={styles.buttonContainer}>
         <View style={styles.buttonPosition}>
           <BigButton
-            theme={getTheme('dark')}
+            theme={getTheme('light')}
             disabled={code !== '' ? false : true}
             onPress={function (): void {
               AddHouse();
