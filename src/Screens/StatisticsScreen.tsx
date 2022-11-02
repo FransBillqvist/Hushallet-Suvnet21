@@ -21,16 +21,12 @@ export interface ChorePieData {
   pieData: PieData[];
 }
 
-type Props = NativeStackScreenProps<RootStackParamList, 'StatisticsScreen'>;
 
-export default function StatisticsScreen({ navigation, route }: Props) {
+
+export default function StatisticsScreen() {
   // const { totalData, everyPieData } = useAppSelector(selectHistoryByPeriod(route.params.period));
   const { totalData, everyPieData } = useAppSelector(selectHistoryByPeriod('currentWeek'));
   return (
-    <GestureRecognizer
-      style={styles.container}
-      onSwipeRight={() => navigation.navigate('HomeScreen')}
-    >
       <View style={styles.container}>
         <Text variant='headlineMedium'>Nuvarande vecka</Text>
         <ChorePieChart width={500} height={300} hasLegend data={totalData} />
@@ -43,7 +39,6 @@ export default function StatisticsScreen({ navigation, route }: Props) {
           ))}
         </View>
       </View>
-    </GestureRecognizer>
   );
 }
 
