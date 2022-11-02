@@ -10,16 +10,14 @@ import {
   emptyChoreHistoryState,
   getChoreHistoryFromDbByProfileIds,
 } from '../Store/choreHistorySlice';
-import { flushChores, getChores } from '../Store/choreSlice';
+import { flushChores } from '../Store/choreSlice';
 import { flushHousehold, getHouseHoldByCode, selectActiveHousehold } from '../Store/householdSlice';
 import {
   flushCurrentProfile,
   flushProfileList,
   getCurrentAmountOfProfiles,
-  getProfilesByUserId,
   getProfilesForHousehold,
   profileAlreadyInHousehold,
-  setCurrentProfile,
 } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 import { logout } from '../Store/userSlice';
@@ -57,25 +55,8 @@ export default function ManagerScreen({ navigation }: Props) {
           theme={getTheme('light')}
           onPress={async () => {
             dispatch(flushCurrentProfile());
-            await dispatch(selectActiveHousehold(house.id))
-              .unwrap()
-              .then(async () => {
-                await dispatch(getProfilesForHousehold(house.id));
-                await dispatch(getProfilesByUserId(userId));
-                await dispatch(emptyChoreHistoryState());
-                await dispatch(
-                  setCurrentProfile(
-                    profiles.find((pro) => pro.userId === userId && pro.householdId === house.id),
-                  ),
-                );
-                await dispatch(getChores(house.id));
-                dispatch(
-                  await getChoreHistoryFromDbByProfileIds(
-                    profiles.filter((pro) => pro.householdId == house.id),
-                  ),
-                );
-                navigation.navigate('HomeScreen');
-              });
+            await dispatch(selectActiveHousehold(house.id));
+            navigation.navigate('HomeScreen');
           }}
           key={house.id}
           style={styles.marginBot}

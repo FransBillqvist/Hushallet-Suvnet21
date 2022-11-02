@@ -45,12 +45,8 @@ export default function HomeScreen({ navigation }: Props) {
           <View key={chore.id}>
             <Pressable
               onPress={async () => {
-                await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
-                  .unwrap()
-                  .then(async () => {
-                    await dispatch(getASingleChore(chore.id));
-                    navigation.navigate('DetailScreen');
-                  });
+                await dispatch(getASingleChore(chore.id));
+                navigation.navigate('DetailScreen');
               }}
             >
               <ChoreCard chore={chore}>
@@ -68,6 +64,7 @@ export default function HomeScreen({ navigation }: Props) {
                               width: 25,
                               height: 25,
                               justifyContent: 'center',
+                              alignItems: 'center',
                             }
                           : {}
                       }

@@ -55,7 +55,7 @@ export const getChoreHistoryFromDbByChores = createAsyncThunk<ChoreHistory[], Ch
     try {
       if (chores.length > 0) {
         const choreIds = chores.map((c) => c.id);
-        const q = query(collection(db, 'ChoreHistory'), where('choreId', '==', choreIds));
+        const q = query(collection(db, 'ChoreHistory'), where('choreId', 'in', choreIds));
         const querySnapshot = await getDocs(q);
         const result = querySnapshot.docs.map((doc) => doc.data() as ChoreHistory);
         return result;
@@ -177,7 +177,10 @@ export const selectHistoryByPeriod =
       (pro) => pro.householdId == household?.id,
     );
     const choresInHousehold = state.chore.chores;
-    const choreHistories = state.choreHistory.choresHistory;
+    const choreHistories = state.choreHistory.choresHistory.filter((ch) => ch.profileId !== 'null');
+
+    console.log('||||||||||||||||||||| choreHistories |||||||||||||||||||||');
+    console.log(choreHistories);
 
     const choreHistoryForCurrentWeek = filterCurrentWeek(choreHistories);
 

@@ -300,36 +300,6 @@ interface ChoreData extends Chore {
   isOverdue?: boolean;
 }
 
-// export const selectChoresObject = () => (state: AppState) => {
-//   const result: ChoreData[] = [];
-//   const cDate = new Date().toISOString().slice(0, 10);
-//   const chores = state.chore.chores;
-//   const choreHistory = state.choreHistory.choresHistory;
-//   chores.forEach((c) => {
-//     choreHistory
-//       .filter((h) => h.choreId === c.id)
-//       .map((h) => {
-//         if (h.date.slice(0, 10) === cDate) {
-//           result.push({
-//             ...c,
-//             key: h.id,
-//             avatar: [state.profile.profiles.find((p) => p.id === h.profileId)?.avatar || ''],
-//           });
-//         } else {
-//           const diffrenceInSec = Math.abs(new Date().getTime() - new Date(h.date).getTime());
-//           const diffrenceInDays = Math.round(diffrenceInSec / (1000 * 3600 * 24));
-
-//           result.push({
-//             ...c,
-//             key: h.id,
-//             daysPast: diffrenceInDays,
-//           });
-//         }
-//       });
-//   });
-//   return result;
-// };
-
 export const selectNewChoresObject = () => (state: AppState) => {
   const result: ChoreData[] = [];
   const cDate = new Date().toISOString().slice(0, 10);
@@ -341,7 +311,7 @@ export const selectNewChoresObject = () => (state: AppState) => {
     let isDoneToday = false;
 
     choreHistoryPerChore.forEach((h) => {
-      if (h.date.slice(0, 10) === cDate) isDoneToday = true;
+      if (h.date.slice(0, 10) === cDate && h.profileId != 'null') isDoneToday = true;
     });
 
     if (isDoneToday) {
@@ -368,13 +338,13 @@ export const selectNewChoresObject = () => (state: AppState) => {
           latestDateDone = choreHistoryDoneDate.toISOString().slice(0, 10);
       });
 
-      const diffrenceInSec = Math.abs(new Date().getTime() - new Date(latestDateDone).getTime());
-      const diffrenceInDays = Math.round(diffrenceInSec / (1000 * 3600 * 24));
+      const differenceInSec = Math.abs(new Date().getTime() - new Date(latestDateDone).getTime());
+      const differenceInDays = Math.floor(differenceInSec / (1000 * 3600 * 24));
 
-      if (c.frequency - diffrenceInDays < 0) {
-        result.push({ ...c, isOverdue: true, daysPast: diffrenceInDays });
+      if (c.frequency - differenceInDays < 0) {
+        result.push({ ...c, isOverdue: true, daysPast: differenceInDays });
       } else {
-        result.push({ ...c, isOverdue: false, daysPast: diffrenceInDays });
+        result.push({ ...c, isOverdue: false, daysPast: differenceInDays });
       }
     }
   });
