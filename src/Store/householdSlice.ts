@@ -4,6 +4,10 @@ import { FirebaseError } from 'firebase/app';
 import { db } from '../Config/firebase';
 import { Household } from '../Data/household';
 import { Profile } from '../Data/profile';
+import { emptyChoreHistoryState, getChoreHistoryFromDbByChores } from './choreHistorySlice';
+import { getChores } from './choreSlice';
+import { getProfilesByUserId, getProfilesForHousehold, setCurrentProfile } from './profileSlice';
+import { AppState } from './store';
 
 interface HouseholdsState<Household> {
   households: Household[];
@@ -109,23 +113,38 @@ export const editHouseholdName = createAsyncThunk<Household, Household, { reject
   },
 );
 
-export const selectActiveHousehold = createAsyncThunk<Household, string, { rejectValue: string }>(
-  'household/selectactivehousehold',
-  async (id, thunkApi) => {
-    try {
-      const q = query(collection(db, 'Household'), where('id', '==', id));
-      const querySnapshot = await getDocs(q);
-      const result = querySnapshot.docs.map((doc) => doc.data() as Household);
-      return result[0];
-    } catch (error) {
-      console.error(error);
-      if (error instanceof FirebaseError) {
-        return thunkApi.rejectWithValue('Databasfel. Hittar inget hushåll med detta id.');
-      }
-      return thunkApi.rejectWithValue('Det gick inte');
+export const selectActiveHousehold = createAsyncThunk<
+  Household,
+  string,
+  { rejectValue: string; state: AppState }
+>('household/selectactivehousehold', async (id, thunkApi) => {
+  try {
+    const q = query(collection(db, 'Household'), where('id', '==', id));
+    const querySnapshot = await getDocs(q);
+    const result = querySnapshot.docs.map((doc) => doc.data() as Household);
+    let state = thunkApi.getState();
+    thunkApi.dispatch(getProfilesForHousehold(id));
+    thunkApi.dispatch(getProfilesByUserId(state.user.user.uid));
+    thunkApi.dispatch(emptyChoreHistoryState());
+    thunkApi.dispatch(
+      setCurrentProfile(
+        state.profile.profiles.find(
+          (pro) => pro.userId === state.user.user.uid && pro.householdId === id,
+        ),
+      ),
+    );
+    await thunkApi.dispatch(getChores(id));
+    state = thunkApi.getState();
+    await thunkApi.dispatch(getChoreHistoryFromDbByChores(state.chore.chores));
+    return result[0];
+  } catch (error) {
+    console.error(error);
+    if (error instanceof FirebaseError) {
+      return thunkApi.rejectWithValue('Databasfel. Hittar inget hushåll med detta id.');
     }
-  },
-);
+    return thunkApi.rejectWithValue('Det gick inte');
+  }
+});
 
 export const addHouseholdToHouseholdList = createAsyncThunk<Household, Household>(
   'household/addHouseholdtohouseholdlist',
