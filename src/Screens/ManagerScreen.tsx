@@ -64,7 +64,12 @@ export default function ManagerScreen({ navigation }: Props) {
                 await dispatch(getProfilesByUserId(userId));
                 await dispatch(emptyChoreHistoryState());
                 await dispatch(
-                  getChoreHistoryFromDbByProfileIds(
+                  setCurrentProfile(
+                    profiles.find((pro) => pro.userId === userId && pro.householdId === house.id),
+                  ),
+                );
+                dispatch(
+                  await getChoreHistoryFromDbByProfileIds(
                     profiles.filter((pro) => pro.householdId == house.id),
                   ),
                 );
@@ -123,7 +128,7 @@ export default function ManagerScreen({ navigation }: Props) {
                       await dispatch(emptyChoreHistoryState());
                       dispatch(
                         await getChoreHistoryFromDbByProfileIds(
-                          profiles.filter((pro) => pro.householdId == result.id),
+                          profiles.filter((pro) => pro.householdId == result.id), // TODO: SE ÖVER
                         ),
                       );
                       navigation.navigate('ProfileScreen');

@@ -12,8 +12,8 @@ import ManagerScreen from '../Screens/ManagerScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
 import StartScreen from '../Screens/StartScreen';
-import StatisticsScreen from '../Screens/StatisticsScreen';
 import { useAppSelector } from '../Store/store';
+import { TopTabsNavigator } from './TopTabsNavigator';
 
 declare global {
   namespace ReactNavigation {
@@ -29,7 +29,6 @@ export type RootStackParamList = {
   ChoreScreen: undefined;
   CreateScreen: undefined;
   EditChoreScreen: { id: string };
-  StatisticsScreen: undefined;
   ProfileScreen: undefined;
   DetailScreen: undefined;
 };
@@ -68,7 +67,7 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
             />
             <RootStack.Screen
               name='HomeScreen'
-              component={HomeScreen}
+              component={TopTabsNavigator}
               options={{ title: homeName, headerRight: () => <Text>{currentAvatar}</Text> }}
             />
             <RootStack.Screen
@@ -85,11 +84,6 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
               name='EditChoreScreen'
               component={EditChoreScreen}
               options={{ title: 'Redigera en syssla' }}
-            />
-            <RootStack.Screen
-              name='StatisticsScreen'
-              component={StatisticsScreen}
-              options={{ title: 'Statistik' }}
             />
             <RootStack.Screen
               name='ProfileScreen'

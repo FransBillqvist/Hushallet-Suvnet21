@@ -64,7 +64,7 @@ export default function ProfileScreen({ navigation }: Props) {
               await dispatch(addNewProfile(newProfile)).unwrap();
               await dispatch(addHouseholdToHouseholdList(household));
               await dispatch(getChores(household.id));
-              navigation.navigate('HomeScreen');
+              navigation.replace('HomeScreen');
             }
           } catch {
             console.error(Error);
