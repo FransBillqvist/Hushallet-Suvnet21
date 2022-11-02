@@ -175,7 +175,7 @@ export default function EditChoreScreen({ navigation }: Props) {
                 </ChoreCard>
               </Pressable>
               <BigButton
-                theme={getTheme('dark')}
+                theme={getTheme('light')}
                 onPress={props.handleSubmit}
                 style={{ marginTop: 10 }}
               >

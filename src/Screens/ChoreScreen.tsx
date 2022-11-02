@@ -192,11 +192,11 @@ export default function ChoreScreen({ navigation }: Props) {
 
               <View style={styles.smallButtonContainer}>
                 <View style={styles.smallButtonPosition}>
-                  <SmallButton theme={getTheme('dark')} onPress={props.handleSubmit}>
+                  <SmallButton theme={getTheme('light')} onPress={props.handleSubmit}>
                     Lägg till
                   </SmallButton>
                   <SmallButton
-                    theme={getTheme('dark')}
+                    theme={getTheme('light')}
                     onPress={() => {
                       navigation.goBack();
                     }}

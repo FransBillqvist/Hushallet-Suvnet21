@@ -104,7 +104,7 @@ export default function ProfileScreen({ navigation }: Props) {
               <SmallButton
                 style={styles.button}
                 icon='plus-circle-outline'
-                theme={getTheme('dark')}
+                theme={getTheme('light')}
                 onPress={props.handleSubmit}
               >
                 Skapa
