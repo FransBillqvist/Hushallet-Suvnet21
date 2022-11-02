@@ -12,8 +12,11 @@ import { filterAvatarList } from '../Components/filterAvatarList';
 import { getTheme } from '../Components/theme';
 import { Profile } from '../Data/profile';
 import { RootStackParamList } from '../Navigation/RootNavigator';
-import { getChores } from '../Store/choreSlice';
-import { addHouseholdToHouseholdList, createNewHousehold } from '../Store/householdSlice';
+import {
+  addHouseholdToHouseholdList,
+  createNewHousehold,
+  selectActiveHousehold,
+} from '../Store/householdSlice';
 import { addNewProfile } from '../Store/profileSlice';
 import { useAppDispatch, useAppSelector } from '../Store/store';
 
@@ -38,7 +41,6 @@ export default function ProfileScreen({ navigation }: Props) {
       .forEach((profile) => avatarsInHousehold.push(profile.avatar)),
   );
   const [chosenAvatar, setAvatar] = React.useState('');
-  const nav = navigation.getState().routes.find((nav) => nav.name === 'CreateScreen');
 
   return (
     <View style={styles.container}>
@@ -48,7 +50,7 @@ export default function ProfileScreen({ navigation }: Props) {
           try {
             actions.resetForm();
             const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 8);
-            const householdMember = nav ? 'owner' : 'member';
+            const householdMember = avatarsInHousehold.length == 0 ? 'owner' : 'member';
             if (userId && household) {
               const newProfile: Profile = {
                 id: nanoId(),
@@ -58,12 +60,11 @@ export default function ProfileScreen({ navigation }: Props) {
                 role: householdMember,
                 householdId: household.id,
               };
-
               if (householdMember == 'owner') dispatch(createNewHousehold(household));
 
               await dispatch(addNewProfile(newProfile)).unwrap();
               await dispatch(addHouseholdToHouseholdList(household));
-              await dispatch(getChores(household.id));
+              await dispatch(selectActiveHousehold(household.id));
               navigation.replace('HomeScreen');
             }
           } catch {
