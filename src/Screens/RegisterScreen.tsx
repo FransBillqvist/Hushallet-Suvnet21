@@ -38,7 +38,7 @@ export default function RegisterScreen({ navigation }: Props) {
               .then(async (value) => {
                 if (value.uid !== undefined) {
                   saveUserStorage(value);
-                  navigation.navigate('ManagerScreen');
+                  navigation.replace('ManagerScreen');
                 }
               });
           } catch {
