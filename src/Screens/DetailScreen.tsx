@@ -3,6 +3,7 @@ import { customAlphabet } from 'nanoid';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import BigButton from '../Components/Buttons/BigButton';
 import HugeButton from '../Components/Buttons/HugeButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
@@ -14,24 +15,25 @@ import { useAppDispatch, useAppSelector } from '../Store/store';
 type Props = NativeStackScreenProps<RootStackParamList, 'DetailScreen'>;
 
 export default function DetailScreen(navigator: Props) {
-  const chores = useAppSelector((state) => state.chore.singleChore);
+  const singleChore = useAppSelector((state) => state.chore.singleChore);
   const nanoId = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
   const profileId = useAppSelector((state) => state.profile.currentProfile.id);
   const dispatch = useAppDispatch();
+  const activeProfile = useAppSelector((state) => state.profile.currentProfile);
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ flex: 1, marginBottom: 25 }}>
       <View style={styles.container}>
         <ChoreCard style={{ marginTop: 14 }}>
-          <Text>{chores.name}</Text>
-          <Text>Skall göras var {chores.frequency}:e dag</Text>
+          <Text>{singleChore.name}</Text>
+          <Text>Skall göras var {singleChore.frequency}:e dag</Text>
         </ChoreCard>
         <ChoreCard style={{ minHeight: 129 }}>
-          <Text>{chores.description}</Text>
+          <Text>{singleChore.description}</Text>
         </ChoreCard>
         <ChoreCard style={{ minHeight: 70 }}>
           <Text>Energivärde:</Text>
-          <Text>{chores.demanding}</Text>
+          <Text>{singleChore.demanding}</Text>
         </ChoreCard>
         <HugeButton
           icon='plus-circle-outline'
@@ -39,7 +41,7 @@ export default function DetailScreen(navigator: Props) {
           onPress={() => {
             const isDone: ChoreHistory = {
               id: '-' + nanoId(),
-              choreId: chores.id,
+              choreId: singleChore.id,
               profileId: profileId,
               date: new Date().toISOString(),
             };
@@ -50,6 +52,24 @@ export default function DetailScreen(navigator: Props) {
         >
           Markera som klar
         </HugeButton>
+        <View style={styles.buttonContainer}>
+          <View style={{ justifyContent: 'flex-end' }}>
+            {activeProfile.role == 'owner' ? (
+              <BigButton
+                style={{ marginTop: 10, alignSelf: 'center' }}
+                icon='pencil-outline'
+                theme={getTheme('light')}
+                onPress={() =>
+                  navigator.navigation.navigate('EditChoreScreen', { id: singleChore.id })
+                }
+              >
+                Redigera syssla
+              </BigButton>
+            ) : (
+              <></>
+            )}
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
@@ -60,5 +80,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flex: 1,
   },
 });
