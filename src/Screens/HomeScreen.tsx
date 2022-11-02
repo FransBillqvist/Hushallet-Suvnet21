@@ -46,91 +46,91 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <ScrollView>
-        <View>
-          {chores.chores.map((chore) => (
-            <View key={chore.id}>
-              <Pressable
-                onPress={async () => {
-                  await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
-                    .unwrap()
-                    .then(async () => {
-                      await dispatch(getASingleChore(chore.id));
-                      navigation.navigate('DetailScreen');
-                    });
+      <View>
+        {chores.chores.map((chore) => (
+          <View key={chore.id}>
+            <Pressable
+              onPress={async () => {
+                await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
+                  .unwrap()
+                  .then(async () => {
+                    await dispatch(getASingleChore(chore.id));
+                    navigation.navigate('DetailScreen');
+                  });
+              }}
+            >
+              <ChoreCard chore={chore}>
+                <Text>{chore.name}</Text>
+                <View style={{ alignItems: 'center' }}>
+                  {choreData
+                    .filter((cD) => cD.id === chore.id)
+                    .map((cD) => (
+                      <Text key={cD.key}>{cD.avatarOrDays}</Text>
+                    ))}
+                </View>
+              </ChoreCard>
+            </Pressable>
+          </View>
+        ))}
+      </View>
+
+      {activeProfile.role == 'owner' ? (
+        <View style={styles.smallButtonContainer}>
+          <View style={styles.smallButtonPosition}>
+            <BigButton
+              theme={getTheme('dark')}
+              onPress={() => navigation.navigate('ChoreScreen')}
+              icon='plus-circle-outline'
+              style={{ maxWidth: 150 }}
+            >
+              Ny syssla
+            </BigButton>
+            <Portal>
+              <Dialog
+                visible={houseModalVisible}
+                onDismiss={hideHouseModal}
+                style={{
+                  maxHeight: 200,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                <ChoreCard chore={chore}>
-                  <Text>{chore.name}</Text>
-                  <View style={{ alignItems: 'center' }}>
-                    {choreData
-                      .filter((cD) => cD.id === chore.id)
-                      .map((cD) => (
-                        <Text key={cD.key}>{cD.avatarOrDays}</Text>
-                      ))}
-                  </View>
-                </ChoreCard>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-
-        {activeProfile.role == 'owner' ? (
-          <View style={styles.smallButtonContainer}>
-            <View style={styles.smallButtonPosition}>
-              <BigButton
-                theme={getTheme('dark')}
-                onPress={() => navigation.navigate('ChoreScreen')}
-                icon='plus-circle-outline'
-                style={{ maxWidth: 150 }}
-              >
-                Ny syssla
-              </BigButton>
-              <Portal>
-                <Dialog
-                  visible={houseModalVisible}
-                  onDismiss={hideHouseModal}
-                  style={{
-                    maxHeight: 200,
-                    alignSelf: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Dialog.Title>Byt hushållsnamn</Dialog.Title>
-                  <Dialog.Content style={{ maxHeight: 150, marginBottom: 10 }}>
-                    <TextInput
-                      placeholder={originalHouseHold.name}
-                      value={originalHouseHold.name}
-                      onChangeText={(text: string) => handleHouseholdChange('name', text)}
-                      style={styles.inputTextField}
-                    />
-                    <Dialog.Actions style={{ marginTop: 10, padding: 0 }}>
-                      <BigButton
-                        theme={getTheme('dark')}
-                        onPress={async () => (
-                          setHouseModalVisible(false),
-                          await dispatch(editHouseholdName(originalHouseHold)),
-                          await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
-                        )}
-                      >
-                        Spara
-                      </BigButton>
-                    </Dialog.Actions>
-                  </Dialog.Content>
-                </Dialog>
-              </Portal>
-              <BigButton
-                style={{ maxWidth: 150, marginLeft: 10 }}
-                theme={getTheme('dark')}
-                onPress={showHouseModal}
-                icon='pencil-outline'
-              >
-                Hushållsnamn
-              </BigButton>
-            </View>
+                <Dialog.Title>Byt hushållsnamn</Dialog.Title>
+                <Dialog.Content style={{ maxHeight: 150, marginBottom: 10 }}>
+                  <TextInput
+                    placeholder={originalHouseHold.name}
+                    value={originalHouseHold.name}
+                    onChangeText={(text: string) => handleHouseholdChange('name', text)}
+                    style={styles.inputTextField}
+                  />
+                  <Dialog.Actions style={{ marginTop: 10, padding: 0 }}>
+                    <BigButton
+                      theme={getTheme('dark')}
+                      onPress={async () => (
+                        setHouseModalVisible(false),
+                        await dispatch(editHouseholdName(originalHouseHold)),
+                        await dispatch(selectActiveHousehold(activeHouseHold?.id || ''))
+                      )}
+                    >
+                      Spara
+                    </BigButton>
+                  </Dialog.Actions>
+                </Dialog.Content>
+              </Dialog>
+            </Portal>
+            <BigButton
+              style={{ maxWidth: 150, marginLeft: 10 }}
+              theme={getTheme('dark')}
+              onPress={showHouseModal}
+              icon='pencil-outline'
+            >
+              Hushållsnamn
+            </BigButton>
           </View>
-        ) : (
-          <></>
-        )}
+        </View>
+      ) : (
+        <></>
+      )}
     </ScrollView>
   );
 }
