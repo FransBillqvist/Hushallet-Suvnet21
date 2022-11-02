@@ -83,7 +83,7 @@ export default function HomeScreen({ navigation }: Props) {
         <View style={styles.smallButtonContainer}>
           <View style={styles.smallButtonPosition}>
             <BigButton
-              theme={getTheme('dark')}
+              theme={getTheme('light')}
               onPress={() => navigation.navigate('ChoreScreen')}
               icon='plus-circle-outline'
               style={{ maxWidth: 150 }}
@@ -110,7 +110,7 @@ export default function HomeScreen({ navigation }: Props) {
                   />
                   <Dialog.Actions style={{ marginTop: 10, padding: 0 }}>
                     <BigButton
-                      theme={getTheme('dark')}
+                      theme={getTheme('light')}
                       onPress={async () => (
                         setHouseModalVisible(false),
                         await dispatch(editHouseholdName(originalHouseHold)),
@@ -125,7 +125,7 @@ export default function HomeScreen({ navigation }: Props) {
             </Portal>
             <BigButton
               style={{ maxWidth: 150, marginLeft: 10 }}
-              theme={getTheme('dark')}
+              theme={getTheme('light')}
               onPress={showHouseModal}
               icon='pencil-outline'
             >
