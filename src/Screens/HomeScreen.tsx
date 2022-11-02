@@ -74,14 +74,6 @@ export default function HomeScreen({ navigation }: Props) {
                       .map((cD) => (
                         <Text key={cD.key}>{cD.avatarOrDays}</Text>
                       ))}
-                    {activeProfile.role == 'owner' ? (
-                      <IconButton
-                        icon='pencil-outline'
-                        onPress={() => navigation.navigate('EditChoreScreen', { id: chore.id })}
-                      ></IconButton>
-                    ) : (
-                      <></>
-                    )}
                   </View>
                 </ChoreCard>
               </Pressable>
