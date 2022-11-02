@@ -1,11 +1,8 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import GestureRecognizer from 'react-native-swipe-gestures';
 import ChorePieChart from '../Components/ChorePieChart';
-import { RootStackParamList } from '../Navigation/RootNavigator';
 import { selectHistoryByPeriod } from '../Store/choreHistorySlice';
 import { useAppSelector } from '../Store/store';
 
@@ -29,7 +26,6 @@ export default function StatisticsScreen() {
     <ScrollView>
       <SafeAreaView>
         <View style={styles.container}>
-          <Text variant='headlineMedium'>Nuvarande vecka</Text>
           <ChorePieChart width={400} height={200} hasLegend data={totalData} />
           <View style={styles.smallPiechartContainer}>
             {everyPieData.map((data) => (

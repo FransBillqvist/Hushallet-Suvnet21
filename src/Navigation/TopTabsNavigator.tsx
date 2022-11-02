@@ -3,9 +3,10 @@ import {
   MaterialTopTabBarProps,
 } from '@react-navigation/material-top-tabs';
 import React from 'react';
-import StatisticsScreen from '../Screens/StatisticsScreen';
+import { View } from 'react-native';
+import { IconButton, Text } from 'react-native-paper';
 import HomeScreen from '../Screens/HomeScreen';
-import { View, Text } from 'react-native';
+import StatisticsScreen from '../Screens/StatisticsScreen';
 
 export type TopTabsParamList = {
   TodayScreen: undefined;
@@ -28,8 +29,7 @@ export function TopTabsNavigator() {
 }
 
 const CustomTabBar = (props: MaterialTopTabBarProps) => {
-  const { index, routeNames, routes } = props.state;
-
+  const { index, routeNames } = props.state;
   // props.descriptors[0].options.title
 
   const prevScreen = routeNames[index - 1];
@@ -40,10 +40,29 @@ const CustomTabBar = (props: MaterialTopTabBarProps) => {
   // props.jumpTo(nextScreen);
 
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-      <Text>{'<'}</Text>
-      <Text>{currentScreen}</Text>
-      <Text>{'>'}</Text>
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: 'white',
+      }}
+    >
+      <IconButton
+        icon={'chevron-left'}
+        onPress={() => {
+          if (prevScreen) props.navigation.navigate(prevScreen);
+        }}
+      />
+      <Text variant='titleMedium'>
+        {props.descriptors[props.state.routes[index].key].options.title}
+      </Text>
+      <IconButton
+        icon={'chevron-right'}
+        onPress={() => {
+          if (nextScreen) props.navigation.navigate(nextScreen);
+        }}
+      />
     </View>
   );
 };
