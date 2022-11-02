@@ -2,8 +2,9 @@ import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
+import * as Clipboard from 'expo-clipboard';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Dialog, Portal, Text, TextInput } from 'react-native-paper';
+import { Dialog, IconButton, Portal, Text, TextInput } from 'react-native-paper';
 import BigButton from '../Components/Buttons/BigButton';
 import ChoreCard from '../Components/Cards/ChoreCard';
 import { getTheme } from '../Components/theme';
@@ -36,6 +37,10 @@ export default function HomeScreen({ navigation }: Props) {
 
   const handleHouseholdChange = (key: string, value: string | number) => {
     editedHousehold((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const copyToClipboard = () => {
+    Clipboard.setStringAsync(activeHouseHold?.code || '');
   };
 
   return (
@@ -95,19 +100,31 @@ export default function HomeScreen({ navigation }: Props) {
                 visible={houseModalVisible}
                 onDismiss={hideHouseModal}
                 style={{
-                  maxHeight: 200,
+                  maxHeight: 230,
                   alignSelf: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <Dialog.Title>Byt hushållsnamn</Dialog.Title>
-                <Dialog.Content style={{ maxHeight: 150, marginBottom: 10 }}>
+                <Dialog.Title style={{ alignSelf: 'center', paddingTop: 6 }}>
+                  Byt hushållsnamn
+                </Dialog.Title>
+                <Dialog.Content style={{ maxHeight: 210, marginBottom: 1 }}>
                   <TextInput
                     placeholder={originalHouseHold.name}
                     value={originalHouseHold.name}
                     onChangeText={(text: string) => handleHouseholdChange('name', text)}
                     style={styles.inputTextField}
                   />
+                  <View style={{ alignSelf: 'center' }}>
+                    <Text style={{ fontSize: 22 }}>
+                      {activeHouseHold?.code}
+                      <IconButton
+                        icon='content-copy'
+                        onPress={copyToClipboard}
+                        style={{ paddingTop: 10 }}
+                      ></IconButton>
+                    </Text>
+                  </View>
                   <Dialog.Actions style={{ marginTop: 10, padding: 0 }}>
                     <BigButton
                       theme={getTheme('dark')}
@@ -160,7 +177,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   inputTextField: {
-    marginTop: 20,
+    marginTop: 5,
     borderRadius: 7,
     fontSize: 15,
     borderWidth: 1,
