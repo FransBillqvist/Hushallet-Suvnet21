@@ -41,7 +41,14 @@ export default function RootNavigator({ colorScheme }: { colorScheme: ColorSchem
   const currentAvatar = useAppSelector((state) => state.profile.currentProfile.avatar);
   return (
     <NavigationContainer theme={getTheme(colorScheme)}>
-      <RootStack.Navigator>
+      <RootStack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: 'white',
+          },
+          headerShadowVisible: false,
+        }}
+      >
         {user.uid === '' ? (
           <>
             <RootStack.Screen
