@@ -68,15 +68,10 @@ export default function ManagerScreen({ navigation }: Props) {
                     profiles.find((pro) => pro.userId === userId && pro.householdId === house.id),
                   ),
                 );
+                await dispatch(getChores(house.id));
                 dispatch(
                   await getChoreHistoryFromDbByProfileIds(
                     profiles.filter((pro) => pro.householdId == house.id),
-                  ),
-                );
-                await dispatch(getChores(house.id));
-                await dispatch(
-                  setCurrentProfile(
-                    profiles.find((pro) => pro.userId === userId && pro.householdId == house.id),
                   ),
                 );
                 navigation.navigate('HomeScreen');
