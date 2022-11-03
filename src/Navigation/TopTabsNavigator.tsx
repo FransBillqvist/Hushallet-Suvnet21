@@ -49,15 +49,17 @@ const CustomTabBar = (props: MaterialTopTabBarProps) => {
       }}
     >
       <IconButton
+        style={prevScreen ? {} : { opacity: 0 }}
         icon={'chevron-left'}
         onPress={() => {
           if (prevScreen) props.navigation.navigate(prevScreen);
         }}
       />
-      <Text variant='titleMedium'>
+      <Text variant='titleMedium' style={{ alignSelf: 'center' }}>
         {props.descriptors[props.state.routes[index].key].options.title}
       </Text>
       <IconButton
+        style={nextScreen ? {} : { opacity: 0 }}
         icon={'chevron-right'}
         onPress={() => {
           if (nextScreen) props.navigation.navigate(nextScreen);
