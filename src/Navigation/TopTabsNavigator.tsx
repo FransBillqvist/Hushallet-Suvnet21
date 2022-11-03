@@ -30,14 +30,9 @@ export function TopTabsNavigator() {
 
 const CustomTabBar = (props: MaterialTopTabBarProps) => {
   const { index, routeNames } = props.state;
-  // props.descriptors[0].options.title
 
   const prevScreen = routeNames[index - 1];
-  const currentScreen = routeNames[index];
   const nextScreen = routeNames[index + 1];
-
-  // props.jumpTo(prevScreen);
-  // props.jumpTo(nextScreen);
 
   return (
     <View
@@ -49,6 +44,7 @@ const CustomTabBar = (props: MaterialTopTabBarProps) => {
       }}
     >
       <IconButton
+        style={prevScreen ? {} : { opacity: 0 }}
         icon={'chevron-left'}
         onPress={() => {
           if (prevScreen) props.navigation.navigate(prevScreen);
@@ -58,6 +54,7 @@ const CustomTabBar = (props: MaterialTopTabBarProps) => {
         {props.descriptors[props.state.routes[index].key].options.title}
       </Text>
       <IconButton
+        style={nextScreen ? {} : { opacity: 0 }}
         icon={'chevron-right'}
         onPress={() => {
           if (nextScreen) props.navigation.navigate(nextScreen);
