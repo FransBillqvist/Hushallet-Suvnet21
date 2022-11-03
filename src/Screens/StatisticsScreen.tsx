@@ -32,7 +32,9 @@ export default function StatisticsScreen() {
     <ScrollView>
       <SafeAreaView>
         <View style={styles.container}>
-          <ChorePieChart width={400} height={200} hasLegend data={totalDataToDecimal} />
+          <View style={{ paddingLeft: 70 }}>
+            <ChorePieChart width={550} height={330} hasLegend data={totalData} />
+          </View>
           <View style={styles.smallPiechartContainer}>
             {everyPieData.map((data) => (
               <View key={data.choreTitle} style={styles.smallPiechart}>
