@@ -22,11 +22,17 @@ export interface ChorePieData {
 export default function StatisticsScreen() {
   // const { totalData, everyPieData } = useAppSelector(selectHistoryByPeriod(route.params.period));
   const { totalData, everyPieData } = useAppSelector(selectHistoryByPeriod('currentWeek'));
+  const totalDataToDecimal = totalData.map((data) => {
+    return {
+      ...data,
+      contribution: data.contribution / 10,
+    };
+  });
   return (
     <ScrollView>
       <SafeAreaView>
         <View style={styles.container}>
-          <ChorePieChart width={400} height={200} hasLegend data={totalData} />
+          <ChorePieChart width={400} height={200} hasLegend data={totalDataToDecimal} />
           <View style={styles.smallPiechartContainer}>
             {everyPieData.map((data) => (
               <View key={data.choreTitle} style={styles.smallPiechart}>
