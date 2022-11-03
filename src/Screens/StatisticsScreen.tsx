@@ -22,6 +22,12 @@ export interface ChorePieData {
 export default function StatisticsScreen() {
   // const { totalData, everyPieData } = useAppSelector(selectHistoryByPeriod(route.params.period));
   const { totalData, everyPieData } = useAppSelector(selectHistoryByPeriod('currentWeek'));
+  const totalDataToDecimal = totalData.map((data) => {
+    return {
+      ...data,
+      contribution: data.contribution / 10,
+    };
+  });
   return (
     <ScrollView>
       <SafeAreaView>
