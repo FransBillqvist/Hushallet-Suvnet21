@@ -62,18 +62,14 @@ export default function HomeScreen({ navigation }: Props) {
                       <Text key={chore.id}>{chore.avatar}</Text>
                     ) : (
                       <View
-                        style={
-                          chore.isOverdue
-                            ? {
-                                backgroundColor: '#FF0000',
-                                borderRadius: 100,
-                                width: 25,
-                                height: 25,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }
-                            : {}
-                        }
+                        style={{
+                          backgroundColor: chore.isOverdue ? '#FF0000' : '#BEBEBE',
+                          borderRadius: 100,
+                          width: 25,
+                          height: 25,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
                       >
                         <Text>{chore.daysPast}</Text>
                       </View>

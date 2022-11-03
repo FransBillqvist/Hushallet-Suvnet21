@@ -30,14 +30,9 @@ export function TopTabsNavigator() {
 
 const CustomTabBar = (props: MaterialTopTabBarProps) => {
   const { index, routeNames } = props.state;
-  // props.descriptors[0].options.title
 
   const prevScreen = routeNames[index - 1];
-  const currentScreen = routeNames[index];
   const nextScreen = routeNames[index + 1];
-
-  // props.jumpTo(prevScreen);
-  // props.jumpTo(nextScreen);
 
   return (
     <View
@@ -55,7 +50,7 @@ const CustomTabBar = (props: MaterialTopTabBarProps) => {
           if (prevScreen) props.navigation.navigate(prevScreen);
         }}
       />
-      <Text variant='titleMedium' style={{ alignSelf: 'center' }}>
+      <Text variant='titleMedium'>
         {props.descriptors[props.state.routes[index].key].options.title}
       </Text>
       <IconButton
