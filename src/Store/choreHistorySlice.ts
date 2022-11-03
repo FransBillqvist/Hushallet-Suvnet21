@@ -196,6 +196,20 @@ export const selectHistoryByPeriod =
       }
     });
 
+    everyPieData.sort((a, b) => {
+      a.pieData.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      b.pieData.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      return 0;
+    });
+
     return { totalData, everyPieData };
   };
 
