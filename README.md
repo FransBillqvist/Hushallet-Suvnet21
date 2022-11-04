@@ -36,7 +36,7 @@ Hushållet körs på `localhost:19000` som standard.
 
 - [x] En logga, splashscreen och appikon ska designas och användas. *
 - [x] Applikationen ska byggas med RN, Expo & TS. *
-- [/] Designen av appen ska utgå ifrån befintliga skisser, undantag kan ges men ska diskuteras
+- [x] Designen av appen ska utgå ifrån befintliga skisser, undantag kan ges men ska diskuteras
 med produktägare, godkännas och dokumenteras. *
 
 ## Hushåll
@@ -66,19 +66,15 @@ vikt som beskriver hur energikrävande den är. *
 
 ## Dagsvyn
 - [x] Alla sysslor ska listas i en dagsvy och ge en översikt kring vad som behöver göras. *
-- [] Utöver sysslans namn ska även vem/vilka som har gjort sysslan visas, hur många dagar
+- [x] Utöver sysslans namn ska även vem/vilka som har gjort sysslan visas, hur många dagar
 sedan sysslan gjordes senast samt om den är försenad. *
 - [x] När en användare väljer en syssla ska beskrivningen av sysslan visas och det ska även
 med ett enkelt tryck gå att markera sysslan som gjord. *
 
 ## Statistik
 
-- [/] En användare ska kunna se fördelningen av gjorda sysslor mellan användarna i sitt
+- [x] En användare ska kunna se fördelningen av gjorda sysslor mellan användarna i sitt
 hushåll. *
-- [/] Varje statistikvy ska visa den totala fördelningen (inräknat vikterna för sysslorna) samt
+- [x] Varje statistikvy ska visa den totala fördelningen (inräknat vikterna för sysslorna) samt
 fördelning av varje enskild syssla. *
 - [x] Det ska finnas en statistikvy över ”nuvarande vecka”. *
-
-# Avgränsningar
-
-- Där vi skapar en syssla har vi vi lagt till en knapp där det står "välj" som du kan klicka på för att ändra "Återkommande" samt "Värde" då vi tyckte att det inte var tillräckligt solklart att du kunde klicka på dom för att ändra värdet i dom.
