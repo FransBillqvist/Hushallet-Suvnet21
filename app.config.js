@@ -3,12 +3,10 @@ import 'dotenv/config';
 export default {
   expo: {
     name: 'Household-app',
-    slug: 'household-app-suvnet21',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
-    owner: 'lumincob',
     splash: {
       image: './assets/hushållet-removebg-preview.png',
       resizeMode: 'contain',
@@ -40,9 +38,6 @@ export default {
       firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.FIREBASE_APP_ID,
       firebasedatabaseURL: process.env.FIREBASE_DATABASE_URL,
-      eas: {
-        projectId: '944cbf2f-93f0-4889-9d63-127054d200f5',
-      },
     },
   },
 };

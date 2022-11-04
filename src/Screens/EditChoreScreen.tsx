@@ -80,7 +80,7 @@ export default function EditChoreScreen({ navigation }: Props) {
             dispatch(editChore(originalchore));
             navigation.navigate('HomeScreen');
           }}
-          initialValues={{ name: '', description: '' }}
+          initialValues={{ name: originalchore.name, description: originalchore.description }}
         >
           {(props) => (
             <View style={styles.container}>
@@ -89,7 +89,6 @@ export default function EditChoreScreen({ navigation }: Props) {
                   style={styles.input}
                   outlineColor='transparent'
                   mode='outlined'
-                  placeholder={originalchore.name}
                   value={props.values.name}
                   onChangeText={props.handleChange('name')}
                   onBlur={props.handleBlur('name')}
@@ -103,7 +102,6 @@ export default function EditChoreScreen({ navigation }: Props) {
                   numberOfLines={4}
                   multiline={true}
                   mode='outlined'
-                  placeholder={originalchore.description}
                   value={props.values.description}
                   onChangeText={props.handleChange('description')}
                   onBlur={props.handleBlur('description')}
