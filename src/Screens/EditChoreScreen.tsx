@@ -17,13 +17,13 @@ import { useAppDispatch, useAppSelector } from '../Store/store';
 const formValidationSchema = yup.object().shape({
   name: yup
     .string()
-    .matches(/^[a-ö A-Ö]+$/, 'Accepterar bara bokstäver')
+    .matches(/^[a-ö A-Ö,.!]+$/, 'Accepterar bara bokstäver')
     .min(3, 'Minst 3 bokstäver')
     .max(20, 'Max 20 bokstäver')
     .required('Namn är obligatoriskt'),
   description: yup
     .string()
-    .matches(/^[a-ö A-Ö]+$/, 'Accepterar bara bokstäver')
+    .matches(/^[a-ö A-Ö,.!]+$/, 'Accepterar bara bokstäver')
     .min(5, 'Minst 5 bokstäver')
     .max(50, 'Max 50 bokstäver')
     .required('Beskrivning är obligatoriskt'),
@@ -89,7 +89,6 @@ export default function EditChoreScreen({ navigation }: Props) {
                   style={styles.input}
                   outlineColor='transparent'
                   mode='outlined'
-                  label='Titel'
                   placeholder={originalchore.name}
                   value={props.values.name}
                   onChangeText={props.handleChange('name')}
@@ -104,7 +103,6 @@ export default function EditChoreScreen({ navigation }: Props) {
                   numberOfLines={4}
                   multiline={true}
                   mode='outlined'
-                  label='Beskrivning'
                   placeholder={originalchore.description}
                   value={props.values.description}
                   onChangeText={props.handleChange('description')}
@@ -198,6 +196,7 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     borderRadius: 10,
+    backgroundColor: 'white',
   },
   modal: {
     backgroundColor: 'white',

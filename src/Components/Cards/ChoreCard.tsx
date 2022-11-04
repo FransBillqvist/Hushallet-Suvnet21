@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { Surface } from 'react-native-paper';
-import { string } from 'yup';
 import { Chore } from '../../Data/chore';
-import { Profile } from '../../Data/profile';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -28,6 +26,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 10,
+    backgroundColor: 'white',
   },
 });
 

@@ -24,7 +24,7 @@ import { useAppDispatch, useAppSelector } from '../Store/store';
 const formValidationSchema = yup.object().shape({
   name: yup
     .string()
-    .matches(/^[a-ö A-Ö]+$/, 'Accepterar bara bokstäver')
+    .matches(/^[a-ö A-Ö,.!]+$/, 'Accepterar bara bokstäver')
     .min(3, 'Minst 3 bokstäver')
     .max(20, 'Max 20 bokstäver')
     .required('Namn är obligatoriskt'),
@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     borderRadius: 10,
+    backgroundColor: 'white',
   },
   smallButtonContainer: {
     flex: 1,
