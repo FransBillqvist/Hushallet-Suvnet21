@@ -30,7 +30,7 @@ const formValidationSchema = yup.object().shape({
     .required('Namn är obligatoriskt'),
   description: yup
     .string()
-    .matches(/^[a-ö A-Ö]+$/, 'Accepterar bara bokstäver')
+    .matches(/^[a-ö A-Ö,.!]+$/, 'Accepterar bara bokstäver')
     .min(5, 'Minst 5 bokstäver')
     .max(50, 'Max 50 bokstäver'),
 });
